@@ -13,6 +13,7 @@ public class InputHandler : MonoBehaviour
     public void ReadDateInput()
     {
         HandleDate();
+        Debug.Log("bloop");
 
     }
 
