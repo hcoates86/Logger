@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Faisalman.AgeCalc</id>
+    <version>0.0.3</version>
+    <authors>Faisal Salman</authors>
+    <owners>Faisal Salman</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/faisalman/age-calc-cs</projectUrl>
+    <description>AgeCalc.cs - C# age calculation library: calculate relative time (years, months, days) ago since birthday.</description>
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+</package>

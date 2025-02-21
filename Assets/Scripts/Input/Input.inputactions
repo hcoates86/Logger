@@ -1,0 +1,12 @@
+{
+    "name": "Input",
+    "maps": [
+        {
+            "name": "User",
+            "id": "2c520be4-ab22-4723-accf-30a66cd284d2",
+            "actions": [],
+            "bindings": []
+        }
+    ],
+    "controlSchemes": []
+}
