@@ -15,7 +15,7 @@ public class Profile : MonoBehaviour
     public string notes;
     // allows editing of profile items
     public bool edit = false;
-    
+
     string GetAge()
     {
         DateTime currentDate = DateTime.Now;
@@ -24,7 +24,10 @@ public class Profile : MonoBehaviour
         if (age.Years < 1)
         {
             if (age.Months < 1)
-                return $"{age.Days} Days";
+            {
+                return $"{age.Days / 7} Weeks, {age.Days} Days";
+
+            }
 
             return $"{age.Months} Months, {age.Days} Days";
         }

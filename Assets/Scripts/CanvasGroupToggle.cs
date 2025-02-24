@@ -1,0 +1,111 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CanvasGroupToggle : MonoBehaviour
+{
+    public CanvasGroup element;
+    public bool fadeOut = false;
+    public bool fadeIn = false;
+    public float fadeOutSpeed;
+    public float fadeInSpeed;
+    public bool startHidden = true;
+    // hides num of seconds after showing
+    public float hideAfterSeconds;
+
+    void Start()
+    {
+        // if element isn't set, attempts to get the canvas group on the gameobject it's attached to
+        if (element == null)
+        {
+            element = GetComponent<CanvasGroup>();
+        }
+        //sets default fade speeds at start
+        if(fadeOutSpeed == 0)
+            fadeOutSpeed = 15f;
+        if(fadeInSpeed == 0)
+            fadeInSpeed = 15f;
+
+        // written out to avoid any issues with fading coroutines
+        if (startHidden)
+        {
+            element.alpha = 0;
+            element.interactable = false;
+            element.blocksRaycasts = false;
+        }
+        else
+        {
+            element.alpha = 1;
+            element.interactable = true;
+            element.blocksRaycasts = true;
+
+        }
+    }
+
+    public void ToggleShow()
+    {
+        if (element.alpha == 1)
+            HideElement();
+        else
+            ShowElement();
+            
+    }
+
+    public void ShowElement()
+    {
+        if (fadeIn)
+            StartCoroutine(FadeElement(false));
+        else
+            element.alpha = 1;
+            
+        element.interactable = true;
+        element.blocksRaycasts = true;
+
+        if (hideAfterSeconds > 0)
+        {
+            StartCoroutine(HideAfterDelay());
+        }
+    }
+
+    IEnumerator HideAfterDelay()
+    {
+        yield return new WaitForSeconds(hideAfterSeconds);
+        HideElement();
+
+    }
+
+    public void HideElement()
+    {
+        if (fadeOut)
+            StartCoroutine(FadeElement(true));
+        else
+            element.alpha = 0;
+        
+        element.interactable = false;
+        element.blocksRaycasts = false;
+    }
+
+    // bool controls whether fading in or out
+    IEnumerator FadeElement(bool fadingAway)
+    {
+        if (fadingAway)
+        {
+            while (element != null && element.alpha > 0)
+            {
+                element.alpha -= 0.1f * fadeOutSpeed * Time.deltaTime;
+                yield return null;
+            }
+        }
+        else
+        {
+            while (element != null && element.alpha < 1)
+            {
+                element.alpha += 0.1f * fadeInSpeed * Time.deltaTime;
+                yield return null;
+            }
+
+        }
+    }
+
+
+}
