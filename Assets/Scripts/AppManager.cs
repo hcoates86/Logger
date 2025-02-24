@@ -7,6 +7,8 @@ public class AppManager : MonoBehaviour
     public static AppManager Instance { get; private set; }
 
     public Error error;
+    public bool canEdit = false;
+
 
     void Awake()
     {
@@ -19,5 +21,20 @@ public class AppManager : MonoBehaviour
         {
             Destroy(this.gameObject); // Destroy other instance
         }
+    }
+
+    void DeleteProfile(int id)
+    {
+
+    }
+
+    void AddProfile(int id)
+    {
+
+    }
+
+    void SwitchProfile()
+    {
+        canEdit = false;
     }
 }

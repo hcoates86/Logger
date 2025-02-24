@@ -17,6 +17,7 @@ public class NewEventHandler : MonoBehaviour
         if (startDateValidator.SubmitDateValidation() && dueDateValidator.SubmitDateValidation())
         {
             // startDateValidator.dateValue;
+            // dueDateValidator.dateValue;
         }
         else
         {
