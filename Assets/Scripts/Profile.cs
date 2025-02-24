@@ -9,36 +9,27 @@ public class Profile : MonoBehaviour
     public string named;
     // must be in day/month/year format
     public DateTime birthDate;
-    public int Age => ComputeAge();
-    public List<string> vaccines;
+    public string Age => GetAge();
+    // for vaccines, flea meds, etc
+    public List<string> listItems;
     public string notes;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        // birthDate = new DateTime(01,11,2023);
-        // GetAge();
-    }
-
-    int ComputeAge()
-    {
-        DateTime today = DateTime.Today;
-        int age = today.Year - birthDate.Year;
-
-        if (birthDate.Date > today.AddYears(-age)) age--;
-
-        return age;
-    }
-
+    // allows editing of profile items
+    public bool edit = false;
+    
     string GetAge()
     {
-        DateTime birthDate = new DateTime(1990, 1, 1);
         DateTime currentDate = DateTime.Now;
         Age age = new Age(birthDate, currentDate);
 
-        Debug.Log($"Age: {age}, {age.Years} years, {age.Months} months, {age.Days} days");
-        return age.ToString();
+        if (age.Years < 1)
+        {
+            if (age.Months < 1)
+                return $"{age.Days} Days";
 
+            return $"{age.Months} Months, {age.Days} Days";
+        }
+
+        return $"{age.Years} Years";
     }
 
 }
