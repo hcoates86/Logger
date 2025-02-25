@@ -13,13 +13,13 @@ public class Profile : MonoBehaviour
     // must be in day/month/year format
     public DateTime birthDate;
     public string Age => GetAge();
-    public Image profileImage;
-    // for vaccines, flea meds, etc
-    public List<string> listItems;
-    // public string notes;
-    // allows editing of profile items
-    // public bool edit = false;
+    public Sprite profileImage;
+    // // for vaccines, flea meds, etc
+    // public List<string> listItems;
+    // three favorite events
+    public int[] favoriteEvents = new int[3];
 
+    // keeps a count of the total events for event id and sorting
     private int totalEventsAdded;
 
     string GetAge()
@@ -51,21 +51,33 @@ public class Profile : MonoBehaviour
 
     }
 
-    void SaveEvent()
+    public void SaveEvent()
     {
 
     }
 
 
+    [System.Serializable]
+    public class ProfileData
+    {
+        public int id;
+        public string named;
+        public string birthDate;
+        public string profileImagePath;
+        public int favoriteEvent1;
+        public int favoriteEvent2;
+        public int favoriteEvent3;
+        public int totalEventsAdded;
+    }
 
 
     [System.Serializable]
     public class EventData
     {
         // corresponds to the profile id
-        public int id;
-        // event number, to be loaded in order
-        public int number;
+        public int profileId;
+        // to be loaded in order
+        public int eventId;
         public string title;
         public string notes;
         //for when something was given, and when it's due next
@@ -81,10 +93,10 @@ public class Profile : MonoBehaviour
     {
         EventData data = new EventData();
         // assigns the profile's id
-        data.id = id;
+        data.profileId = id;
 
         int number = totalEventsAdded + 1;
-        data.number = number;
+        data.eventId = number;
 
         // assigns passed-in data
         data.title = title;
@@ -105,14 +117,45 @@ public class Profile : MonoBehaviour
         }
 
         // File.WriteAllText($"{Application.persistentDataPath}/profiles/{id}/{}.json", json);
-        string itemPath = Path.Combine(path, number.ToString());
+        string itemPath = Path.Combine(path, $"{number}.json");
         File.WriteAllText(itemPath, json);
     }
 
     void OverwriteItemData()
     {
-        //load?
-        //and save
+        // save to same id
+    }
+
+    void SaveProfile()
+    {
+        if (id == 0)
+        {
+            // assigns new id
+            id = AppManager.Instance.allProfiles.Count + 1;
+
+        }
+        ProfileData data = new ProfileData();
+        data.id = id;
+        data.named = named;
+        data.birthDate = birthDate.ToString("MM/dd/yyyy");
+        // data.profileImagePath 
+        data.favoriteEvent1 = favoriteEvents[0];
+        data.favoriteEvent2 = favoriteEvents[1];
+        data.favoriteEvent3 = favoriteEvents[2];
+        data.totalEventsAdded = totalEventsAdded;
+
+        string json = JsonUtility.ToJson(data);
+        string path = $"{Application.persistentDataPath}/profiles";
+
+        if (!Directory.Exists(path))
+        {
+            // Create the directory
+            Directory.CreateDirectory(path);
+        }
+
+        File.WriteAllText($"{Application.persistentDataPath}/profiles/profile{id}.json", json);
+
+
     }
 
 }

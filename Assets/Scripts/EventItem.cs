@@ -5,7 +5,10 @@ using TMPro;
 
 public class EventItem : MonoBehaviour
 {
-    public int id;
+    // corresponds to the profile id
+    public int profileId;
+    // to be loaded in order
+    public int eventId;
     public TMP_Text title;
     public TMP_Text notes;
     public TMP_Text startDate, dueDate;

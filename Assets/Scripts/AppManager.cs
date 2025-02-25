@@ -7,7 +7,13 @@ public class AppManager : MonoBehaviour
     public static AppManager Instance { get; private set; }
 
     public Error error;
-    public bool canEdit = false;
+    private bool canEdit = false;
+    public CanvasGroupToggle editImage;
+    public CanvasGroupToggle editName;
+    public CanvasGroupToggle editBirthdate;
+    public int currentProfile;
+
+    public List<Profile> allProfiles;
 
 
     void Awake()
@@ -20,6 +26,24 @@ public class AppManager : MonoBehaviour
         else if (Instance != this)
         {
             Destroy(this.gameObject); // Destroy other instance
+        }
+    }
+
+    public void ChangeEditable(bool changed)
+    {
+        canEdit = changed;
+
+        if (canEdit)
+        {
+            editImage.ShowElement();
+            editName.ShowElement();
+            editBirthdate.ShowElement();
+        }
+        else
+        {
+            editImage.HideElement();
+            editName.HideElement();
+            editBirthdate.HideElement();
         }
     }
 
@@ -36,5 +60,13 @@ public class AppManager : MonoBehaviour
     void SwitchProfile()
     {
         canEdit = false;
+        // currentProfile = 
+    }
+
+    void LoadAllProfiles()
+    {
+        // folder all profiles are saved to. Events are saved within profileid folders
+        string path = $"{Application.persistentDataPath}/profiles";
+
     }
 }

@@ -39,7 +39,7 @@ public class EditButton : MonoBehaviour
             button.colors = cbPressed;
             text.color = pressedTextColor;
 
-            AppManager.Instance.canEdit = true;
+            AppManager.Instance.ChangeEditable(true);
 
         }
         else
@@ -49,7 +49,7 @@ public class EditButton : MonoBehaviour
             button.colors = cbNormal;
             text.color = initialTextColor;
 
-            AppManager.Instance.canEdit = false;
+            AppManager.Instance.ChangeEditable(false);
         }
 
 
