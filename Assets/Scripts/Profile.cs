@@ -41,8 +41,24 @@ public class Profile : MonoBehaviour
         return $"{age.Years} Years {age.Months} Months";
     }
 
-    void DeleteEvent()
+    void DeleteEvent(int eventId)
     {
+        //fade + delete the gameobject 
+        //delete the notification if notifications on that event were on
+
+
+        // deletes the event file
+        string path = $"{Application.persistentDataPath}/profiles/{id}/{eventId}.json";
+
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log($"File at {path} has been deleted.");
+        }
+        else
+        {
+            Debug.Log($"File at {path} does not exist.");
+        }
 
     }
 
@@ -88,7 +104,7 @@ public class Profile : MonoBehaviour
         public bool hasDueDate;
     }
 
-    public void SaveItemData(string title, string notes = "", string startDate = "", string dueDate = "", 
+    public void SaveEventData(string title, string notes = "", string startDate = "", string dueDate = "", 
     bool hasStartDate = false, bool hasDueDate = false)
     {
         EventData data = new EventData();
@@ -121,7 +137,7 @@ public class Profile : MonoBehaviour
         File.WriteAllText(itemPath, json);
     }
 
-    void OverwriteItemData()
+    void OverwriteEventData()
     {
         // save to same id
     }

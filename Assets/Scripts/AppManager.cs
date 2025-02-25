@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.IO;
 
 
 public class AppManager : MonoBehaviour
@@ -53,6 +54,43 @@ public class AppManager : MonoBehaviour
     void DeleteProfile(int id)
     {
 
+        // finds and removes from profile list
+        foreach (Profile profile in allProfiles)
+        {
+            if (profile.id == id)
+            {
+                CanvasGroupToggle toggle;
+                //fade + delete the gameobject
+                // checks if the component exists, if not adds it
+                if (!profile.TryGetComponent<CanvasGroupToggle>(out toggle))
+                {
+                    toggle = profile.gameObject.AddComponent<CanvasGroupToggle>();
+                }
+
+                toggle.destroyAfterFade = true;
+                toggle.HideElement();
+
+
+
+            }
+            
+        }
+        //delete related notifications
+
+
+        // deletes the profile file
+        string path = $"{Application.persistentDataPath}/profiles/{id}";
+
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log($"File at {path} has been deleted.");
+        }
+        else
+        {
+            Debug.Log($"File at {path} does not exist.");
+        }
+
     }
 
     void AddProfile(int id)
@@ -81,7 +119,7 @@ public class AppManager : MonoBehaviour
         profile.named = newName;
         
         profile.profileImage = LoadImage(imagePath);
-        
+
         profile.birthDate = (DateTime) birthDate;
         allProfiles.Add(profile);
 
