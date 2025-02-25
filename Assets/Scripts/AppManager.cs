@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
 
 public class AppManager : MonoBehaviour
 {
@@ -14,6 +16,7 @@ public class AppManager : MonoBehaviour
     public int currentProfile;
 
     public List<Profile> allProfiles;
+    public Profile profilePrefab;
 
 
     void Awake()
@@ -67,6 +70,28 @@ public class AppManager : MonoBehaviour
     {
         // folder all profiles are saved to. Events are saved within profileid folders
         string path = $"{Application.persistentDataPath}/profiles";
+
+    }
+
+    public void CreateProfile(string newName, DateTime? birthDate = null, string imagePath = "")
+    {
+
+        Profile profile = Instantiate(profilePrefab);
+        profile.id = allProfiles.Count + 1;
+        profile.named = newName;
+        
+        profile.profileImage = LoadImage(imagePath);
+        
+        profile.birthDate = (DateTime) birthDate;
+        allProfiles.Add(profile);
+
+
+    }
+
+    Sprite LoadImage(string path)
+    {
+        Sprite sprite;
+        return null;
 
     }
 }

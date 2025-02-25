@@ -16,6 +16,8 @@ public class EventItem : MonoBehaviour
     public GameObject startDateContainer;
     public GameObject dueDateContainer;
 
+    // public bool getNotificationOnDue;
+
     void SetData()
     {
         // // save it to be able to edit it later

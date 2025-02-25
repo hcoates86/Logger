@@ -14,7 +14,7 @@ public class Error : MonoBehaviour
 
     private float refreshAmount = 0.1f;
 
-    private string[] errorArray = {"Something went wrong.", "Date is invalid. Please use day/month/year format using only numbers and /."};
+    private string[] errorArray = {"Something went wrong.", "Date is invalid. Please use day/month/year format using only numbers and slashes (/)."};
 
     void Start()
     {
