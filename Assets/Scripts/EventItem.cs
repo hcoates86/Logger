@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using System.IO;
 
 public class EventItem : MonoBehaviour
 {
+    public CanvasGroupToggle expandedContainer;
+    public CanvasGroupToggle shortBackground;
     // corresponds to the profile id
     public int profileId;
     // to be loaded in order
@@ -13,8 +17,14 @@ public class EventItem : MonoBehaviour
     public TMP_Text notes;
     public TMP_Text startDate, dueDate;
 
-    public GameObject startDateContainer;
-    public GameObject dueDateContainer;
+    public CanvasGroupToggle startDateContainer;
+    public CanvasGroupToggle dueDateContainer;
+
+    public bool isFavorite = false;
+    public Image favoriteStar;
+
+    private bool hasStartDate;
+    private bool hasDueDate;
 
     // public bool getNotificationOnDue;
 
@@ -29,6 +39,152 @@ public class EventItem : MonoBehaviour
         //     startDate.text = _event.startDate;
         // if (_event.hasDueDate)
         //     dueDate.text = _event.dueDate;
+    }
 
+    // displays optional items
+    // bool asks if full view is on to show expanded note view
+    public void DisplayOptional(bool fullView)
+    {
+        startDateContainer.ShowElement(hasStartDate);
+        dueDateContainer.ShowElement(hasDueDate);
+
+        if (fullView)
+        {
+            if (notes.text != string.Empty)
+            {
+                ShowExpanded(true);
+            }
+        }
+    }
+
+    public void ShowExpanded(bool _showExpanded)
+    {
+        if (_showExpanded)
+        {
+            expandedContainer.ShowElement();
+            shortBackground.HideElement();
+        }
+        else
+        {
+            expandedContainer.HideElement();
+            shortBackground.ShowElement();
+        }
+    }
+
+    public void ToggleFavorite()
+    {
+        isFavorite = !isFavorite;
+        ChangeFavorite();
+    }
+
+    void ChangeFavorite()
+    {
+        // isFavorite = favoriteChange;
+        if (isFavorite)
+        {
+            favoriteStar.sprite = AppManager.Instance.starFilled;
+        }
+        else
+        {
+            favoriteStar.sprite = AppManager.Instance.starHollow;
+        }
+        SaveEvent(DataType.IsFavorite);
+
+    }
+
+    [System.Serializable]
+    public class EventData
+    {
+        // corresponds to the profile id
+        public int profileId;
+        public int eventId;
+        public string title;
+        public string notes;
+        public string startDate;
+        public string dueDate;
+        public bool hasStartDate; 
+        public bool hasDueDate;
+        public bool isFavorite;
+    }
+
+    // saves the event according to the datatype
+    void SaveEvent(DataType dataType)
+    {
+        EventData data = new EventData();
+
+        switch (dataType)
+        {
+            case DataType.ProfileID:
+                data.profileId = profileId;
+                break;
+            case DataType.EventID:
+                data.eventId = eventId;
+                break;
+            case DataType.Title:
+                data.title = title.text;
+                break;
+            case DataType.Notes:
+                data.notes = notes.text;
+                break;
+            case DataType.StartDate:
+                data.startDate = startDate.text;
+                break;
+            case DataType.DueDate:
+                data.dueDate = dueDate.text;
+                break;
+            case DataType.HasStart:
+                data.hasStartDate = hasStartDate;
+                break;
+            case DataType.HasDue:
+                data.hasDueDate = hasDueDate;
+                break;
+            case DataType.IsFavorite:
+                data.isFavorite = isFavorite;
+                break;
+            case DataType.All:        
+                data.profileId = profileId;
+                data.eventId = eventId;
+                data.title = title.text;
+                data.notes = notes.text;
+                data.startDate = startDate.text;
+                data.dueDate = dueDate.text;
+                data.hasStartDate = hasStartDate;
+                data.hasDueDate = hasDueDate;
+                data.isFavorite = isFavorite;
+                break;
+        }
+
+        string json = JsonUtility.ToJson(data);
+
+        string path = $"{Application.persistentDataPath}/profiles/{profileId}/{eventId}.json";
+        if (!Directory.Exists(path))
+        {
+            // Create the directory
+            Directory.CreateDirectory(path);
+        }
+
+        File.WriteAllText(path, json);
+    }
+
+    public void DeleteEvent()
+    {
+        // deletes self from saved events
+        string path = $"{Application.persistentDataPath}/profiles/{profileId}/{eventId}.json";
+        AppManager.Instance.DeleteItemAtPath(path);
+
+        //delete notifications too
+
+
+        Profile profile = AppManager.Instance.FindProfile(profileId);
+        // removes self from profile's list of events
+        profile.allEvents.Remove(this);
+
+        AppManager.Instance.FadeAndDestroy(gameObject);
+
+    }
+
+    public enum DataType
+    {
+        ProfileID, EventID, Title, Notes, StartDate, DueDate, HasStart, HasDue, IsFavorite, All
     }
 }

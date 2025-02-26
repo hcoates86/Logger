@@ -71,6 +71,14 @@ public class CanvasGroupToggle : MonoBehaviour
         }
     }
 
+    public void ShowElement(bool show)
+    {
+        if (show)
+            ShowElement();
+        else
+            HideElement();
+    }
+
     IEnumerator HideAfterDelay()
     {
         yield return new WaitForSeconds(hideAfterSeconds);

@@ -21,6 +21,8 @@ public class Profile : MonoBehaviour
 
     // keeps a count of the total events for event id and sorting
     private int totalEventsAdded;
+    public Transform eventContainer;
+    public List<EventItem> allEvents = new List<EventItem>();
 
     string GetAge()
     {
@@ -50,20 +52,13 @@ public class Profile : MonoBehaviour
         // deletes the event file
         string path = $"{Application.persistentDataPath}/profiles/{id}/{eventId}.json";
 
-        if (File.Exists(path))
-        {
-            File.Delete(path);
-            Debug.Log($"File at {path} has been deleted.");
-        }
-        else
-        {
-            Debug.Log($"File at {path} does not exist.");
-        }
-
+        AppManager.Instance.DeleteItemAtPath(path);
     }
 
     void AddEvent()
     {
+        GameObject newEvent = Instantiate(AppManager.Instance.eventPrefab, eventContainer);
+        
 
     }
 
@@ -102,9 +97,10 @@ public class Profile : MonoBehaviour
         public string dueDate;
         public bool hasStartDate; 
         public bool hasDueDate;
+        public bool isFavorite;
     }
 
-    public void SaveEventData(string title, string notes = "", string startDate = "", string dueDate = "", 
+    public void SaveEventData(string title, bool isFavorite, string notes = "", string startDate = "", string dueDate = "", 
     bool hasStartDate = false, bool hasDueDate = false)
     {
         EventData data = new EventData();
@@ -121,6 +117,7 @@ public class Profile : MonoBehaviour
         data.dueDate = dueDate;
         data.hasStartDate = hasStartDate;
         data.hasDueDate = hasDueDate;
+        data.isFavorite = isFavorite;
 
 
         string json = JsonUtility.ToJson(data);
@@ -135,11 +132,6 @@ public class Profile : MonoBehaviour
         // File.WriteAllText($"{Application.persistentDataPath}/profiles/{id}/{}.json", json);
         string itemPath = Path.Combine(path, $"{number}.json");
         File.WriteAllText(itemPath, json);
-    }
-
-    void OverwriteEventData()
-    {
-        // save to same id
     }
 
     void SaveProfile()
@@ -171,6 +163,11 @@ public class Profile : MonoBehaviour
 
         File.WriteAllText($"{Application.persistentDataPath}/profiles/profile{id}.json", json);
 
+
+    }
+
+    public void SortEvents()
+    {
 
     }
 

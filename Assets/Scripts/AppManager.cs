@@ -10,15 +10,19 @@ public class AppManager : MonoBehaviour
     public static AppManager Instance { get; private set; }
 
     public Error error;
-    private bool canEdit = false;
     public CanvasGroupToggle editImage;
     public CanvasGroupToggle editName;
     public CanvasGroupToggle editBirthdate;
     public int currentProfile;
 
-    public List<Profile> allProfiles;
+    public List<Profile> allProfiles = new List<Profile>();
     public Profile profilePrefab;
+    public GameObject eventPrefab;
 
+    public Sprite starHollow;
+    public Sprite starFilled;
+
+    private bool canEdit = false;
 
     void Awake()
     {
@@ -55,32 +59,30 @@ public class AppManager : MonoBehaviour
     {
 
         // finds and removes from profile list
-        foreach (Profile profile in allProfiles)
-        {
-            if (profile.id == id)
-            {
-                CanvasGroupToggle toggle;
-                //fade + delete the gameobject
-                // checks if the component exists, if not adds it
-                if (!profile.TryGetComponent<CanvasGroupToggle>(out toggle))
-                {
-                    toggle = profile.gameObject.AddComponent<CanvasGroupToggle>();
-                }
-
-                toggle.destroyAfterFade = true;
-                toggle.HideElement();
-
-
-
-            }
+        // foreach (Profile profile in allProfiles)
+        // {
+        //     if (profile.id == id)
+        //     {
+        //         FadeAndDestroy(profile.gameObject);
+        //         allProfiles.Remove(profile);
+        //     }
             
-        }
+        // }
+        Profile profile = FindProfile(id);
+        FadeAndDestroy(profile.gameObject);
+        allProfiles.Remove(profile);
+
         //delete related notifications
 
 
         // deletes the profile file
         string path = $"{Application.persistentDataPath}/profiles/{id}";
+        DeleteItemAtPath(path);
 
+    }
+
+    public void DeleteItemAtPath(string path)
+    {
         if (File.Exists(path))
         {
             File.Delete(path);
@@ -90,7 +92,20 @@ public class AppManager : MonoBehaviour
         {
             Debug.Log($"File at {path} does not exist.");
         }
+    }
 
+    //fade + delete the gameobject
+    public void FadeAndDestroy(GameObject item)
+    {
+        CanvasGroupToggle toggle;
+        // checks if the component exists, if not adds it
+        if (!item.TryGetComponent<CanvasGroupToggle>(out toggle))
+        {
+            toggle = item.AddComponent<CanvasGroupToggle>();
+        }
+
+        toggle.destroyAfterFade = true;
+        toggle.HideElement();
     }
 
     void AddProfile(int id)
@@ -113,7 +128,6 @@ public class AppManager : MonoBehaviour
 
     public void CreateProfile(string newName, DateTime? birthDate = null, string imagePath = "")
     {
-
         Profile profile = Instantiate(profilePrefab);
         profile.id = allProfiles.Count + 1;
         profile.named = newName;
@@ -122,8 +136,6 @@ public class AppManager : MonoBehaviour
 
         profile.birthDate = (DateTime) birthDate;
         allProfiles.Add(profile);
-
-
     }
 
     Sprite LoadImage(string path)
@@ -131,5 +143,17 @@ public class AppManager : MonoBehaviour
         Sprite sprite;
         return null;
 
+    }
+
+    public Profile FindProfile(int id)
+    {
+        foreach (Profile profile in allProfiles)
+        {
+            if (profile.id == id)
+            {
+                return profile;
+            }
+        }
+        return null;
     }
 }
