@@ -39,7 +39,7 @@ public class DateInputValidator : MonoBehaviour
         // if it passes initial input restrictions, sees if it needs to adds slashes
         if (RestrictDateInput(value))
         {
-            HandleDate(value);
+            // HandleDate(value);
         }
     }
 

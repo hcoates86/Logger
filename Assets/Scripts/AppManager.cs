@@ -17,7 +17,9 @@ public class AppManager : MonoBehaviour
     public Profile currentProfile;
 
     public ProfileDisplay shortProfile;
+    public CanvasGroupToggle shortProfileToggle;
     public ProfileDisplay fullProfile;
+    public CanvasGroupToggle fullProfileToggle;
 
     public List<Profile> allProfiles = new List<Profile>();
     public Profile profilePrefab;
@@ -30,6 +32,11 @@ public class AppManager : MonoBehaviour
     public string deletePath;
 
     private bool canEdit = false;
+
+    // colors of the pressed and unpressed profile items
+    private const string PRESSED_HEX = "#696A8C";
+    private const string NORMAL_HEX = "#758398";
+
 
     void Awake()
     {
@@ -132,10 +139,29 @@ public class AppManager : MonoBehaviour
 
     }
 
-    void SwitchProfile()
+    public void SwitchProfile(Profile profile)
     {
         canEdit = false;
-        // currentProfile = 
+
+        Color color;
+        if (currentProfile != null && ColorUtility.TryParseHtmlString(NORMAL_HEX, out color))
+        {
+            currentProfile.profileBackground.color = color;
+        }
+
+        if (ColorUtility.TryParseHtmlString(PRESSED_HEX, out color))
+        {
+            profile.profileBackground.color = color;
+        }
+
+        shortProfile.Setup(profile);
+
+        if (shortProfileToggle.element.alpha == 0)
+        {
+            shortProfileToggle.ShowElement();
+        }
+
+        currentProfile = profile;
     }
 
     void LoadAllProfiles()
@@ -168,10 +194,21 @@ public class AppManager : MonoBehaviour
 
         allProfiles.Add(profile);
 
-        if (!shortProfile.gameObject.activeSelf)
+        // clicks the new profile to display on the short profile and whatever else
+        SwitchProfile(profile);
+
+        if (shortProfileToggle.element.alpha == 0)
         {
-            shortProfile.gameObject.SetActive(true);
+            shortProfileToggle.ShowElement();
         }
+    }
+
+    // the onclick method for the button
+    public void DisplayFullProfile()
+    {
+        fullProfile.Setup(currentProfile);
+        fullProfileToggle.ShowElement();
+
     }
 
     // loads the image files, picture and thumbnail from the id

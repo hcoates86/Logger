@@ -14,30 +14,28 @@ public class InputHandler : MonoBehaviour
     // public string imagePath;
     public Image image;
     public UploadImage uploadImage;
-    public GameObject inputParentToDeactivate;
-    public bool deactivateParentOnSubmit = false;
+
+    public CanvasGroupToggle cgtToHideOnSubmit;
+
     //save image to /create directory id
 
     public void OnSubmit()
     {
         // checks if the object is active (accepting input)
-        if (nameInput.gameObject.activeInHierarchy)
-        {
-            // AppManager.Instance.currentProfile
+        // if (nameInput.gameObject.activeInHierarchy)
+        // {
+        //     // AppManager.Instance.currentProfile
 
-        }
-        if (dateValidator.gameObject.activeInHierarchy)
-        {
-            DateTime dateTime;
-            if (dateValidator.SubmitDateValidation())
-                dateTime = dateValidator.dateValue;
+        // }
+        // if (dateValidator.gameObject.activeInHierarchy)
+        // {
+        //     DateTime dateTime;
+        //     if (dateValidator.SubmitDateValidation())
+        //         dateTime = dateValidator.dateValue;
 
-        }
+        // }
 
-        if (deactivateParentOnSubmit)
-        {
-            inputParentToDeactivate.SetActive(false);
-        }
+
     }
 
     public void SubmitNewProfile()
@@ -61,12 +59,25 @@ public class InputHandler : MonoBehaviour
 
 
         AppManager.Instance.CreateProfile(nameInput.text, dateTime, uploadImage.imageUploaded);
+        cgtToHideOnSubmit.HideElement();
+        ClearInput();
 
-        nameInput.text = string.Empty;
-        dateInput.text = string.Empty;
-        image.sprite = null;
+    }
 
-        inputParentToDeactivate.SetActive(false);
+    void ClearInput()
+    {
+        if (nameInput != null)
+            nameInput.text = string.Empty;
+        if (dateInput != null)
+            dateInput.text = string.Empty;
+        if (image != null)
+            image.sprite = null;
+
+        // hides errors
+        AppManager.Instance.error.OkButton();
+
+        uploadImage.imageUploaded = false;
+
     }
 
 

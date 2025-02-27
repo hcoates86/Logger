@@ -25,6 +25,9 @@ public class Profile : MonoBehaviour
     public Transform eventContainer;
     public List<EventItem> allEvents = new List<EventItem>();
 
+    public Image profileBackground;
+
+
     string GetAge()
     {
         // if date is default value, treat as null
@@ -71,8 +74,7 @@ public class Profile : MonoBehaviour
 
     public void OnClick()
     {
-        AppManager.Instance.currentProfile = this;
-        AppManager.Instance.shortProfile.Setup(this);
+        AppManager.Instance.SwitchProfile(this);
     }
 
     void AddEvent()

@@ -15,15 +15,21 @@ public class ProfileDisplay : MonoBehaviour
 
     public bool useThumbnail = false;
 
-    private bool canEdit = false;
+    // private bool canEdit = false;
 
 
     public void Setup(Profile profile)
     {
         nameText.text = profile.named;
         ageText.text = profile.Age;
-        if (dateText != null && profile.birthDate != DateTime.MinValue)
-            dateText.text = profile.birthDate.ToString("MM/dd/yyyy");
+        if (dateText != null)
+        {
+            if (profile.birthDate != DateTime.MinValue)
+                dateText.text = profile.birthDate.ToString("MM/dd/yyyy");
+            else
+                dateText.text = "--/--/----";
+        }
+
 
         if (profile.profileImage != null)
         {
@@ -32,6 +38,12 @@ public class ProfileDisplay : MonoBehaviour
             else
                 image.sprite = profile.profileImage;
         }
+        else
+        {
+            image.sprite = null;
+        }
 
     }
+
+
 }

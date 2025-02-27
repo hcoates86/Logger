@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 9822534}
   - component: {fileID: 9822533}
   m_Layer: 5
-  m_Name: Born Text
+  m_Name: Born Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1438,7 +1438,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &84482080
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1750,10 +1750,10 @@ MonoBehaviour:
   onClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 337358342}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 337358344}
+        m_TargetAssemblyTypeName: CanvasGroupToggle, Assembly-CSharp
+        m_MethodName: ShowElement
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2630,11 +2630,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameInput: {fileID: 996853835}
   dateValidator: {fileID: 1923718013}
-  dateInput: {fileID: 0}
-  image: {fileID: 0}
+  dateInput: {fileID: 1923718017}
+  image: {fileID: 1163059606}
   uploadImage: {fileID: 1074751282}
-  inputParentToDeactivate: {fileID: 337358342}
-  deactivateParentOnSubmit: 1
+  cgtToHideOnSubmit: {fileID: 337358344}
 --- !u!1 &176469879
 GameObject:
   m_ObjectHideFlags: 0
@@ -5352,6 +5351,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 337358343}
+  - component: {fileID: 337358345}
+  - component: {fileID: 337358344}
   m_Layer: 5
   m_Name: New Profile Modal
   m_TagString: Untagged
@@ -5387,6 +5388,39 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 29}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &337358344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337358342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49189576c2000043a201281f5dc53c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  element: {fileID: 337358345}
+  fadeOut: 0
+  fadeIn: 0
+  fadeOutSpeed: 0
+  fadeInSpeed: 0
+  startHidden: 1
+  hideAfterSeconds: 0
+  destroyAfterFade: 0
+  destroyAfterFadeDelay: 0
+--- !u!225 &337358345
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337358342}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1001 &342993730
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5693,6 +5727,7 @@ MonoBehaviour:
   favoriteEvents: 000000000000000000000000
   eventContainer: {fileID: 0}
   allEvents: []
+  profileBackground: {fileID: 0}
 --- !u!4 &366586577
 Transform:
   m_ObjectHideFlags: 0
@@ -7985,6 +8020,8 @@ GameObject:
   - component: {fileID: 534926970}
   - component: {fileID: 534926969}
   - component: {fileID: 534926971}
+  - component: {fileID: 534926973}
+  - component: {fileID: 534926972}
   m_Layer: 5
   m_Name: Short Profile View
   m_TagString: Untagged
@@ -8071,9 +8108,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 1673585501}
   ageText: {fileID: 391070165}
-  dateText: {fileID: 2066484903}
+  dateText: {fileID: 917554640}
   image: {fileID: 240017708}
   useThumbnail: 0
+--- !u!114 &534926972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534926967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49189576c2000043a201281f5dc53c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  element: {fileID: 0}
+  fadeOut: 0
+  fadeIn: 0
+  fadeOutSpeed: 0
+  fadeInSpeed: 0
+  startHidden: 1
+  hideAfterSeconds: 0
+  destroyAfterFade: 0
+  destroyAfterFadeDelay: 0
+--- !u!225 &534926973
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534926967}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!222 &535521069
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15810,6 +15880,8 @@ GameObject:
   - component: {fileID: 959867466}
   - component: {fileID: 959867465}
   - component: {fileID: 959867464}
+  - component: {fileID: 959867468}
+  - component: {fileID: 959867467}
   m_Layer: 5
   m_Name: Full Profile View
   m_TagString: Untagged
@@ -15858,7 +15930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 1973706495}
   ageText: {fileID: 1219892515}
-  dateText: {fileID: 9822533}
+  dateText: {fileID: 231360558}
   image: {fileID: 1176827337}
   useThumbnail: 0
 --- !u!114 &959867465
@@ -15899,6 +15971,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 959867462}
   m_CullTransparentMesh: 1
+--- !u!114 &959867467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959867462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49189576c2000043a201281f5dc53c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  element: {fileID: 0}
+  fadeOut: 0
+  fadeIn: 0
+  fadeOutSpeed: 0
+  fadeInSpeed: 0
+  startHidden: 1
+  hideAfterSeconds: 0
+  destroyAfterFade: 0
+  destroyAfterFadeDelay: 0
+--- !u!225 &959867468
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959867462}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!224 &969318071 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8049986285991048458, guid: a93d8de9c3128d747b6f68a3ee41c4aa, type: 3}
@@ -16755,7 +16860,19 @@ MonoBehaviour:
   animationSolution: 1
   onClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1819958740}
+        m_TargetAssemblyTypeName: AppManager, Assembly-CSharp
+        m_MethodName: DisplayFullProfile
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onDoubleClick:
     m_PersistentCalls:
       m_Calls: []
@@ -18911,8 +19028,7 @@ MonoBehaviour:
   dateInput: {fileID: 0}
   image: {fileID: 0}
   uploadImage: {fileID: 0}
-  inputParentToDeactivate: {fileID: 0}
-  deactivateParentOnSubmit: 0
+  cgtToHideOnSubmit: {fileID: 0}
 --- !u!1 &1151719334
 GameObject:
   m_ObjectHideFlags: 0
@@ -21070,10 +21186,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 337358342}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 337358344}
+        m_TargetAssemblyTypeName: CanvasGroupToggle, Assembly-CSharp
+        m_MethodName: HideElement
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -26386,8 +26502,7 @@ MonoBehaviour:
   dateInput: {fileID: 0}
   image: {fileID: 0}
   uploadImage: {fileID: 0}
-  inputParentToDeactivate: {fileID: 0}
-  deactivateParentOnSubmit: 0
+  cgtToHideOnSubmit: {fileID: 0}
 --- !u!1 &1720222170
 GameObject:
   m_ObjectHideFlags: 0
@@ -27649,7 +27764,9 @@ MonoBehaviour:
   editBirthdate: {fileID: 820739638}
   currentProfile: {fileID: 0}
   shortProfile: {fileID: 534926971}
+  shortProfileToggle: {fileID: 534926972}
   fullProfile: {fileID: 959867464}
+  fullProfileToggle: {fileID: 959867467}
   allProfiles: []
   profilePrefab: {fileID: 8523991558992381885, guid: 9c070efa2116abf4b96dfc82a745c2f2, type: 3}
   profileContainer: {fileID: 1647857400}
@@ -29369,6 +29486,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6551831a5f1c6d74a8101945dc4fab51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1923718017 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7015882520586383206, guid: e66a53fa2e422414eaccfd226443444b, type: 3}
+  m_PrefabInstance: {fileID: 2871166117940839025}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1925137923
 GameObject:
   m_ObjectHideFlags: 0
@@ -30348,8 +30476,7 @@ MonoBehaviour:
   dateInput: {fileID: 0}
   image: {fileID: 0}
   uploadImage: {fileID: 0}
-  inputParentToDeactivate: {fileID: 0}
-  deactivateParentOnSubmit: 0
+  cgtToHideOnSubmit: {fileID: 0}
 --- !u!4 &1967007859
 Transform:
   m_ObjectHideFlags: 0
@@ -31482,7 +31609,7 @@ GameObject:
   - component: {fileID: 2066484904}
   - component: {fileID: 2066484903}
   m_Layer: 5
-  m_Name: Born Text
+  m_Name: Born Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32932,7 +33059,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6868110975959512633, guid: 9c070efa2116abf4b96dfc82a745c2f2, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6868110975959512633, guid: 9c070efa2116abf4b96dfc82a745c2f2, type: 3}
       propertyPath: m_AnchorMin.x
@@ -32940,7 +33067,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6868110975959512633, guid: 9c070efa2116abf4b96dfc82a745c2f2, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6868110975959512633, guid: 9c070efa2116abf4b96dfc82a745c2f2, type: 3}
       propertyPath: m_SizeDelta.x
@@ -32948,7 +33075,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6868110975959512633, guid: 9c070efa2116abf4b96dfc82a745c2f2, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6868110975959512633, guid: 9c070efa2116abf4b96dfc82a745c2f2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -32997,6 +33124,18 @@ PrefabInstance:
     - target: {fileID: 6868110975959512633, guid: 9c070efa2116abf4b96dfc82a745c2f2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8444454939866426727, guid: 9c070efa2116abf4b96dfc82a745c2f2, type: 3}
+      propertyPath: m_Color.b
+      value: 0.59607846
+      objectReference: {fileID: 0}
+    - target: {fileID: 8444454939866426727, guid: 9c070efa2116abf4b96dfc82a745c2f2, type: 3}
+      propertyPath: m_Color.g
+      value: 0.5137255
+      objectReference: {fileID: 0}
+    - target: {fileID: 8444454939866426727, guid: 9c070efa2116abf4b96dfc82a745c2f2, type: 3}
+      propertyPath: m_Color.r
+      value: 0.45882353
       objectReference: {fileID: 0}
     - target: {fileID: 8883477004662933665, guid: 9c070efa2116abf4b96dfc82a745c2f2, type: 3}
       propertyPath: m_Name
