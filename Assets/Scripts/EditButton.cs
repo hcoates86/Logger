@@ -16,7 +16,11 @@ public class EditButton : MonoBehaviour
     
     private string initial = "Edit";
     private string done = "Finish";
-    private bool pressed = false;
+    public bool pressed = false;
+
+    public InputHandler editInput;
+
+    public bool nameEdited, bdayEdited, imageUploaded;
 
     void Start()
     {
@@ -44,6 +48,7 @@ public class EditButton : MonoBehaviour
         }
         else
         {
+            EditProfile();
             pressed = false;
             text.text = initial;
             button.colors = cbNormal;
@@ -53,5 +58,12 @@ public class EditButton : MonoBehaviour
         }
 
 
+    }
+
+    void EditProfile()
+    {
+
+        // AppManager.Instance.EditCurrentProfile();
+        
     }
 }

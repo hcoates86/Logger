@@ -40,22 +40,48 @@ public class Profile : MonoBehaviour
         if (birthDate > DateTime.Now)
         {
             return "Unborn";
+            // TODO: "Due in x weeks/months"
         }
 
         Age age = new Age(birthDate, DateTime.Now);
+
+        string pluralDays;
+        string pluralWeeks;
+        string pluralMonths;
+        string pluralYears;
+        if (age.Days == 1)
+            pluralDays = "Day";
+        else
+            pluralDays = "Days";
+        if (Mathf.Floor(age.Days / 7) == 1)
+            pluralWeeks = "Week";
+        else
+            pluralWeeks = "Weeks";
+
+        if (age.Months == 1)
+            pluralMonths = "Month";
+        else
+            pluralMonths = "Months";
+        if (age.Years == 1)
+            pluralYears = "Year";
+        else
+            pluralYears = "Years";
+
 
         if (age.Years < 1)
         {
             if (age.Months < 1)
             {
-                return $"{Mathf.Floor(age.Days / 7)} Weeks {age.Days} Days";
+                return $"{Mathf.Floor(age.Days / 7)} {pluralWeeks} {age.Days} {pluralDays}";
 
             }
 
-            return $"{age.Months} Months {age.Days} Days";
+
+
+            return $"{age.Months} {pluralMonths} {Mathf.Floor(age.Days / 7)} {pluralWeeks}";
         }
 
-        return $"{age.Years} Years {age.Months} Months";
+        return $"{age.Years} {pluralYears} {age.Months} {pluralMonths}";
     }
 
     // doing this on the event
@@ -161,7 +187,7 @@ public class Profile : MonoBehaviour
         if (id == 0)
         {
             // assigns new id
-            id = AppManager.Instance.allProfiles.Count + 1;
+            id = AppManager.Instance.CreateNewId();
 
         }
         ProfileData data = new ProfileData();

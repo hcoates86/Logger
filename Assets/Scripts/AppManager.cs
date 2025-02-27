@@ -21,6 +21,8 @@ public class AppManager : MonoBehaviour
     public ProfileDisplay fullProfile;
     public CanvasGroupToggle fullProfileToggle;
 
+    public EditButton editButton;
+
     public List<Profile> allProfiles = new List<Profile>();
     public Profile profilePrefab;
     public Transform profileContainer;
@@ -49,6 +51,15 @@ public class AppManager : MonoBehaviour
         {
             Destroy(this.gameObject); // Destroy other instance
         }
+
+        // creates the profiles directory
+        string path = $"{Application.persistentDataPath}/profiles";
+
+        if (!Directory.Exists(path))
+        {
+            // Create the directory
+            Directory.CreateDirectory(path);
+        }
     }
 
     public void ChangeEditable(bool changed)
@@ -67,6 +78,17 @@ public class AppManager : MonoBehaviour
             editName.HideElement();
             editBirthdate.HideElement();
         }
+    }
+
+    public void EditCurrentProfile(bool nameEdited, bool bdayEdited, bool pictureUploaded, string name = "", string birthDate = "")
+    {
+        if (canEdit)
+        {
+
+
+            shortProfile.Setup(currentProfile);
+        }
+
     }
 
     public void DeleteProfileConfirm()
@@ -142,6 +164,8 @@ public class AppManager : MonoBehaviour
     public void SwitchProfile(Profile profile)
     {
         canEdit = false;
+        if (editButton.pressed)
+            editButton.ToggleButton();
 
         Color color;
         if (currentProfile != null && ColorUtility.TryParseHtmlString(NORMAL_HEX, out color))
@@ -171,10 +195,10 @@ public class AppManager : MonoBehaviour
 
     }
 
-    public void CreateProfile(string newName, DateTime birthDate, bool imageUploaded = false)
+    public void CreateProfile(string newName, DateTime birthDate, bool imageUploaded, int id)
     {
         Profile profile = Instantiate(profilePrefab, profileContainer);
-        profile.id = allProfiles.Count + 1;
+        profile.id = id;
         profile.named = newName;
         
         if (imageUploaded)
@@ -201,6 +225,23 @@ public class AppManager : MonoBehaviour
         {
             shortProfileToggle.ShowElement();
         }
+    }
+
+    public int CreateNewId()
+    {
+        int id = allProfiles.Count + 1;
+        string path = $"{Application.persistentDataPath}/profiles/profile{id}.json";
+
+        // if directory already exists, not a unique id
+        while (File.Exists(path))
+        {
+            id = UnityEngine.Random.Range(500, 2001);
+            Debug.Log(id);
+            path = $"{Application.persistentDataPath}/profiles/profile{id}.json";
+        }
+
+        return id;
+
     }
 
     // the onclick method for the button
@@ -266,3 +307,4 @@ public class AppManager : MonoBehaviour
         return null;
     }
 }
+

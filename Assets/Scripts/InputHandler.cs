@@ -21,19 +21,7 @@ public class InputHandler : MonoBehaviour
 
     public void OnSubmit()
     {
-        // checks if the object is active (accepting input)
-        // if (nameInput.gameObject.activeInHierarchy)
-        // {
-        //     // AppManager.Instance.currentProfile
 
-        // }
-        // if (dateValidator.gameObject.activeInHierarchy)
-        // {
-        //     DateTime dateTime;
-        //     if (dateValidator.SubmitDateValidation())
-        //         dateTime = dateValidator.dateValue;
-
-        // }
 
 
     }
@@ -52,13 +40,14 @@ public class InputHandler : MonoBehaviour
         else
             return;
 
+        int id = AppManager.Instance.CreateNewId();
         if (uploadImage.imageUploaded)
         {
-            uploadImage.Upload(AppManager.Instance.allProfiles.Count + 1);
+            uploadImage.Upload(id);
         }
 
 
-        AppManager.Instance.CreateProfile(nameInput.text, dateTime, uploadImage.imageUploaded);
+        AppManager.Instance.CreateProfile(nameInput.text, dateTime, uploadImage.imageUploaded, id);
         cgtToHideOnSubmit.HideElement();
         ClearInput();
 
