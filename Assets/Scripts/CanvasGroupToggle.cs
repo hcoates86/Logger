@@ -97,6 +97,20 @@ public class CanvasGroupToggle : MonoBehaviour
         element.blocksRaycasts = false;
     }
 
+    public void HideElementImmediate()
+    {
+        element.alpha = 0;
+        element.interactable = false;
+        element.blocksRaycasts = false;
+    }
+
+    public void ShowElementImmediate()
+    {
+        element.alpha = 1;
+        element.interactable = true;
+        element.blocksRaycasts = true;
+    }
+
     // bool controls whether fading in or out
     IEnumerator FadeElement(bool fadingOut)
     {

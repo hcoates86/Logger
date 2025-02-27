@@ -60,10 +60,10 @@ public class DateInputValidator : MonoBehaviour
         }
         slashPlaced = false;
         
+        // checks if the new value is longer than the last to see if user is deleting
         if (previousLength < newLength)
         {
-            // checks if the new value is longer than the last to see if user is deleting
-            if (value.Length == 2 || value.Length == 5)
+            if (value.Length == 2 || value.Length == 5 && value[value.Length - 1] != '/')
             {
                 dateInput.text = value + "/";
                 dateInput.MoveToEndOfLine(false, false);

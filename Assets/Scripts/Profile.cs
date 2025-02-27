@@ -27,8 +27,19 @@ public class Profile : MonoBehaviour
 
     string GetAge()
     {
-        DateTime currentDate = DateTime.Now;
-        Age age = new Age(birthDate, currentDate);
+        // if date is default value, treat as null
+        if (birthDate == DateTime.MinValue)
+            return "";
+
+        // DateTime currentDate = DateTime.Now;
+
+        // since the age calc can't handle future dates, just list as unborn until date
+        if (birthDate > DateTime.Now)
+        {
+            return "Unborn";
+        }
+
+        Age age = new Age(birthDate, DateTime.Now);
 
         if (age.Years < 1)
         {
@@ -44,12 +55,6 @@ public class Profile : MonoBehaviour
         return $"{age.Years} Years {age.Months} Months";
     }
 
-    // Sprite LoadImage(string path)
-    // {
-    //     Sprite sprite;
-    //     return null;
-    // }
-
     // doing this on the event
     // void DeleteEvent(int eventId)
     // {
@@ -63,6 +68,12 @@ public class Profile : MonoBehaviour
     //     AppManager.Instance.confirm.Show("Are you sure you want to delete this profile?", AppManager.Instance.DeleteItemAtPath);
         
     // }
+
+    public void OnClick()
+    {
+        AppManager.Instance.currentProfile = this;
+        AppManager.Instance.shortProfile.Setup(this);
+    }
 
     void AddEvent()
     {
@@ -83,7 +94,7 @@ public class Profile : MonoBehaviour
         public int id;
         public string named;
         public string birthDate;
-        public string profileImagePath;
+        // public string profileImagePath;
         public int favoriteEvent1;
         public int favoriteEvent2;
         public int favoriteEvent3;
@@ -143,7 +154,7 @@ public class Profile : MonoBehaviour
         File.WriteAllText(itemPath, json);
     }
 
-    void SaveProfile()
+    public void SaveProfile()
     {
         if (id == 0)
         {

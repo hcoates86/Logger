@@ -4,12 +4,15 @@ using UnityEngine;
 using TMPro;
 using System.Text.RegularExpressions;
 using System;
+using UnityEngine.UI;
 
 public class InputHandler : MonoBehaviour
 {
     public TMP_InputField nameInput;
     public DateInputValidator dateValidator;
-    public string imagePath;
+    public TMP_InputField dateInput;
+    // public string imagePath;
+    public Image image;
     public UploadImage uploadImage;
     public GameObject inputParentToDeactivate;
     public bool deactivateParentOnSubmit = false;
@@ -39,11 +42,6 @@ public class InputHandler : MonoBehaviour
 
     public void SubmitNewProfile()
     {
-        if (uploadImage.imageUploaded)
-        {
-            uploadImage.Upload(AppManager.Instance.allProfiles.Count + 1);
-        }
-
         if (nameInput.text == null || nameInput.text == string.Empty)
         {
             AppManager.Instance.error.SetError("A name is required to create a profile.");
@@ -56,7 +54,17 @@ public class InputHandler : MonoBehaviour
         else
             return;
 
+        if (uploadImage.imageUploaded)
+        {
+            uploadImage.Upload(AppManager.Instance.allProfiles.Count + 1);
+        }
 
+
+        AppManager.Instance.CreateProfile(nameInput.text, dateTime, uploadImage.imageUploaded);
+
+        nameInput.text = string.Empty;
+        dateInput.text = string.Empty;
+        image.sprite = null;
 
         inputParentToDeactivate.SetActive(false);
     }

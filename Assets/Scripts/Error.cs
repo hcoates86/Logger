@@ -4,11 +4,12 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+// a simplified error class
 public class Error : MonoBehaviour
 {
     public GameObject errorPopup;
     public TextMeshProUGUI text;
-    [SerializeField] GameObject okButton;
+    [SerializeField]
     private bool isErrorRunning = false;
     public CanvasGroupToggle canvasGroupToggle;
 
@@ -23,7 +24,7 @@ public class Error : MonoBehaviour
     }
 
     // defaults to no delay, ok button used
-    public void SetError(string errorText, float delay = 0, bool moveToObject = false)
+    public void SetError(string errorText)
     {
         //will blink off and back on if called while running
         if (isErrorRunning)
@@ -37,22 +38,10 @@ public class Error : MonoBehaviour
         text.text = errorText;
 
         isErrorRunning = true;
-
-        if (delay > 0)
-        {
-            StartCoroutine(DeactivateObject(delay));
-            if (okButton != null)
-                okButton.SetActive(false);
-        }
-        else
-        {
-            if (okButton != null)
-                okButton.SetActive(true);
-        }
     }
 
     // shows an error for one second with text from the errorArray
-    public void SetError(int errorNum, bool moveToObject = false)
+    public void SetError(int errorNum)
     {
         //will blink off and back on if called while running
         if (isErrorRunning)
@@ -62,36 +51,21 @@ public class Error : MonoBehaviour
         }
         else
         {
-            if (moveToObject)
-            {
-                //moves element to above object
-
-            }
             canvasGroupToggle.ShowElement();
         }
-        okButton.SetActive(false);
 
         text.text = errorArray[errorNum];
 
         isErrorRunning = true;
 
-        StartCoroutine(DeactivateObject(1));
-
-    }
-
-    IEnumerator DeactivateObject(float seconds)
-    {
-        yield return new WaitForSecondsRealtime(seconds);
-        isErrorRunning = false;
-        canvasGroupToggle.HideElement();
     }
 
     // refreshes for the "blink" when changing errors. never turns isErrorRunning off
     IEnumerator RefreshObject()
     {
-        canvasGroupToggle.HideElement();
+        canvasGroupToggle.HideElementImmediate();
         yield return new WaitForSecondsRealtime(refreshAmount);
-        canvasGroupToggle.ShowElement();
+        canvasGroupToggle.ShowElementImmediate();
     }
 
 

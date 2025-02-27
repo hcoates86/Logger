@@ -15,7 +15,9 @@ public class AppManager : MonoBehaviour
     public CanvasGroupToggle editName;
     public CanvasGroupToggle editBirthdate;
     public Profile currentProfile;
-    public UploadImage profileCreationUpload;
+
+    public ProfileDisplay shortProfile;
+    public ProfileDisplay fullProfile;
 
     public List<Profile> allProfiles = new List<Profile>();
     public Profile profilePrefab;
@@ -60,7 +62,7 @@ public class AppManager : MonoBehaviour
         }
     }
 
-    void DeleteProfileConfirm()
+    public void DeleteProfileConfirm()
     {
         AppManager.Instance.confirm.Show("Are you sure you want to delete this profile?", DeleteProfile);
 
@@ -143,27 +145,75 @@ public class AppManager : MonoBehaviour
 
     }
 
-    public void CreateProfile(string newName, DateTime? birthDate = null, bool imageUploaded = false)
+    public void CreateProfile(string newName, DateTime birthDate, bool imageUploaded = false)
     {
         Profile profile = Instantiate(profilePrefab, profileContainer);
         profile.id = allProfiles.Count + 1;
         profile.named = newName;
         
         if (imageUploaded)
+        {
             profile.profileImage = LoadImage(profile.id);
+            profile.thumbnail = LoadThumbnail(profile.id);
+        }
 
-        profile.birthDate = (DateTime) birthDate;
+        // if (birthDate != DateTime.MinValue)
+        // {
+            profile.birthDate = birthDate;
+        // }
+        profile.SaveProfile();
+
+        ProfileDisplay profileDisplay = profile.GetComponent<ProfileDisplay>();
+        profileDisplay.Setup(profile);
+
         allProfiles.Add(profile);
+
+        if (!shortProfile.gameObject.activeSelf)
+        {
+            shortProfile.gameObject.SetActive(true);
+        }
     }
 
     // loads the image files, picture and thumbnail from the id
     Sprite LoadImage(int profileId)
     {
-        Sprite sprite;
         string imagePath = $"{Application.persistentDataPath}/{profileId}/picture.png";
-        string thumbnailPath =  $"{Application.persistentDataPath}/{profileId}/thumbnail.png";
+        Sprite sprite = LoadPNG(imagePath);
 
-        return null;
+        return sprite;
+    }
+
+    Sprite LoadThumbnail(int profileId)
+    {
+        string thumbnailPath =  $"{Application.persistentDataPath}/{profileId}/thumbnail.png";
+        Sprite sprite = LoadPNG(thumbnailPath);
+
+        return sprite;
+    }
+
+    public Sprite LoadPNG(string filePath) 
+    {
+        Texture2D tex = null;
+        byte[] fileData;
+
+        Sprite sprite = null;
+
+        if (File.Exists(filePath)) 	{
+            fileData = File.ReadAllBytes(filePath);
+            tex = new Texture2D (2, 2, TextureFormat.BGRA32,false);
+            //this will auto-resize the texture dimensions.
+            tex.LoadImage(fileData); 
+        }
+        else
+        {
+            AppManager.Instance.error.SetError("Failed to load image.");
+        }
+        if (tex != null)
+        {
+            sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
+
+        }
+        return sprite;
     }
 
 

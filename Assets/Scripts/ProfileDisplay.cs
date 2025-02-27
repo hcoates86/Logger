@@ -13,9 +13,7 @@ public class ProfileDisplay : MonoBehaviour
     // image to set the sprite photo to
     public Image image;
 
-    public CanvasGroupToggle editImage;
-    public CanvasGroupToggle editName;
-    public CanvasGroupToggle editBirthdate;
+    public bool useThumbnail = false;
 
     private bool canEdit = false;
 
@@ -24,9 +22,16 @@ public class ProfileDisplay : MonoBehaviour
     {
         nameText.text = profile.named;
         ageText.text = profile.Age;
-        dateText.text = profile.birthDate.ToString("MM/dd/yyyy");
+        if (dateText != null && profile.birthDate != DateTime.MinValue)
+            dateText.text = profile.birthDate.ToString("MM/dd/yyyy");
 
-        image.sprite = profile.profileImage;
+        if (profile.profileImage != null)
+        {
+            if (useThumbnail)
+                image.sprite = profile.thumbnail;
+            else
+                image.sprite = profile.profileImage;
+        }
 
     }
 }
