@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.IO;
+using Unity.Notifications.Android;
 
 public class EventItem : MonoBehaviour
 {
@@ -166,6 +167,7 @@ public class EventItem : MonoBehaviour
         File.WriteAllText(path, json);
     }
 
+    // deletes an event. Doesn't need confirmation. Located on onclick of eventitem delete button
     public void DeleteEvent()
     {
         // deletes self from saved events
@@ -182,6 +184,15 @@ public class EventItem : MonoBehaviour
         AppManager.Instance.FadeAndDestroy(gameObject);
 
     }
+
+    void HandleNotifications()
+    {
+        string newID = profileId.ToString() + eventId.ToString();
+        var notificationID = int.Parse(newID);
+        // AndroidNotificationCenter.SendNotificationWithExplicitID(notification, "channel_id", notificationId);
+    }
+
+
 
     public enum DataType
     {

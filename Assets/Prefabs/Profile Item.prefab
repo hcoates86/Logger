@@ -444,6 +444,8 @@ GameObject:
   - component: {fileID: 6868110975959512633}
   - component: {fileID: 30874484777462914}
   - component: {fileID: 8444454939866426727}
+  - component: {fileID: 9216023986072376086}
+  - component: {fileID: 8523991558992381885}
   m_Layer: 5
   m_Name: Profile Item
   m_TagString: Untagged
@@ -511,3 +513,40 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &9216023986072376086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8883477004662933665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecfa70ba9c4021449654e1e9d6e8fd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 748311029264476399}
+  ageText: {fileID: 1566492890910754572}
+  dateText: {fileID: 0}
+  image: {fileID: 4784706269291646741}
+  editImage: {fileID: 0}
+  editName: {fileID: 0}
+  editBirthdate: {fileID: 0}
+--- !u!114 &8523991558992381885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8883477004662933665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2edae00d674fcf4fae4997421797519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  named: 
+  profileImage: {fileID: 0}
+  favoriteEvents: 000000000000000000000000
+  eventContainer: {fileID: 0}
+  allEvents: []

@@ -4,11 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Networking;
+using System.IO;
 
 public class UploadImage : MonoBehaviour
 {
-public Image displayImage; // UI Image to display the selected image
-    public TMP_Text statusText; // TextMesh Pro text to display status messages
+    public Image displayImage; // UI Image to display the selected image
+
+    public bool imageUploaded = false;
+    private Texture2D texture;
+
+    void OnDisable()
+    {
+        imageUploaded = false;
+        texture = null;
+    }
 
     public void PickImage()
     {
@@ -19,39 +28,65 @@ public Image displayImage; // UI Image to display the selected image
         {
             if (path != null)
             {
-                Texture2D texture = NativeGallery.LoadImageAtPath(path, -1);
+                texture = NativeGallery.LoadImageAtPath(path, -1);
                 if (texture == null)
                 {
-                    statusText.text = "Couldn't load texture from " + path;
                     return;
                 }
-
+                //resizes the image to fit
+                texture = ResizeTexture(texture, 800, 800);
                 displayImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-                StartCoroutine(Upload(texture));
+                // sets bool true to note an image was uploaded for inputhandler
+                imageUploaded = true;
             }
         }, "Select an image", "image/*");
 
-        statusText.text = "Permission result: " + permission;
     }
 
-    private IEnumerator Upload(Texture2D texture)
+    public string Upload(int profileId)
     {
         byte[] imageData = texture.EncodeToPNG();
-        WWWForm form = new WWWForm();
-        form.AddBinaryData("image", imageData, "image.png", "image/png");
-
-        using (UnityWebRequest www = UnityWebRequest.Post("YOUR_UPLOAD_URL", form))
+        string imagepath = $"{Application.persistentDataPath}/{profileId}";
+        if (!Directory.Exists(imagepath))
         {
-            yield return www.SendWebRequest();
-
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                statusText.text = "Upload failed: " + www.error;
-            }
-            else
-            {
-                statusText.text = "Upload successful!";
-            }
+            // Create the directory
+            Directory.CreateDirectory(imagepath);
         }
+        string picturePath = $"{imagepath}/picture.png";
+        System.IO.File.WriteAllBytes(picturePath, imageData);
+        Debug.Log($"Image saved to {imagepath}");
+        SaveThumbnail(profileId);
+        return picturePath;
+    }
+
+    void SaveThumbnail(int profileId)
+    {
+        texture = ResizeTexture(texture, 300, 300);
+        byte[] imageData = texture.EncodeToPNG();
+        string imagepath = $"{Application.persistentDataPath}/{profileId}";
+        if (!Directory.Exists(imagepath))
+        {
+            // Create the directory
+            Directory.CreateDirectory(imagepath);
+        }
+        string picturePath = $"{imagepath}/thumbnail.png";
+        System.IO.File.WriteAllBytes(picturePath, imageData);
+        Debug.Log($"thumbnail saved to {imagepath}");
+
+
+    }
+
+    Texture2D ResizeTexture(Texture2D source, int newWidth, int newHeight)
+    {
+        RenderTexture rt = RenderTexture.GetTemporary(newWidth, newHeight);
+        rt.filterMode = FilterMode.Bilinear;
+        RenderTexture.active = rt;
+        Graphics.Blit(source, rt);
+        Texture2D result = new Texture2D(newWidth, newHeight);
+        result.ReadPixels(new Rect(0, 0, newWidth, newHeight), 0, 0);
+        result.Apply();
+        RenderTexture.active = null;
+        RenderTexture.ReleaseTemporary(rt);
+        return result;
     }
 }

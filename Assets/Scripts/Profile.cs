@@ -14,6 +14,7 @@ public class Profile : MonoBehaviour
     public DateTime birthDate;
     public string Age => GetAge();
     public Sprite profileImage;
+    public Sprite thumbnail;
     // // for vaccines, flea meds, etc
     // public List<string> listItems;
     // three favorite events
@@ -43,17 +44,25 @@ public class Profile : MonoBehaviour
         return $"{age.Years} Years {age.Months} Months";
     }
 
-    void DeleteEvent(int eventId)
-    {
-        //fade + delete the gameobject 
-        //delete the notification if notifications on that event were on
+    // Sprite LoadImage(string path)
+    // {
+    //     Sprite sprite;
+    //     return null;
+    // }
+
+    // doing this on the event
+    // void DeleteEvent(int eventId)
+    // {
+    //     //fade + delete the gameobject 
+    //     //delete the notification if notifications on that event were on
 
 
-        // deletes the event file
-        string path = $"{Application.persistentDataPath}/profiles/{id}/{eventId}.json";
-
-        AppManager.Instance.DeleteItemAtPath(path);
-    }
+    //     // deletes the event file
+    //     string path = $"{Application.persistentDataPath}/profiles/{id}/{eventId}.json";
+    //     AppManager.Instance.deletePath = path;
+    //     AppManager.Instance.confirm.Show("Are you sure you want to delete this profile?", AppManager.Instance.DeleteItemAtPath);
+        
+    // }
 
     void AddEvent()
     {

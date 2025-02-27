@@ -10,13 +10,13 @@ public class ConfirmationDialog : MonoBehaviour
 {
     public TMP_Text messageText;
     private Action onConfirmAction;
-    [SerializeField] private CanvasGroupToggle confirmGameObject;
+    [SerializeField] private CanvasGroupToggle canvasToggle;
     [SerializeField] private TMP_Text confirmButton; 
     [SerializeField] private TMP_Text cancelButton;
 
     public void Show(string message, Action onConfirm, string confirmText = "Confirm", string cancelText = "Cancel")
     {
-        confirmGameObject.ShowElement();
+        canvasToggle.ShowElement();
 
         confirmButton.text = confirmText;
         cancelButton.text = cancelText;
@@ -27,11 +27,11 @@ public class ConfirmationDialog : MonoBehaviour
     public void OnConfirm()
     {
         onConfirmAction?.Invoke();
-        confirmGameObject.HideElement();
+        canvasToggle.HideElement();
     }
 
     public void OnCancel()
     {
-        confirmGameObject.HideElement();
+        canvasToggle.HideElement();
     }
 }

@@ -10,17 +10,22 @@ public class AppManager : MonoBehaviour
     public static AppManager Instance { get; private set; }
 
     public Error error;
+    public ConfirmationDialog confirm;
     public CanvasGroupToggle editImage;
     public CanvasGroupToggle editName;
     public CanvasGroupToggle editBirthdate;
-    public int currentProfile;
+    public Profile currentProfile;
+    public UploadImage profileCreationUpload;
 
     public List<Profile> allProfiles = new List<Profile>();
     public Profile profilePrefab;
+    public Transform profileContainer;
     public GameObject eventPrefab;
 
     public Sprite starHollow;
     public Sprite starFilled;
+
+    public string deletePath;
 
     private bool canEdit = false;
 
@@ -55,30 +60,25 @@ public class AppManager : MonoBehaviour
         }
     }
 
-    void DeleteProfile(int id)
+    void DeleteProfileConfirm()
     {
+        AppManager.Instance.confirm.Show("Are you sure you want to delete this profile?", DeleteProfile);
 
-        // finds and removes from profile list
-        // foreach (Profile profile in allProfiles)
-        // {
-        //     if (profile.id == id)
-        //     {
-        //         FadeAndDestroy(profile.gameObject);
-        //         allProfiles.Remove(profile);
-        //     }
-            
-        // }
-        Profile profile = FindProfile(id);
-        FadeAndDestroy(profile.gameObject);
-        allProfiles.Remove(profile);
+    }
 
+    void DeleteProfile()
+    {
         //delete related notifications
 
 
         // deletes the profile file
-        string path = $"{Application.persistentDataPath}/profiles/{id}";
+        string path = $"{Application.persistentDataPath}/profiles/{currentProfile.id}";
         DeleteItemAtPath(path);
 
+        FadeAndDestroy(currentProfile.gameObject);
+        allProfiles.Remove(currentProfile);
+
+        currentProfile = null;
     }
 
     public void DeleteItemAtPath(string path)
@@ -91,6 +91,23 @@ public class AppManager : MonoBehaviour
         else
         {
             Debug.Log($"File at {path} does not exist.");
+        }
+    }
+
+    public void DeleteItemAtPath()
+    {
+        // takes the string set here to delete
+        if (File.Exists(deletePath))
+        {
+            File.Delete(deletePath);
+            Debug.Log($"File at {deletePath} has been deleted.");
+            // empties the string
+            deletePath = string.Empty;
+        }
+        else
+        {
+            Debug.Log($"File at {deletePath} does not exist.");
+            deletePath = string.Empty;
         }
     }
 
@@ -126,24 +143,29 @@ public class AppManager : MonoBehaviour
 
     }
 
-    public void CreateProfile(string newName, DateTime? birthDate = null, string imagePath = "")
+    public void CreateProfile(string newName, DateTime? birthDate = null, bool imageUploaded = false)
     {
-        Profile profile = Instantiate(profilePrefab);
+        Profile profile = Instantiate(profilePrefab, profileContainer);
         profile.id = allProfiles.Count + 1;
         profile.named = newName;
         
-        profile.profileImage = LoadImage(imagePath);
+        if (imageUploaded)
+            profile.profileImage = LoadImage(profile.id);
 
         profile.birthDate = (DateTime) birthDate;
         allProfiles.Add(profile);
     }
 
-    Sprite LoadImage(string path)
+    // loads the image files, picture and thumbnail from the id
+    Sprite LoadImage(int profileId)
     {
         Sprite sprite;
-        return null;
+        string imagePath = $"{Application.persistentDataPath}/{profileId}/picture.png";
+        string thumbnailPath =  $"{Application.persistentDataPath}/{profileId}/thumbnail.png";
 
+        return null;
     }
+
 
     public Profile FindProfile(int id)
     {
