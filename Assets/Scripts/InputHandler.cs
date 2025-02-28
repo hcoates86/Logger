@@ -11,6 +11,9 @@ public class InputHandler : MonoBehaviour
     public TMP_InputField nameInput;
     public DateInputValidator dateValidator;
     public TMP_InputField dateInput;
+    // for ages, like "5", "12"
+    public TMP_InputField ageInput;
+
     // public string imagePath;
     public Image image;
     public UploadImage uploadImage;
@@ -46,6 +49,14 @@ public class InputHandler : MonoBehaviour
             uploadImage.Upload(id);
         }
 
+        // if a birthdate hasn't been input, uses the age
+        if (dateTime == DateTime.MinValue && ageInput != null && ageInput.text != string.Empty)
+        {
+            int _age = int.Parse(ageInput.text);
+            DateTime today = DateTime.Now;
+            today = today.AddYears(-_age);
+            dateTime = today;
+        }
 
         AppManager.Instance.CreateProfile(nameInput.text, dateTime, uploadImage.imageUploaded, id);
         cgtToHideOnSubmit.HideElement();
@@ -61,6 +72,8 @@ public class InputHandler : MonoBehaviour
             dateInput.text = string.Empty;
         if (image != null)
             image.sprite = null;
+        if (ageInput != null)
+            ageInput.text = string.Empty;
 
         // hides errors
         AppManager.Instance.error.OkButton();

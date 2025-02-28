@@ -41,6 +41,11 @@ public class AppManager : MonoBehaviour
     private const string PRESSED_HEX = "#696A8C";
     private const string NORMAL_HEX = "#758398";
 
+    // signifies an event was edited in the full profile and the view needs to be refreshed upon returning to the short profile
+    public bool eventEdited = false;
+    // signifies name/bday/picture was edited in the full profile and the short profile and profile item need to be refreshed
+    public bool profileEdited = false;
+
 
     void Awake()
     {
@@ -266,6 +271,24 @@ public class AppManager : MonoBehaviour
 
     }
 
+    public void HideFullProfile()
+    {
+        if (eventEdited || profileEdited)
+        {
+            // sorts and refreshes the short profile
+            currentProfile.SortByCurrentCriteria();
+            shortProfile.Setup(currentProfile);
+        }
+
+        if (profileEdited)
+        {
+            ProfileDisplay currentProfDisplay = currentProfile.GetComponent<ProfileDisplay>();
+            currentProfDisplay.Setup(currentProfile);
+        }
+
+        fullProfileToggle.HideElement();
+    }
+
     // loads the image files, picture and thumbnail from the id
     Sprite LoadImage(int profileId)
     {
@@ -319,6 +342,28 @@ public class AppManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public void ClearChildren(Transform objectTrans)
+    {
+        int i = 0;
+
+        //Array to hold all child obj
+        GameObject[] allChildren = new GameObject[objectTrans.childCount];
+
+        //Find all child obj and store to that array
+        foreach (Transform child in objectTrans)
+        {
+            allChildren[i] = child.gameObject;
+            i += 1;
+        }
+
+        //Now destroy them
+        foreach (GameObject child in allChildren)
+        {
+            Destroy(child.gameObject);
+        }
+
     }
 }
 

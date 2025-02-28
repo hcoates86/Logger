@@ -15,6 +15,9 @@ public class ProfileDisplay : MonoBehaviour
 
     public bool useThumbnail = false;
 
+    public Transform eventContainer;
+    public FavoriteEventDisplay[] favoriteDisplays = new FavoriteEventDisplay[3];
+
     // private bool canEdit = false;
 
 
@@ -43,6 +46,42 @@ public class ProfileDisplay : MonoBehaviour
             image.sprite = AppManager.Instance.defaultImage;
         }
 
+        if (profile.allEvents.Count > 0)
+        {
+            SetEvents(profile);
+        }
+    }
+
+    public void SetEvents(Profile profile)
+    {
+        // sets the events on the full profile
+        if (eventContainer != null && profile.allEvents.Count > 0)
+        {
+            foreach (EventItem item in profile.allEvents)
+            {
+                item.gameObject.SetActive(true);
+                item.transform.SetParent(eventContainer, false);
+                
+            }
+        }
+
+        //sets the events on the short profile
+        // checks for null to see if it's short profile instead of length due to fixed array size
+        if (favoriteDisplays[0] != null)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                // if the item exists displays it, otherwise hides display
+                if (profile.allEvents[i] != null)
+                {
+                    favoriteDisplays[i].Setup(profile.allEvents[i], true);
+                }
+                else
+                {
+                    favoriteDisplays[i].Setup(null, false);
+                }
+            }
+        }
     }
 
 

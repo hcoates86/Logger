@@ -5,6 +5,7 @@ using System;
 using Faisalman.AgeCalc;
 using UnityEngine.UI;
 using System.IO;
+using System.Linq;
 
 public class Profile : MonoBehaviour
 {
@@ -18,15 +19,21 @@ public class Profile : MonoBehaviour
     // // for vaccines, flea meds, etc
     // public List<string> listItems;
     // three favorite events
-    public int[] favoriteEvents = new int[3];
+    // public int[] favoriteEvents = new int[3];
 
     // keeps a count of the total events for event id and sorting
     private int totalEventsAdded;
     public Transform eventContainer;
     public List<EventItem> allEvents = new List<EventItem>();
 
+    public SortBy eventsSortedBy;
+
     public Image profileBackground;
 
+    void Start()
+    {
+        SortByCurrentCriteria();
+    }
 
     string GetAge()
     {
@@ -110,8 +117,9 @@ public class Profile : MonoBehaviour
 
     }
 
-    public void SaveEvent()
+    public void CreateEvent()
     {
+
 
     }
 
@@ -127,6 +135,7 @@ public class Profile : MonoBehaviour
         public int favoriteEvent2;
         public int favoriteEvent3;
         public int totalEventsAdded;
+        public SortBy eventsSortedBy;
     }
 
 
@@ -195,10 +204,11 @@ public class Profile : MonoBehaviour
         data.named = named;
         data.birthDate = birthDate.ToString("MM/dd/yyyy");
         // data.profileImagePath 
-        data.favoriteEvent1 = favoriteEvents[0];
-        data.favoriteEvent2 = favoriteEvents[1];
-        data.favoriteEvent3 = favoriteEvents[2];
+        // data.favoriteEvent1 = favoriteEvents[0];
+        // data.favoriteEvent2 = favoriteEvents[1];
+        // data.favoriteEvent3 = favoriteEvents[2];
         data.totalEventsAdded = totalEventsAdded;
+        data.eventsSortedBy = eventsSortedBy;
 
         string json = JsonUtility.ToJson(data);
         string path = $"{Application.persistentDataPath}/profiles";
@@ -210,13 +220,170 @@ public class Profile : MonoBehaviour
         }
 
         File.WriteAllText($"{Application.persistentDataPath}/profiles/profile{id}.json", json);
-
-
     }
 
-    public void SortEvents()
+    // bool checks if sorting should be forced by script and not clicked. 
+    // ^Sets previous to none before sorting again to avoid click-based logic
+    public void SortEvents(SortBy sortCriteria, bool scriptOnly = false)
     {
+        if (scriptOnly)
+        {
+            eventsSortedBy = SortBy.None;
+        }
 
+
+        if (sortCriteria == SortBy.None)
+        {
+            eventsSortedBy = SortBy.None;
+
+            allEvents.Sort((x, y) => y.isFavorite.CompareTo(x.isFavorite));
+        }
+
+        DateTime now = DateTime.Now;
+
+
+
+        if (sortCriteria == SortBy.DueDate)
+        {
+            eventsSortedBy = SortBy.DueDate;
+
+            var sortedEvents = allEvents
+            .OrderByDescending(e => e.isFavorite)
+            .ThenBy(e => e.hasDueDate ? DateTime.Parse(e.dueDate.text) : DateTime.MaxValue)
+            .ToList();
+
+            allEvents = new List<EventItem>(sortedEvents);
+
+            // allEvents.Sort((x, y) =>
+            // {
+            //     // First, compare by isfavorite (true first)
+            //     int favoriteComparison = y.isFavorite.CompareTo(x.isFavorite);
+            //     if (favoriteComparison != 0)
+            //         return favoriteComparison;
+
+            //     // Then, compare by enddate closest to now
+            //     DateTime endDateX = DateTime.Parse(x.dueDate.text);
+            //     DateTime endDateY = DateTime.Parse(y.dueDate.text);
+            //     double diffX = (endDateX - now).TotalSeconds;
+            //     double diffY = (endDateY - now).TotalSeconds;
+
+            //     return diffX.CompareTo(diffY);
+            // });
+        }
+        // if events are already sorted by due date, sort by ascending duedate (for button click)
+        // also set explicitely for script setup
+        if ((sortCriteria == SortBy.DueDate && eventsSortedBy == SortBy.DueDate)
+            || sortCriteria == SortBy.ReverseDueDate)
+        {
+            eventsSortedBy = SortBy.DueDate;
+
+            var sortedEvents = allEvents
+            .OrderByDescending(e => e.isFavorite)
+            .ThenByDescending(e => e.hasDueDate ? DateTime.Parse(e.dueDate.text) : DateTime.MinValue)
+            .ToList();
+
+            allEvents = new List<EventItem>(sortedEvents);
+
+            // allEvents.Sort((x, y) =>
+            // {
+            //     // First, compare by isfavorite (true first)
+            //     int favoriteComparison = y.isFavorite.CompareTo(x.isFavorite);
+            //     if (favoriteComparison != 0)
+            //         return favoriteComparison;
+
+            //     // Then, compare by enddate closest to now
+            //     DateTime endDateX = DateTime.Parse(x.dueDate.text);
+            //     DateTime endDateY = DateTime.Parse(y.dueDate.text);
+            //     double diffX = (endDateX - now).TotalSeconds;
+            //     double diffY = (endDateY - now).TotalSeconds;
+
+            //     return diffY.CompareTo(diffX);
+            // });
+        }
+        // if events are already sorted by given date, sort by ascending givendate (for button click)
+        // also set explicitely for script setup
+        if ((sortCriteria == SortBy.GivenDate && eventsSortedBy == SortBy.GivenDate)
+            || sortCriteria == SortBy.ReverseGivenDate)
+        {
+            eventsSortedBy = SortBy.ReverseGivenDate;
+
+            var sortedEvents = allEvents
+            .OrderByDescending(e => e.isFavorite)
+            .ThenBy(e => e.hasStartDate ? DateTime.Parse(e.startDate.text) : DateTime.MaxValue)
+            .ToList();
+
+            allEvents = new List<EventItem>(sortedEvents);
+            // allEvents.Sort((x, y) =>
+            // {
+            //     // First, compare by isfavorite (true first)
+            //     int favoriteComparison = y.isFavorite.CompareTo(x.isFavorite);
+            //     if (favoriteComparison != 0)
+            //         return favoriteComparison;
+
+            //     // Then, compare by enddate closest to now
+            //     DateTime startDateX = DateTime.Parse(x.startDate.text);
+            //     DateTime startDateY = DateTime.Parse(y.startDate.text);
+            //     return startDateX.CompareTo(startDateY);
+            // });
+        }
+        if (sortCriteria == SortBy.GivenDate)
+        {
+            eventsSortedBy = SortBy.GivenDate;
+
+            
+            var sortedEvents = allEvents
+            .OrderByDescending(e => e.isFavorite)
+            .ThenByDescending(e => e.hasStartDate ? DateTime.Parse(e.startDate.text) : DateTime.MinValue)
+            .ToList();
+
+            allEvents = new List<EventItem>(sortedEvents);
+            // allEvents.Sort((x, y) =>
+            // {
+            //     // First, compare by isfavorite (true first)
+            //     int favoriteComparison = y.isFavorite.CompareTo(x.isFavorite);
+            //     if (favoriteComparison != 0)
+            //         return favoriteComparison;
+
+            //     // Then, compare by enddate closest to now
+            //     DateTime startDateX = DateTime.Parse(x.startDate.text);
+            //     DateTime startDateY = DateTime.Parse(y.startDate.text);
+            //     return startDateY.CompareTo(startDateX);
+            // });
+        }
+
+        if (sortCriteria == SortBy.Created)
+        {
+            eventsSortedBy = SortBy.Created;
+
+            var sortedEvents = allEvents
+            .OrderByDescending(e => e.isFavorite)
+            .ThenBy(e => e.eventId)
+            .ToList();
+
+            allEvents = new List<EventItem>(sortedEvents);
+        }
+        if ((sortCriteria == SortBy.Created && eventsSortedBy == SortBy.Created)
+            || sortCriteria == SortBy.ReverseCreated)
+        {
+            eventsSortedBy = SortBy.ReverseCreated;
+
+            var sortedEvents = allEvents
+            .OrderByDescending(e => e.isFavorite)
+            .ThenBy(e => e.eventId)
+            .ToList();
+
+            allEvents = new List<EventItem>(sortedEvents);
+        }
     }
 
+    public void SortByCurrentCriteria()
+    {
+        SortEvents(eventsSortedBy, true);
+    }
+}
+
+public enum SortBy
+{
+    // none is effectively a cancel
+    None, DueDate, GivenDate, ReverseGivenDate, ReverseDueDate, Created, ReverseCreated
 }

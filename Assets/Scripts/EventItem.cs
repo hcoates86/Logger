@@ -25,8 +25,8 @@ public class EventItem : MonoBehaviour
     public bool isFavorite = false;
     public Image favoriteStar;
 
-    private bool hasStartDate;
-    private bool hasDueDate;
+    public bool hasStartDate;
+    public bool hasDueDate;
 
     // public bool getNotificationOnDue;
 
@@ -96,27 +96,29 @@ public class EventItem : MonoBehaviour
             favoriteStar.sprite = AppManager.Instance.starHollow;
         }
         SaveEvent(DataType.IsFavorite);
+        // AppManager.Instance.eventEdited = true;
 
     }
-
-    [System.Serializable]
-    public class EventData
-    {
-        // corresponds to the profile id
-        public int profileId;
-        public int eventId;
-        public string title;
-        public string notes;
-        public string startDate;
-        public string dueDate;
-        public bool hasStartDate; 
-        public bool hasDueDate;
-        public bool isFavorite;
-    }
+//moved outside of class
+    // [System.Serializable]
+    // public class EventData
+    // {
+    //     // corresponds to the profile id
+    //     public int profileId;
+    //     public int eventId;
+    //     public string title;
+    //     public string notes;
+    //     public string startDate;
+    //     public string dueDate;
+    //     public bool hasStartDate; 
+    //     public bool hasDueDate;
+    //     public bool isFavorite;
+    // }
 
     // saves the event according to the datatype
-    void SaveEvent(DataType dataType)
+    public void SaveEvent(DataType dataType)
     {
+        AppManager.Instance.eventEdited = true;
         EventData data = new EventData();
 
         switch (dataType)
@@ -171,6 +173,7 @@ public class EventItem : MonoBehaviour
         }
 
         File.WriteAllText(path, json);
+
     }
 
     // deletes an event. Doesn't need confirmation. Located on onclick of eventitem delete button
@@ -198,10 +201,25 @@ public class EventItem : MonoBehaviour
         // AndroidNotificationCenter.SendNotificationWithExplicitID(notification, "channel_id", notificationId);
     }
 
+}
 
+    [System.Serializable]
+    public class EventData
+    {
+        // corresponds to the profile id
+        public int profileId;
+        public int eventId;
+        public string title;
+        public string notes;
+        public string startDate;
+        public string dueDate;
+        public bool hasStartDate; 
+        public bool hasDueDate;
+        public bool isFavorite;
+    }
 
     public enum DataType
     {
         ProfileID, EventID, Title, Notes, StartDate, DueDate, HasStart, HasDue, IsFavorite, All
     }
-}
+

@@ -30,19 +30,13 @@ public class CanvasGroupToggle : MonoBehaviour
         if(fadeInSpeed == 0)
             fadeInSpeed = 15f;
 
-        // written out to avoid any issues with fading coroutines
         if (startHidden)
         {
-            element.alpha = 0;
-            element.interactable = false;
-            element.blocksRaycasts = false;
+            HideElementImmediate();
         }
         else
         {
-            element.alpha = 1;
-            element.interactable = true;
-            element.blocksRaycasts = true;
-
+            ShowElementImmediate();
         }
     }
 
