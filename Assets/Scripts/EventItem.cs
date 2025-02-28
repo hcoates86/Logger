@@ -8,6 +8,7 @@ using Unity.Notifications.Android;
 
 public class EventItem : MonoBehaviour
 {
+    public CanvasGroupToggle deleteButtonCGT;
     public CanvasGroupToggle expandedContainer;
     public CanvasGroupToggle shortBackground;
     // corresponds to the profile id
@@ -60,15 +61,20 @@ public class EventItem : MonoBehaviour
 
     public void ShowExpanded(bool _showExpanded)
     {
+        RectTransform containerRect = transform.parent.GetComponent<RectTransform>();
+
         if (_showExpanded)
         {
             expandedContainer.ShowElement();
             shortBackground.HideElement();
+            containerRect.sizeDelta = new Vector2(0, 250);
         }
         else
         {
             expandedContainer.HideElement();
             shortBackground.ShowElement();
+            containerRect.sizeDelta = new Vector2(0, 100);
+
         }
     }
 
@@ -181,8 +187,8 @@ public class EventItem : MonoBehaviour
         // removes self from profile's list of events
         profile.allEvents.Remove(this);
 
-        AppManager.Instance.FadeAndDestroy(gameObject);
-
+        AppManager.Instance.FadeAndDestroy(transform.parent.gameObject);
+        //reorganize the short events list
     }
 
     void HandleNotifications()

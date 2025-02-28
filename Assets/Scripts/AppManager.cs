@@ -16,6 +16,8 @@ public class AppManager : MonoBehaviour
     public CanvasGroupToggle editBirthdate;
     public Profile currentProfile;
 
+    public Sprite defaultImage;
+
     public ProfileDisplay shortProfile;
     public CanvasGroupToggle shortProfileToggle;
     public ProfileDisplay fullProfile;
@@ -217,6 +219,8 @@ public class AppManager : MonoBehaviour
         profileDisplay.Setup(profile);
 
         allProfiles.Add(profile);
+        // increases the total profile count on profile creation
+        PlayerPrefs.SetInt("TotalProfiles", id + 1);
 
         // clicks the new profile to display on the short profile and whatever else
         SwitchProfile(profile);
@@ -229,18 +233,28 @@ public class AppManager : MonoBehaviour
 
     public int CreateNewId()
     {
-        int id = allProfiles.Count + 1;
-        string path = $"{Application.persistentDataPath}/profiles/profile{id}.json";
+        int totalProfiles = PlayerPrefs.GetInt("TotalProfiles");
+        Debug.Log("totalProfiles key: " + totalProfiles);
 
-        // if directory already exists, not a unique id
-        while (File.Exists(path))
+        // if key doesn't exist or is 0, set it to 1 and return that number
+        if (totalProfiles <= 0)
         {
-            id = UnityEngine.Random.Range(500, 2001);
-            Debug.Log(id);
-            path = $"{Application.persistentDataPath}/profiles/profile{id}.json";
+            totalProfiles = 1;
+            PlayerPrefs.SetInt("TotalProfiles", 1);
         }
 
-        return id;
+        // int id = allProfiles.Count + 1;
+        // string path = $"{Application.persistentDataPath}/profiles/profile{id}.json";
+
+        // // if directory already exists, not a unique id
+        // while (File.Exists(path))
+        // {
+        //     id = UnityEngine.Random.Range(500, 2001);
+        //     Debug.Log(id);
+        //     path = $"{Application.persistentDataPath}/profiles/profile{id}.json";
+        // }
+
+        return totalProfiles;
 
     }
 

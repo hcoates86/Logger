@@ -43,6 +43,7 @@ public class EditButton : MonoBehaviour
             button.colors = cbPressed;
             text.color = pressedTextColor;
 
+            SetEventDeleteButtonsVisible(true);
             AppManager.Instance.ChangeEditable(true);
 
         }
@@ -54,6 +55,7 @@ public class EditButton : MonoBehaviour
             button.colors = cbNormal;
             text.color = initialTextColor;
 
+            SetEventDeleteButtonsVisible(false);
             AppManager.Instance.ChangeEditable(false);
         }
 
@@ -62,8 +64,27 @@ public class EditButton : MonoBehaviour
 
     void EditProfile()
     {
+        //on finish click
 
         // AppManager.Instance.EditCurrentProfile();
-        
+    }
+
+    void SetEventDeleteButtonsVisible(bool show)
+    {
+        if (AppManager.Instance.currentProfile == null ||
+            AppManager.Instance.currentProfile.allEvents.Count < 1) return;
+
+        foreach (EventItem item in AppManager.Instance.currentProfile.allEvents)
+        {
+            if (show)
+            {
+                item.deleteButtonCGT.ShowElement();
+            }
+            else
+            {
+                item.deleteButtonCGT.HideElement();
+            }
+            
+        }
     }
 }

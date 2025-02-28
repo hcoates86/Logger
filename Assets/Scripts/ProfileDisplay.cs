@@ -40,7 +40,7 @@ public class ProfileDisplay : MonoBehaviour
         }
         else
         {
-            image.sprite = null;
+            image.sprite = AppManager.Instance.defaultImage;
         }
 
     }
