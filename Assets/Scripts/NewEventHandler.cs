@@ -9,9 +9,10 @@ public class NewEventHandler : MonoBehaviour
     public TMP_InputField notesInput;
     public DateInputValidator startDateValidator;
     public DateInputValidator dueDateValidator;
+    public CanvasGroupToggle cgtToHideOnSubmit;
 
 
-    void OnSubmit()
+    public void OnSubmit()
     {
         // receives true if dates are valid (includes null for optional dates)
         if (startDateValidator.SubmitDateValidation() && dueDateValidator.SubmitDateValidation())
@@ -23,7 +24,8 @@ public class NewEventHandler : MonoBehaviour
         {
             return;
         }
-        
+
+        cgtToHideOnSubmit.HideElement();
     }
 
 
