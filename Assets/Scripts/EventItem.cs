@@ -99,21 +99,6 @@ public class EventItem : MonoBehaviour
         // AppManager.Instance.eventEdited = true;
 
     }
-//moved outside of class
-    // [System.Serializable]
-    // public class EventData
-    // {
-    //     // corresponds to the profile id
-    //     public int profileId;
-    //     public int eventId;
-    //     public string title;
-    //     public string notes;
-    //     public string startDate;
-    //     public string dueDate;
-    //     public bool hasStartDate; 
-    //     public bool hasDueDate;
-    //     public bool isFavorite;
-    // }
 
     // saves the event according to the datatype
     public void SaveEvent(DataType dataType)
@@ -161,18 +146,29 @@ public class EventItem : MonoBehaviour
                 data.hasDueDate = hasDueDate;
                 data.isFavorite = isFavorite;
                 break;
+            // edit items only, doesn't change ids or favorite value
+            case DataType.Edit:
+                data.title = title.text;
+                data.notes = notes.text;
+                data.startDate = startDate.text;
+                data.dueDate = dueDate.text;
+                data.hasStartDate = hasStartDate;
+                data.hasDueDate = hasDueDate;
+                break;
         }
 
         string json = JsonUtility.ToJson(data);
+        // string path = $"{Application.persistentDataPath}/{profileId}/{eventId}.json";
 
-        string path = $"{Application.persistentDataPath}/profiles/{profileId}/{eventId}.json";
-        if (!Directory.Exists(path))
+        string directoryPath = $"{Application.persistentDataPath}/{profileId}";
+        if (!Directory.Exists(directoryPath))
         {
             // Create the directory
-            Directory.CreateDirectory(path);
+            Directory.CreateDirectory(directoryPath);
         }
+        string filePath = $"{directoryPath}/{eventId}.json";
 
-        File.WriteAllText(path, json);
+        File.WriteAllText(filePath, json);
 
     }
 
@@ -180,7 +176,7 @@ public class EventItem : MonoBehaviour
     public void DeleteEvent()
     {
         // deletes self from saved events
-        string path = $"{Application.persistentDataPath}/profiles/{profileId}/{eventId}.json";
+        string path = $"{Application.persistentDataPath}/{profileId}/{eventId}.json";
         AppManager.Instance.DeleteItemAtPath(path);
 
         //delete notifications too
@@ -199,6 +195,18 @@ public class EventItem : MonoBehaviour
         string newID = profileId.ToString() + eventId.ToString();
         var notificationID = int.Parse(newID);
         // AndroidNotificationCenter.SendNotificationWithExplicitID(notification, "channel_id", notificationId);
+    }
+
+    // brings up the event modal. Attached to edit button on eventitems prefabs
+    public void StartEditEvent()
+    {
+        //if can't edit exits
+        if (!AppManager.Instance.canEdit) return;
+
+        // opens modal and sets event info
+        NewEventHandler handler = AppManager.Instance.eventModal;
+        handler.SetEditEvent(this);
+        handler.cgtToHideOnSubmit.ShowElement();
     }
 
 }
@@ -220,6 +228,6 @@ public class EventItem : MonoBehaviour
 
     public enum DataType
     {
-        ProfileID, EventID, Title, Notes, StartDate, DueDate, HasStart, HasDue, IsFavorite, All
+        ProfileID, EventID, Title, Notes, StartDate, DueDate, HasStart, HasDue, IsFavorite, All, Edit
     }
 

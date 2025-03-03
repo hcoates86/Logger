@@ -22,8 +22,8 @@ public class Profile : MonoBehaviour
     // public int[] favoriteEvents = new int[3];
 
     // keeps a count of the total events for event id and sorting
-    private int totalEventsAdded;
-    public Transform eventContainer;
+    public int totalEventsAdded;
+    // public Transform eventContainer;
     public List<EventItem> allEvents = new List<EventItem>();
 
     public SortBy eventsSortedBy;
@@ -91,38 +91,10 @@ public class Profile : MonoBehaviour
         return $"{age.Years} {pluralYears} {age.Months} {pluralMonths}";
     }
 
-    // doing this on the event
-    // void DeleteEvent(int eventId)
-    // {
-    //     //fade + delete the gameobject 
-    //     //delete the notification if notifications on that event were on
-
-
-    //     // deletes the event file
-    //     string path = $"{Application.persistentDataPath}/profiles/{id}/{eventId}.json";
-    //     AppManager.Instance.deletePath = path;
-    //     AppManager.Instance.confirm.Show("Are you sure you want to delete this profile?", AppManager.Instance.DeleteItemAtPath);
-        
-    // }
-
     public void OnClick()
     {
         AppManager.Instance.SwitchProfile(this);
     }
-
-    void AddEvent()
-    {
-        GameObject newEvent = Instantiate(AppManager.Instance.eventPrefab, eventContainer);
-        
-
-    }
-
-    public void CreateEvent()
-    {
-
-
-    }
-
 
     [System.Serializable]
     public class ProfileData
@@ -137,7 +109,6 @@ public class Profile : MonoBehaviour
         public int totalEventsAdded;
         public SortBy eventsSortedBy;
     }
-
 
     [System.Serializable]
     public class EventData
@@ -379,6 +350,11 @@ public class Profile : MonoBehaviour
     public void SortByCurrentCriteria()
     {
         SortEvents(eventsSortedBy, true);
+    }
+
+    public void LoadEvents()
+    {
+        string path = $"{Application.persistentDataPath}/{id}";
     }
 }
 

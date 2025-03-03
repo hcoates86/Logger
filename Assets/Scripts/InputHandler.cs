@@ -59,12 +59,12 @@ public class InputHandler : MonoBehaviour
         }
 
         AppManager.Instance.CreateProfile(nameInput.text, dateTime, uploadImage.imageUploaded, id);
-        cgtToHideOnSubmit.HideElement();
-        ClearInput();
+        // cgtToHideOnSubmit.HideElement();
+        ClearInput(true);
 
     }
 
-    void ClearInput()
+    public void ClearInput(bool andHide)
     {
         if (nameInput != null)
             nameInput.text = string.Empty;
@@ -79,6 +79,10 @@ public class InputHandler : MonoBehaviour
         AppManager.Instance.error.OkButton();
 
         uploadImage.imageUploaded = false;
+
+        if (andHide)
+            cgtToHideOnSubmit.HideElement();
+            
 
     }
 

@@ -28,7 +28,10 @@ public class FavoriteEventDisplay : MonoBehaviour
         if (_event.hasDueDate)
             dueDate.text = _event.dueDate.text;    
         else
-            dueDate.text = "";    
+            dueDate.text = "";
+
+        canvasGroupToggle.ShowElement();
+         
 
     }
 

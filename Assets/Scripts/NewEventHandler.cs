@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class NewEventHandler : MonoBehaviour
 {
@@ -11,22 +12,142 @@ public class NewEventHandler : MonoBehaviour
     public DateInputValidator dueDateValidator;
     public CanvasGroupToggle cgtToHideOnSubmit;
 
+    public Profile profile;
+
+    private EventItem editingItem;
+
+    // for setting inputs directly, not read
+    public TMP_InputField startDateInput;
+    public TMP_InputField dueDateInput;
+
 
     public void OnSubmit()
     {
         // receives true if dates are valid (includes null for optional dates)
         if (startDateValidator.SubmitDateValidation() && dueDateValidator.SubmitDateValidation())
         {
-            // startDateValidator.dateValue;
-            // dueDateValidator.dateValue;
+            if (editingItem == null)
+                CreateEvent(titleInput.text, startDateValidator.dateValue, dueDateValidator.dateValue, notesInput.text);
+            else
+                EditEvent(editingItem, titleInput.text, startDateValidator.dateValue, dueDateValidator.dateValue, notesInput.text);
         }
         else
         {
             return;
         }
 
-        cgtToHideOnSubmit.HideElement();
+        editingItem = null;
+        // cgtToHideOnSubmit.HideElement();
+        ClearInput(true);
     }
 
+    public void CreateEvent(string title, DateTime startDate, DateTime dueDate, string notes)
+    {
+        AppManager.Instance.eventEdited = true;
+        profile = AppManager.Instance.currentProfile;
+
+        GameObject newEvent = Instantiate(AppManager.Instance.eventPrefab, AppManager.Instance.fullProfile.eventContainer);
+        EventItem eventItem = newEvent.GetComponentInChildren<EventItem>();
+        
+        // adds one to events added before setting it as the new event id
+        profile.totalEventsAdded++;
+
+        eventItem.profileId = profile.id;
+        eventItem.eventId = profile.totalEventsAdded;
+        eventItem.title.text = title;
+        eventItem.notes.text = notes;
+
+        if (startDate != DateTime.MinValue)
+        {
+            eventItem.hasStartDate = true;
+            eventItem.startDate.text = startDate.ToString("MM/dd/yyyy");
+        }
+        else
+        {
+            eventItem.hasStartDate = false;
+            eventItem.startDate.text = "--/--/----";
+        }
+
+        if (dueDate != DateTime.MinValue)
+        {
+            eventItem.hasDueDate = true;
+            eventItem.dueDate.text = dueDate.ToString("MM/dd/yyyy");
+        }
+        else
+        {
+            eventItem.hasDueDate = false;
+            eventItem.dueDate.text = "--/--/----";
+        }
+
+        // displays the things passed in
+        eventItem.DisplayOptional(true);
+
+
+        eventItem.SaveEvent(DataType.All);
+        profile.allEvents.Add(eventItem);
+
+    }
+
+    // Sets the event to edit
+    public void SetEditEvent(EventItem _event)
+    {
+        editingItem = _event;
+        //sets the text to the passed in event values
+        titleInput.text = _event.title.text;
+        notesInput.text = _event.notes.text;
+        // TMP_InputField startInput = startDateValidator.GetComponent<TMP_InputField>();
+        startDateInput.text = _event.startDate.text;
+        // TMP_InputField dueInput = dueDateValidator.GetComponent<TMP_InputField>();
+        dueDateInput.text = _event.dueDate.text;
+    }
+
+    //called on submit
+    void EditEvent(EventItem _editingItem, string title, DateTime startDate, DateTime dueDate, string notes)
+    {
+        _editingItem.title.text = title;
+        _editingItem.notes.text = notes;
+
+        if (startDate != DateTime.MinValue)
+        {
+            _editingItem.hasStartDate = true;
+            _editingItem.startDate.text = startDate.ToString("MM/dd/yyyy");
+        }
+        else
+        {
+            _editingItem.hasStartDate = false;
+            _editingItem.startDate.text = "--/--/----";
+        }
+
+        if (dueDate != DateTime.MinValue)
+        {
+            _editingItem.hasDueDate = true;
+            _editingItem.dueDate.text = dueDate.ToString("MM/dd/yyyy");
+        }
+        else
+        {
+            _editingItem.hasDueDate = false;
+            _editingItem.dueDate.text = "--/--/----";
+        }
+        _editingItem.DisplayOptional(true);
+
+
+        _editingItem.SaveEvent(DataType.Edit);
+
+    }
+
+    public void ClearInput(bool andHide)
+    {
+        titleInput.text = "";
+        notesInput.text = "";
+        startDateInput.text = "";
+        dueDateInput.text = "";
+        profile = null;
+
+        // hides errors
+        AppManager.Instance.error.OkButton();
+
+        if (andHide)
+            cgtToHideOnSubmit.HideElement();
+    }
 
 }

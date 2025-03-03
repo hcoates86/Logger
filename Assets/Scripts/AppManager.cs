@@ -30,12 +30,14 @@ public class AppManager : MonoBehaviour
     public Transform profileContainer;
     public GameObject eventPrefab;
 
+    public NewEventHandler eventModal;
+
     public Sprite starHollow;
     public Sprite starFilled;
 
     public string deletePath;
 
-    private bool canEdit = false;
+    public bool canEdit = false;
 
     // colors of the pressed and unpressed profile items
     private const string PRESSED_HEX = "#696A8C";
@@ -61,16 +63,25 @@ public class AppManager : MonoBehaviour
 
         // creates the profiles directory
         string path = $"{Application.persistentDataPath}/profiles";
-
         if (!Directory.Exists(path))
         {
             // Create the directory
             Directory.CreateDirectory(path);
         }
+
+        //TEST
+        PlayerPrefs.SetInt("TotalProfiles", 0);
+
     }
 
     public void ChangeEditable(bool changed)
     {
+        // if changing canedit to false, confirm if changes should be saved first
+        if (changed == false && canEdit == true && profileEdited)
+        {
+            confirm.Show("Do you want to close without saving changes?", SaveEdits, "Save", "Close");
+        }
+
         canEdit = changed;
 
         if (canEdit)
@@ -85,6 +96,11 @@ public class AppManager : MonoBehaviour
             editName.HideElement();
             editBirthdate.HideElement();
         }
+    }
+
+    public void SaveEdits()
+    {
+
     }
 
     public void EditCurrentProfile(bool nameEdited, bool bdayEdited, bool pictureUploaded, string name = "", string birthDate = "")
@@ -163,11 +179,6 @@ public class AppManager : MonoBehaviour
         toggle.HideElement();
     }
 
-    void AddProfile(int id)
-    {
-
-    }
-
     public void SwitchProfile(Profile profile)
     {
         canEdit = false;
@@ -197,7 +208,7 @@ public class AppManager : MonoBehaviour
 
     void LoadAllProfiles()
     {
-        // folder all profiles are saved to. Events are saved within profileid folders
+        // folder all profiles are saved to. Events are saved within profileid in "{Application.persistentDataPath}/{profileId}"
         string path = $"{Application.persistentDataPath}/profiles";
 
     }
@@ -214,10 +225,8 @@ public class AppManager : MonoBehaviour
             profile.thumbnail = LoadThumbnail(profile.id);
         }
 
-        // if (birthDate != DateTime.MinValue)
-        // {
-            profile.birthDate = birthDate;
-        // }
+        profile.birthDate = birthDate;
+
         profile.SaveProfile();
 
         ProfileDisplay profileDisplay = profile.GetComponent<ProfileDisplay>();
@@ -271,6 +280,7 @@ public class AppManager : MonoBehaviour
 
     }
 
+    // set on the onclick for the full prof's close view button. Refreshes with the current profile
     public void HideFullProfile()
     {
         if (eventEdited || profileEdited)
@@ -282,11 +292,18 @@ public class AppManager : MonoBehaviour
 
         if (profileEdited)
         {
+            // grabs and refreshes the small profile item
             ProfileDisplay currentProfDisplay = currentProfile.GetComponent<ProfileDisplay>();
             currentProfDisplay.Setup(currentProfile);
         }
 
         fullProfileToggle.HideElement();
+
+        profileEdited = false;
+        eventEdited = false;
+
+        //TODO: confirm
+        ChangeEditable(false);
     }
 
     // loads the image files, picture and thumbnail from the id
@@ -365,5 +382,26 @@ public class AppManager : MonoBehaviour
         }
 
     }
+
+    // set on the onclick for the full prof's close view button. Refreshes with the current profile
+    // public void RefreshShortProfile()
+    // {
+    //     if (profileEdited)
+    //     {
+    //         // refreshes the short profile
+    //         shortProfile.Setup(currentProfile);
+    //         // grabs and refreshes the small profile item
+    //         ProfileDisplay profileItem = currentProfile.GetComponent<ProfileDisplay>();
+    //         profileItem.Setup(currentProfile);
+
+    //     }
+    //     if (eventEdited)
+    //     {
+    //         shortProfile.SetEvents(currentProfile);
+    //     }
+
+    //     profileEdited = false;
+    //     eventEdited = false;
+    // }
 }
 

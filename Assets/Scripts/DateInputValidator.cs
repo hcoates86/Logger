@@ -36,57 +36,51 @@ public class DateInputValidator : MonoBehaviour
     public void ReadDateInput()
     {
         value = dateInput.text;
-        // if it passes initial input restrictions, sees if it needs to adds slashes
-        if (RestrictDateInput(value))
-        {
-            // HandleDate(value);
-        }
+        RestrictDateInput(value);
     }
 
     // adds / to dates
-    void HandleDate(string value)
-    {
-        // string value = dateInput.text;
-        newLength = value.Length;
+    // void HandleDate(string value)
+    // {
+    //     // string value = dateInput.text;
+    //     newLength = value.Length;
 
-        // if a slash was placed last, check if the next character is also a slash and remove it
-        if (slashPlaced == true)
-        {
-            if (value[value.Length - 1] == '/' && value[value.Length - 2] == '/')
-            {
-                value = value.Remove(value.Length - 1);
-                dateInput.text = value;
-            }
-        }
-        slashPlaced = false;
+    //     // if a slash was placed last, check if the next character is also a slash and remove it
+    //     if (slashPlaced == true)
+    //     {
+    //         if (value[value.Length - 1] == '/' && value[value.Length - 2] == '/')
+    //         {
+    //             value = value.Remove(value.Length - 1);
+    //             dateInput.text = value;
+    //         }
+    //     }
+    //     slashPlaced = false;
         
-        // checks if the new value is longer than the last to see if user is deleting
-        if (previousLength < newLength)
-        {
-            if (value.Length == 2 || value.Length == 5 && value[value.Length - 1] != '/')
-            {
-                dateInput.text = value + "/";
-                dateInput.MoveToEndOfLine(false, false);
-                slashPlaced = true;
+    //     // checks if the new value is longer than the last to see if user is deleting
+    //     if (previousLength < newLength)
+    //     {
+    //         if (value.Length == 2 || value.Length == 5 && value[value.Length - 1] != '/')
+    //         {
+    //             dateInput.text = value + "/";
+    //             dateInput.MoveToEndOfLine(false, false);
+    //             slashPlaced = true;
 
-            }
-        }
-        previousLength = value.Length;
-        oldInput = dateInput.text;
-    }
+    //         }
+    //     }
+    //     previousLength = value.Length;
+    //     oldInput = dateInput.text;
+    // }
 
 
-    bool RestrictDateInput(string value)
+    void RestrictDateInput(string value)
     {
+        oldInput = value;
         // Allow only numbers and slash (/) with a max number of characters
-        if (!Regex.IsMatch(value, @"^[\d/]+$") || value.Length > maxDateChars)
+        if (!Regex.IsMatch(value, @"^[\d/]+$"))
         {
             //resets input if it fails validation
             dateInput.text = oldInput;
-            return false;
         }
-        else
-        return true;
     }
 
     public bool SubmitDateValidation()
