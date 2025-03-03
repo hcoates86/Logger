@@ -56,6 +56,8 @@ public class EventItem : MonoBehaviour
             {
                 ShowExpanded(true);
             }
+            else
+                ShowExpanded(false);
         }
     }
 

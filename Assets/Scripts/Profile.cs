@@ -354,6 +354,7 @@ public class Profile : MonoBehaviour
 
     public void LoadEvents()
     {
+        // all events are saved to this folder in format eventId.json
         string path = $"{Application.persistentDataPath}/{id}";
     }
 }

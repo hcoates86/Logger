@@ -68,10 +68,6 @@ public class AppManager : MonoBehaviour
             // Create the directory
             Directory.CreateDirectory(path);
         }
-
-        //TEST
-        PlayerPrefs.SetInt("TotalProfiles", 0);
-
     }
 
     public void ChangeEditable(bool changed)
@@ -257,16 +253,14 @@ public class AppManager : MonoBehaviour
             PlayerPrefs.SetInt("TotalProfiles", 1);
         }
 
-        // int id = allProfiles.Count + 1;
-        // string path = $"{Application.persistentDataPath}/profiles/profile{id}.json";
+        string path = $"{Application.persistentDataPath}/profiles/profile{totalProfiles}.json";
 
-        // // if directory already exists, not a unique id
-        // while (File.Exists(path))
-        // {
-        //     id = UnityEngine.Random.Range(500, 2001);
-        //     Debug.Log(id);
-        //     path = $"{Application.persistentDataPath}/profiles/profile{id}.json";
-        // }
+        // if file already exists, not a unique id
+        while (File.Exists(path))
+        {
+            totalProfiles++;
+            path = $"{Application.persistentDataPath}/profiles/profile{totalProfiles}.json";
+        }
 
         return totalProfiles;
 
@@ -285,8 +279,9 @@ public class AppManager : MonoBehaviour
     {
         if (eventEdited || profileEdited)
         {
-            // sorts and refreshes the short profile
-            currentProfile.SortByCurrentCriteria();
+            // sorts and refreshes the short profile. No need to sort if under two items
+            if (currentProfile.allEvents.Count > 1)
+                currentProfile.SortByCurrentCriteria();
             shortProfile.Setup(currentProfile);
         }
 

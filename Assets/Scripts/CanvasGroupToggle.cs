@@ -17,7 +17,7 @@ public class CanvasGroupToggle : MonoBehaviour
     public bool destroyAfterFade = false;
     public float destroyAfterFadeDelay = 0;
 
-    void Start()
+    void Awake()
     {
         // if element isn't set, attempts to get the canvas group on the gameobject it's attached to
         if (element == null)

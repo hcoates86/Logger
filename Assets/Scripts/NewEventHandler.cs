@@ -86,6 +86,9 @@ public class NewEventHandler : MonoBehaviour
         eventItem.SaveEvent(DataType.All);
         profile.allEvents.Add(eventItem);
 
+        if (AppManager.Instance.currentProfile.allEvents.Count > 1)
+                AppManager.Instance.currentProfile.SortByCurrentCriteria();
+        AppManager.Instance.shortProfile.Setup(AppManager.Instance.currentProfile);
     }
 
     // Sets the event to edit

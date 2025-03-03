@@ -69,7 +69,7 @@ public class ProfileDisplay : MonoBehaviour
         // checks for null to see if it's short profile instead of length due to fixed array size
         if (favoriteDisplays[0] != null)
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < profile.allEvents.Count; i++)
             {
                 // if the item exists displays it, otherwise hides display
                 if (profile.allEvents[i] != null)
