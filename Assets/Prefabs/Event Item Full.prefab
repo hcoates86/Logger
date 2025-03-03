@@ -393,7 +393,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3495889364412778932}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EventItem, Assembly-CSharp
         m_MethodName: DeleteEvent
         m_Mode: 1
@@ -1121,7 +1121,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3524552736643953920}
-  - component: {fileID: 3495889364412778932}
   m_Layer: 5
   m_Name: Event Item
   m_TagString: Untagged
@@ -1150,38 +1149,11 @@ RectTransform:
   - {fileID: 3664625468346027507}
   m_Father: {fileID: 7938720081789562975}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -1.2663574, y: 74.99994}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: -680, y: -150}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3495889364412778932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4353268081889202398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99aecb822322ca242a21ede56b3ac99c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deleteButtonCGT: {fileID: 954310352703118356}
-  expandedContainer: {fileID: 5228527044039620598}
-  shortBackground: {fileID: 5243527651406942786}
-  profileId: 0
-  eventId: 0
-  title: {fileID: 586930412700218753}
-  notes: {fileID: 3971722014528525212}
-  startDate: {fileID: 6756806078719334358}
-  dueDate: {fileID: 808597903020621551}
-  startDateContainer: {fileID: 2499417182878365315}
-  dueDateContainer: {fileID: 4594767077846212480}
-  isFavorite: 0
-  favoriteStar: {fileID: 3604604363133431936}
-  hasStartDate: 0
-  hasDueDate: 0
 --- !u!1 &4373639338529931098
 GameObject:
   m_ObjectHideFlags: 0
@@ -1884,7 +1856,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3495889364412778932}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: EventItem, Assembly-CSharp
         m_MethodName: ToggleFavorite
         m_Mode: 1
@@ -1906,6 +1878,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7938720081789562975}
   - component: {fileID: 759016581792329670}
+  - component: {fileID: 4248441025191504978}
   m_Layer: 5
   m_Name: Event Item Full
   m_TagString: Untagged
@@ -1977,7 +1950,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3495889364412778932}
+      - m_Target: {fileID: 4248441025191504978}
         m_TargetAssemblyTypeName: EventItem, Assembly-CSharp
         m_MethodName: StartEditEvent
         m_Mode: 1
@@ -1989,6 +1962,33 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4248441025191504978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7590649957774447734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99aecb822322ca242a21ede56b3ac99c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deleteButtonCGT: {fileID: 954310352703118356}
+  expandedContainer: {fileID: 5228527044039620598}
+  shortBackground: {fileID: 5243527651406942786}
+  profileId: 0
+  eventId: 0
+  title: {fileID: 586930412700218753}
+  notes: {fileID: 3971722014528525212}
+  startDate: {fileID: 6756806078719334358}
+  dueDate: {fileID: 808597903020621551}
+  startDateContainer: {fileID: 2499417182878365315}
+  dueDateContainer: {fileID: 4594767077846212480}
+  isFavorite: 0
+  favoriteStar: {fileID: 3604604363133431936}
+  hasStartDate: 0
+  hasDueDate: 0
 --- !u!1 &7623642766314111135
 GameObject:
   m_ObjectHideFlags: 0

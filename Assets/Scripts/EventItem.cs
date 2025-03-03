@@ -213,23 +213,23 @@ public class EventItem : MonoBehaviour
 
 }
 
-    [System.Serializable]
-    public class EventData
-    {
-        // corresponds to the profile id
-        public int profileId;
-        public int eventId;
-        public string title;
-        public string notes;
-        public string startDate;
-        public string dueDate;
-        public bool hasStartDate; 
-        public bool hasDueDate;
-        public bool isFavorite;
-    }
+[System.Serializable]
+public class EventData
+{
+    // corresponds to the profile id
+    public int profileId;
+    public int eventId;
+    public string title;
+    public string notes;
+    public string startDate;
+    public string dueDate;
+    public bool hasStartDate; 
+    public bool hasDueDate;
+    public bool isFavorite;
+}
 
-    public enum DataType
-    {
-        ProfileID, EventID, Title, Notes, StartDate, DueDate, HasStart, HasDue, IsFavorite, All, Edit
-    }
+public enum DataType
+{
+    ProfileID, EventID, Title, Notes, StartDate, DueDate, HasStart, HasDue, IsFavorite, All, Edit
+}
 

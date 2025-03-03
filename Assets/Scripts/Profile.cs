@@ -96,37 +96,37 @@ public class Profile : MonoBehaviour
         AppManager.Instance.SwitchProfile(this);
     }
 
-    [System.Serializable]
-    public class ProfileData
-    {
-        public int id;
-        public string named;
-        public string birthDate;
-        // public string profileImagePath;
-        public int favoriteEvent1;
-        public int favoriteEvent2;
-        public int favoriteEvent3;
-        public int totalEventsAdded;
-        public SortBy eventsSortedBy;
-    }
+    // [System.Serializable]
+    // public class ProfileData
+    // {
+    //     public int id;
+    //     public string named;
+    //     public string birthDate;
+    //     // public string profileImagePath;
+    //     public int favoriteEvent1;
+    //     public int favoriteEvent2;
+    //     public int favoriteEvent3;
+    //     public int totalEventsAdded;
+    //     public SortBy eventsSortedBy;
+    // }
 
-    [System.Serializable]
-    public class EventData
-    {
-        // corresponds to the profile id
-        public int profileId;
-        // to be loaded in order
-        public int eventId;
-        public string title;
-        public string notes;
-        //for when something was given, and when it's due next
-        // should be able to edit these alone. Press edit button then click? If edit button has been pressed, then allow edit
-        public string startDate;
-        public string dueDate;
-        public bool hasStartDate; 
-        public bool hasDueDate;
-        public bool isFavorite;
-    }
+    // [System.Serializable]
+    // public class EventData
+    // {
+    //     // corresponds to the profile id
+    //     public int profileId;
+    //     // to be loaded in order
+    //     public int eventId;
+    //     public string title;
+    //     public string notes;
+    //     //for when something was given, and when it's due next
+    //     // should be able to edit these alone. Press edit button then click? If edit button has been pressed, then allow edit
+    //     public string startDate;
+    //     public string dueDate;
+    //     public bool hasStartDate; 
+    //     public bool hasDueDate;
+    //     public bool isFavorite;
+    // }
 
     public void SaveEventData(string title, bool isFavorite, string notes = "", string startDate = "", string dueDate = "", 
     bool hasStartDate = false, bool hasDueDate = false)
@@ -364,3 +364,35 @@ public enum SortBy
     // none is effectively a cancel
     None, DueDate, GivenDate, ReverseGivenDate, ReverseDueDate, Created, ReverseCreated
 }
+
+    [System.Serializable]
+    public class ProfileData
+    {
+        public int id;
+        public string named;
+        public string birthDate;
+        // public string profileImagePath;
+        // public int favoriteEvent1;
+        // public int favoriteEvent2;
+        // public int favoriteEvent3;
+        public int totalEventsAdded;
+        public SortBy eventsSortedBy;
+    }
+
+    // [System.Serializable]
+    // public class EventData
+    // {
+    //     // corresponds to the profile id
+    //     public int profileId;
+    //     // to be loaded in order
+    //     public int eventId;
+    //     public string title;
+    //     public string notes;
+    //     //for when something was given, and when it's due next
+    //     // should be able to edit these alone. Press edit button then click? If edit button has been pressed, then allow edit
+    //     public string startDate;
+    //     public string dueDate;
+    //     public bool hasStartDate; 
+    //     public bool hasDueDate;
+    //     public bool isFavorite;
+    // }

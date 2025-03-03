@@ -66,8 +66,15 @@ public class AppManager : MonoBehaviour
         if (!Directory.Exists(path))
         {
             // Create the directory
+            Debug.Log($"making path, directory does not exist");
+
             Directory.CreateDirectory(path);
         }
+        else
+            LoadAllProfiles();
+
+
+
     }
 
     public void ChangeEditable(bool changed)
@@ -94,6 +101,8 @@ public class AppManager : MonoBehaviour
         }
     }
 
+
+    // attach to edit button, to go off when pressed again
     public void SaveEdits()
     {
 
@@ -206,10 +215,83 @@ public class AppManager : MonoBehaviour
     {
         // folder all profiles are saved to. Events are saved within profileid in "{Application.persistentDataPath}/{profileId}"
         string path = $"{Application.persistentDataPath}/profiles";
+        string getJson = "*.json";
+
+        if (Directory.Exists(path))
+        {
+            string[] filePaths = Directory.GetFiles(path, getJson);
+
+            if (filePaths.Length > 0)
+            {
+                foreach (string filePath in filePaths)
+                {
+                    string[] data = LoadProfileData(filePath);
+                    DateTime dateValue;
+                    DateTime.TryParse(data[2], out dateValue);
+
+                    // parses the id
+                    int profileId = int.Parse(data[0]);
+                    // checks if the profile has an image
+                    string imagePath = $"{Application.persistentDataPath}/{profileId}/picture.png";
+                    bool profileHasImage = false;
+                    if (File.Exists(imagePath)) profileHasImage = true;
+
+                    // creates the profile from the prefab but doesn't save it since it just loaded it
+                    CreateProfile(profileId, data[1], dateValue, profileHasImage, false);
+                    
+                }
+            }
+        }
 
     }
 
-    public void CreateProfile(string newName, DateTime birthDate, bool imageUploaded, int id)
+    public string[] LoadProfileData(string path)
+    {
+        if (File.Exists(path)) {
+                string json = File.ReadAllText(path);
+                ProfileData data = JsonUtility.FromJson<ProfileData>(json);
+
+                string[] dataArray = new string[]
+                {
+                            data.id.ToString(),
+                            data.named,
+                            data.birthDate,
+                            data.totalEventsAdded.ToString(),
+                            data.eventsSortedBy.ToString(),
+                };
+
+                return dataArray;
+            }
+        else
+            return null;
+    }
+
+    public string[] LoadEventData(string path)
+    {
+        if (File.Exists(path)) {
+                string json = File.ReadAllText(path);
+                EventData data = JsonUtility.FromJson<EventData>(json);
+
+                string[] dataArray = new string[]
+                {
+                            data.profileId.ToString(),
+                            data.eventId.ToString(),
+                            data.title,
+                            data.notes,
+                            data.startDate,
+                            data.dueDate,
+                            data.hasStartDate.ToString(),
+                            data.hasDueDate.ToString(),
+                            data.isFavorite.ToString()
+                };
+
+                return dataArray;
+            }
+        else
+            return null;
+    }
+
+    public void CreateProfile(int id, string newName, DateTime birthDate, bool imageUploaded, bool save)
     {
         Profile profile = Instantiate(profilePrefab, profileContainer);
         profile.id = id;
@@ -223,22 +305,20 @@ public class AppManager : MonoBehaviour
 
         profile.birthDate = birthDate;
 
-        profile.SaveProfile();
+        if (save)
+        {
+            profile.SaveProfile();
+            // increases the total profile count on profile creation
+            PlayerPrefs.SetInt("TotalProfiles", id + 1);
+        }
 
         ProfileDisplay profileDisplay = profile.GetComponent<ProfileDisplay>();
         profileDisplay.Setup(profile);
 
         allProfiles.Add(profile);
-        // increases the total profile count on profile creation
-        PlayerPrefs.SetInt("TotalProfiles", id + 1);
 
         // clicks the new profile to display on the short profile and whatever else
-        SwitchProfile(profile);
-
-        if (shortProfileToggle.element.alpha == 0)
-        {
-            shortProfileToggle.ShowElement();
-        }
+        // SwitchProfile(profile);
     }
 
     public int CreateNewId()
