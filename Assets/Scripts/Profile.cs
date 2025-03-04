@@ -356,6 +356,48 @@ public class Profile : MonoBehaviour
     {
         // all events are saved to this folder in format eventId.json
         string path = $"{Application.persistentDataPath}/{id}";
+        string getJson = "*.json";
+
+        AppManager.Instance.LoadEventData(path);
+
+         if (Directory.Exists(path))
+        {
+            string[] filePaths = Directory.GetFiles(path, getJson);
+            if (filePaths.Length > 0)
+            {
+                foreach (string filePath in filePaths)
+                {
+                    string[] data = AppManager.Instance.LoadEventData(filePath);
+                    // DateTime dateValue;
+                    // DateTime.TryParse(data[2], out dateValue);
+
+                    // parses the id
+                    int profileId = int.Parse(data[0]);
+
+
+                    // creates the event from the prefab but doesn't save it since it just loaded it
+                    CreateEventGameObject();
+                }
+            }
+        }
+    }
+
+
+    void CreateEventGameObject()
+    {
+        GameObject newEvent = Instantiate(AppManager.Instance.eventPrefab);
+
+    }
+
+    // hides or shows all events
+    public void ShowAllEvents(bool show)
+    {
+        foreach (EventItem item in allEvents)
+        {
+            //turns elements on or off
+            // item.selfCGT.ShowElement(show);
+            item.gameObject.SetActive(show);
+        }
     }
 }
 

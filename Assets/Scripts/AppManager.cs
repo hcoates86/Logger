@@ -194,11 +194,13 @@ public class AppManager : MonoBehaviour
         if (currentProfile != null && ColorUtility.TryParseHtmlString(NORMAL_HEX, out color))
         {
             currentProfile.profileBackground.color = color;
+            currentProfile.ShowAllEvents(false);
         }
 
         if (ColorUtility.TryParseHtmlString(PRESSED_HEX, out color))
         {
             profile.profileBackground.color = color;
+            profile.ShowAllEvents(true);
         }
 
         shortProfile.Setup(profile);
