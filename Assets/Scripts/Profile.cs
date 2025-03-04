@@ -32,7 +32,8 @@ public class Profile : MonoBehaviour
 
     void Start()
     {
-        SortByCurrentCriteria();
+        LoadEvents();
+        // SortByCurrentCriteria();
     }
 
     string GetAge()
@@ -368,24 +369,42 @@ public class Profile : MonoBehaviour
                 foreach (string filePath in filePaths)
                 {
                     string[] data = AppManager.Instance.LoadEventData(filePath);
-                    // DateTime dateValue;
-                    // DateTime.TryParse(data[2], out dateValue);
 
-                    // parses the id
+                    // parses the ids
                     int profileId = int.Parse(data[0]);
-
+                    int eventId = int.Parse(data[1]);
 
                     // creates the event from the prefab but doesn't save it since it just loaded it
-                    CreateEventGameObject();
+                    CreateEventGameObject(profileId, eventId, data[2], data[3], data[4], data[5], bool.Parse(data[6]), bool.Parse(data[7]), bool.Parse(data[8]));
                 }
             }
         }
     }
 
 
-    void CreateEventGameObject()
+    void CreateEventGameObject(int profileId, int eventId, string title, string notes, string startDate, 
+    string dueDate, bool hasStartDate, bool hasDueDate, bool isFavorite)
     {
+        // instantiates a new event and adds all info
         GameObject newEvent = Instantiate(AppManager.Instance.eventPrefab);
+        EventItem eventItem = newEvent.GetComponent<EventItem>();
+        eventItem.profileId = profileId;
+        eventItem.eventId = eventId;
+        eventItem.title.text = title;
+        eventItem.notes.text = notes;
+        eventItem.startDate.text = startDate;
+        eventItem.dueDate.text = dueDate;
+        eventItem.hasStartDate = hasStartDate;
+        eventItem.hasDueDate = hasDueDate;
+        eventItem.isFavorite = isFavorite;
+
+        eventItem.DisplayOptional(true);
+
+        // places event on the full profile
+        eventItem.transform.SetParent(AppManager.Instance.fullProfile.eventContainer, false);
+        // adds to the list and then sorts it
+        allEvents.Add(eventItem);
+        SortByCurrentCriteria();
 
     }
 

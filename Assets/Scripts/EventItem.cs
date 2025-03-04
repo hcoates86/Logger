@@ -30,18 +30,15 @@ public class EventItem : MonoBehaviour
 
     // public bool getNotificationOnDue;
 
-    void SetData()
-    {
-        // // save it to be able to edit it later
-        // savedEvent = _event;
-
-        // title.text = _event.title;
-        // notes.text = _event.notes;
-        // if (_event.hasStartDate)
-        //     startDate.text = _event.startDate;
-        // if (_event.hasDueDate)
-        //     dueDate.text = _event.dueDate;
-    }
+    // void SetData()
+    // {
+    //     title.text = _event.title;
+    //     notes.text = _event.notes;
+    //     if (_event.hasStartDate)
+    //         startDate.text = _event.startDate;
+    //     if (_event.hasDueDate)
+    //         dueDate.text = _event.dueDate;
+    // }
 
     // displays optional items
     // bool asks if full view is on to show expanded note view
@@ -63,12 +60,13 @@ public class EventItem : MonoBehaviour
 
     public void ShowExpanded(bool _showExpanded)
     {
-        RectTransform containerRect = transform.parent.GetComponent<RectTransform>();
+        RectTransform containerRect = transform.GetComponent<RectTransform>();
 
         if (_showExpanded)
         {
             expandedContainer.ShowElement();
             shortBackground.HideElement();
+            // DOES NOT WORK 
             containerRect.sizeDelta = new Vector2(0, 250);
         }
         else
