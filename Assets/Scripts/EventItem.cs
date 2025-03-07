@@ -80,12 +80,12 @@ public class EventItem : MonoBehaviour
     public void ToggleFavorite()
     {
         isFavorite = !isFavorite;
+        SaveEvent();
         ChangeFavorite();
     }
 
-    void ChangeFavorite()
+    public void ChangeFavorite()
     {
-        Debug.Log("clickety star");
         if (isFavorite)
         {
             favoriteStar.sprite = AppManager.Instance.starFilled;
@@ -94,8 +94,6 @@ public class EventItem : MonoBehaviour
         {
             favoriteStar.sprite = AppManager.Instance.starHollow;
         }
-        SaveEvent();
-        // AppManager.Instance.eventEdited = true;
     }
 
     public void SaveEvent()
@@ -212,7 +210,7 @@ public class EventItem : MonoBehaviour
         // removes self from profile's list of events
         profile.allEvents.Remove(this);
 
-        AppManager.Instance.FadeAndDestroy(transform.parent.gameObject);
+        AppManager.Instance.FadeAndDestroy(gameObject);
         //reorganize the short events list
     }
 

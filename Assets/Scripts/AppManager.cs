@@ -86,10 +86,10 @@ public class AppManager : MonoBehaviour
     public void ChangeEditable(bool changed)
     {
         // if changing canedit to false, confirm if changes should be saved first
-        if (changed == false && canEdit == true && profileEdited)
-        {
-            confirm.Show("Do you want to close without saving changes?", SaveEdits, "Save", "Close");
-        }
+        // if (changed == false && canEdit == true && profileEdited)
+        // {
+        //     confirm.Show("Do you want to close without saving changes?", SaveEdits, "Save", "Close");
+        // }
 
         canEdit = changed;
 
@@ -180,10 +180,13 @@ public class AppManager : MonoBehaviour
     public void FadeAndDestroy(GameObject item)
     {
         CanvasGroupToggle toggle;
+        // CanvasGroup canvas;
         // checks if the component exists, if not adds it
         if (!item.TryGetComponent<CanvasGroupToggle>(out toggle))
         {
+            CanvasGroup canvas = item.AddComponent<CanvasGroup>();
             toggle = item.AddComponent<CanvasGroupToggle>();
+            toggle.element = canvas;
         }
 
         toggle.destroyAfterFade = true;
@@ -252,7 +255,46 @@ public class AppManager : MonoBehaviour
                 }
             }
         }
+    }
 
+    public void ReloadProfile(int id)
+    {
+        string path = $"{Application.persistentDataPath}/profiles/profile{id}.json";
+        string[] data = LoadProfileData(path);
+
+        DateTime dateValue;
+        DateTime.TryParse(data[2], out dateValue);
+
+        // parses ints/enum
+        int profileId = int.Parse(data[0]);
+        int totalEvents = int.Parse(data[3]);
+        Enum.TryParse(data[4], out SortBy sortedBy);
+
+
+        if (currentProfile.id == id)
+        {
+            currentProfile.totalEventsAdded = totalEvents;
+            currentProfile.eventsSortedBy = sortedBy;
+            currentProfile.name = data[1];
+            currentProfile.birthDate = dateValue;
+        }
+        else
+        {
+            Profile profile = FindProfile(id);
+
+            // these shouldn't even be needed??? but just in case for future needs
+            profile.id = profileId;
+            profile.totalEventsAdded = totalEvents;
+            profile.eventsSortedBy = sortedBy;
+
+            profile.name = data[1];
+            profile.birthDate = dateValue;
+
+
+        }
+
+
+        
     }
 
     public string[] LoadProfileData(string path)
@@ -363,12 +405,24 @@ public class AppManager : MonoBehaviour
     {
         fullProfile.Setup(currentProfile);
         fullProfileToggle.ShowElement();
+    }
 
+
+    void CancelEditsAndCloseFullProf()
+    {
+        EditButton.editing = false;
+        HideFullProfile();
     }
 
     // set on the onclick for the full prof's close view button. Refreshes with the current profile
     public void HideFullProfile()
     {
+        if (EditButton.editing)
+        {
+            confirm.Show("Do you want to close without saving changes to the profile?", editButton.SubmitEdit, "Save", "Close", CancelEditsAndCloseFullProf);
+            return;
+        }
+
         if (eventEdited || profileEdited)
         {
             // sorts and refreshes the short profile. No need to sort if under two items

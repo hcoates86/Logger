@@ -25,6 +25,7 @@ public class ProfileDisplay : MonoBehaviour
     {
         nameText.text = profile.named;
         ageText.text = profile.Age;
+
         if (dateText != null)
         {
             if (profile.birthDate != DateTime.MinValue)
@@ -33,11 +34,26 @@ public class ProfileDisplay : MonoBehaviour
                 dateText.text = "--/--/----";
         }
 
+        //uses as shortcut to check if it's the small profile item
+        if (useThumbnail)
+        {
+            // shows only the higher age part for the profile item
+            if (profile.Age != string.Empty)
+            {
+                string[] ageSplit = profile.Age.Split(" ");
+                string shortAge = $"{ageSplit[0]} {ageSplit[1]}";
+                ageText.text = shortAge;
+
+            }
+        }
+
 
         if (profile.profileImage != null)
         {
             if (useThumbnail)
+            {
                 image.sprite = profile.thumbnail;
+            }
             else
                 image.sprite = profile.profileImage;
         }

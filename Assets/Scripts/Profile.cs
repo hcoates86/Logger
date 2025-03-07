@@ -313,13 +313,18 @@ public class Profile : MonoBehaviour
         for (int i = 0; i < allEvents.Count; i++)
         {
             allEvents[i].transform.SetSiblingIndex(i);
-            
         }
     }
 
     public void SortByCurrentCriteria()
     {
         SortEvents(eventsSortedBy, true);
+        // places the gameobjects in order in the hierarchy
+        for (int i = 0; i < allEvents.Count; i++)
+        {
+            allEvents[i].transform.SetSiblingIndex(i);
+        }
+
     }
 
     public void LoadEvents()
@@ -348,6 +353,8 @@ public class Profile : MonoBehaviour
                 }
             }
         }
+
+        SortByCurrentCriteria();
     }
 
 
@@ -368,6 +375,7 @@ public class Profile : MonoBehaviour
         eventItem.isFavorite = isFavorite;
 
         eventItem.DisplayOptional(true);
+        eventItem.ChangeFavorite();
 
         // places event on the full profile
         eventItem.transform.SetParent(AppManager.Instance.fullProfile.eventContainer, false);
@@ -409,10 +417,6 @@ public enum Save
         public int id;
         public string named;
         public string birthDate;
-        // public string profileImagePath;
-        // public int favoriteEvent1;
-        // public int favoriteEvent2;
-        // public int favoriteEvent3;
         public int totalEventsAdded;
         public SortBy eventsSortedBy;
     }

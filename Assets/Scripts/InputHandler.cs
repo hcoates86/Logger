@@ -20,14 +20,6 @@ public class InputHandler : MonoBehaviour
 
     public CanvasGroupToggle cgtToHideOnSubmit;
 
-    //save image to /create directory id
-
-    public void OnSubmit()
-    {
-
-
-
-    }
 
     public void SubmitNewProfile()
     {
@@ -78,7 +70,8 @@ public class InputHandler : MonoBehaviour
         // hides errors
         AppManager.Instance.error.OkButton();
 
-        uploadImage.imageUploaded = false;
+        if (uploadImage != null)
+            uploadImage.imageUploaded = false;
 
         if (andHide)
             cgtToHideOnSubmit.HideElement();

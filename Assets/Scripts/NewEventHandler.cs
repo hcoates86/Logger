@@ -36,7 +36,7 @@ public class NewEventHandler : MonoBehaviour
             return;
         }
 
-        editingItem = null;
+        // editingItem = null;
         ClearInput(true);
     }
 

@@ -33,6 +33,14 @@ public class DateInputValidator : MonoBehaviour
 
     }
 
+    // a button that adds today's date to the input
+    public void ClickToday()
+    {
+        DateTime today = DateTime.Now;
+        dateInput.text = today.ToString("MM/dd/yyyy");
+        oldInput = dateInput.text;
+    }
+
     public void ReadDateInput()
     {
         value = dateInput.text;
