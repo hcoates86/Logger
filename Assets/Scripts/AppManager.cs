@@ -43,6 +43,9 @@ public class AppManager : MonoBehaviour
     private const string PRESSED_HEX = "#696A8C";
     private const string NORMAL_HEX = "#758398";
 
+    private Color pressedColor;
+    private Color normalColor;
+
     // signifies an event was edited in the full profile and the view needs to be refreshed upon returning to the short profile
     public bool eventEdited = false;
     // signifies name/bday/picture was edited in the full profile and the short profile and profile item need to be refreshed
@@ -73,7 +76,8 @@ public class AppManager : MonoBehaviour
         else
             LoadAllProfiles();
 
-
+        ColorUtility.TryParseHtmlString(NORMAL_HEX, out normalColor);
+        ColorUtility.TryParseHtmlString(PRESSED_HEX, out pressedColor);
 
     }
 
@@ -190,18 +194,14 @@ public class AppManager : MonoBehaviour
         if (editButton.pressed)
             editButton.ToggleButton();
 
-        Color color;
-        if (currentProfile != null && ColorUtility.TryParseHtmlString(NORMAL_HEX, out color))
+        if (currentProfile != null)
         {
-            currentProfile.profileBackground.color = color;
+            currentProfile.profileBackground.color = normalColor;
             currentProfile.ShowAllEvents(false);
         }
 
-        if (ColorUtility.TryParseHtmlString(PRESSED_HEX, out color))
-        {
-            profile.profileBackground.color = color;
-            profile.ShowAllEvents(true);
-        }
+        profile.profileBackground.color = pressedColor;
+        profile.ShowAllEvents(true);
 
         shortProfile.Setup(profile);
 

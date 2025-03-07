@@ -16,10 +16,6 @@ public class Profile : MonoBehaviour
     public string Age => GetAge();
     public Sprite profileImage;
     public Sprite thumbnail;
-    // // for vaccines, flea meds, etc
-    // public List<string> listItems;
-    // three favorite events
-    // public int[] favoriteEvents = new int[3];
 
     // keeps a count of the total events for event id and sorting
     public int totalEventsAdded;
@@ -33,7 +29,6 @@ public class Profile : MonoBehaviour
     void Start()
     {
         LoadEvents();
-        // SortByCurrentCriteria();
     }
 
     string GetAge()
@@ -94,40 +89,9 @@ public class Profile : MonoBehaviour
 
     public void OnClick()
     {
-        AppManager.Instance.SwitchProfile(this);
+        if (AppManager.Instance.currentProfile != this)
+            AppManager.Instance.SwitchProfile(this);
     }
-
-    // [System.Serializable]
-    // public class ProfileData
-    // {
-    //     public int id;
-    //     public string named;
-    //     public string birthDate;
-    //     // public string profileImagePath;
-    //     public int favoriteEvent1;
-    //     public int favoriteEvent2;
-    //     public int favoriteEvent3;
-    //     public int totalEventsAdded;
-    //     public SortBy eventsSortedBy;
-    // }
-
-    // [System.Serializable]
-    // public class EventData
-    // {
-    //     // corresponds to the profile id
-    //     public int profileId;
-    //     // to be loaded in order
-    //     public int eventId;
-    //     public string title;
-    //     public string notes;
-    //     //for when something was given, and when it's due next
-    //     // should be able to edit these alone. Press edit button then click? If edit button has been pressed, then allow edit
-    //     public string startDate;
-    //     public string dueDate;
-    //     public bool hasStartDate; 
-    //     public bool hasDueDate;
-    //     public bool isFavorite;
-    // }
 
     public void SaveEventData(string title, bool isFavorite, string notes = "", string startDate = "", string dueDate = "", 
     bool hasStartDate = false, bool hasDueDate = false)
@@ -346,6 +310,14 @@ public class Profile : MonoBehaviour
 
             allEvents = new List<EventItem>(sortedEvents);
         }
+
+
+        // places the gameobjects in order in the hierarchy
+        for (int i = 0; i < allEvents.Count; i++)
+        {
+            allEvents[i].transform.SetSiblingIndex(i);
+            
+        }
     }
 
     public void SortByCurrentCriteria()
@@ -406,6 +378,9 @@ public class Profile : MonoBehaviour
         allEvents.Add(eventItem);
         SortByCurrentCriteria();
 
+        // turns off the event so it won't automatically show on all profiles
+        eventItem.gameObject.SetActive(false);
+
     }
 
     // hides or shows all events
@@ -439,21 +414,3 @@ public enum SortBy
         public int totalEventsAdded;
         public SortBy eventsSortedBy;
     }
-
-    // [System.Serializable]
-    // public class EventData
-    // {
-    //     // corresponds to the profile id
-    //     public int profileId;
-    //     // to be loaded in order
-    //     public int eventId;
-    //     public string title;
-    //     public string notes;
-    //     //for when something was given, and when it's due next
-    //     // should be able to edit these alone. Press edit button then click? If edit button has been pressed, then allow edit
-    //     public string startDate;
-    //     public string dueDate;
-    //     public bool hasStartDate; 
-    //     public bool hasDueDate;
-    //     public bool isFavorite;
-    // }

@@ -17,6 +17,8 @@ public class CanvasGroupToggle : MonoBehaviour
     public bool destroyAfterFade = false;
     public float destroyAfterFadeDelay = 0;
 
+    // public bool hideOnEsc = false;
+
     void Awake()
     {
         // if element isn't set, attempts to get the canvas group on the gameobject it's attached to
@@ -131,6 +133,16 @@ public class CanvasGroupToggle : MonoBehaviour
 
         }
     }
+
+    // void AddSelfToList()
+    // {
+    //     if (hideOnEsc)
+    //     {
+    //         //adds self to a list of CanvasGroupToggles that will loop through and hide (in order?) when esc is pressed
+    //         // intended for popups. Will go on the input method for newinputsystem
+    //     }
+
+    // }
 
 
 }

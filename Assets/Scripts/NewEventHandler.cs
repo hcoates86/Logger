@@ -37,7 +37,6 @@ public class NewEventHandler : MonoBehaviour
         }
 
         editingItem = null;
-        // cgtToHideOnSubmit.HideElement();
         ClearInput(true);
     }
 

@@ -67,14 +67,13 @@ public class EventItem : MonoBehaviour
             expandedContainer.ShowElement();
             shortBackground.HideElement();
             // DOES NOT WORK 
-            containerRect.sizeDelta = new Vector2(0, 250);
+            // containerRect.sizeDelta = new Vector2(0, 250);
         }
         else
         {
             expandedContainer.HideElement();
             shortBackground.ShowElement();
-            containerRect.sizeDelta = new Vector2(0, 100);
-
+            // containerRect.sizeDelta = new Vector2(0, 100);
         }
     }
 
@@ -86,7 +85,6 @@ public class EventItem : MonoBehaviour
 
     void ChangeFavorite()
     {
-        // isFavorite = favoriteChange;
         if (isFavorite)
         {
             favoriteStar.sprite = AppManager.Instance.starFilled;

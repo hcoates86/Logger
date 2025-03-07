@@ -13,11 +13,11 @@ public class DateInputValidator : MonoBehaviour
     // submit output
     public DateTime dateValue;
 
-    private int previousLength, newLength;
-    private bool slashPlaced = false;
+    // private int previousLength, newLength;
+    // private bool slashPlaced = false;
     private string oldInput = string.Empty;
     private string value;
-    private int maxDateChars = 10;
+    // private int maxDateChars = 10;
     public bool optional = false;
 
 
@@ -99,8 +99,8 @@ public class DateInputValidator : MonoBehaviour
     void ResetInput()
     {
         dateInput.text = "";
-        previousLength = newLength = 0;
-        slashPlaced = false;
+        // previousLength = newLength = 0;
+        // slashPlaced = false;
         oldInput = value = string.Empty;
 
     }
