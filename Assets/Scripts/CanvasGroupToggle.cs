@@ -134,6 +134,14 @@ public class CanvasGroupToggle : MonoBehaviour
         }
     }
 
+    public bool IsElementVisible()
+    {
+        if (element.alpha == 0)
+            return false;
+        else return true;
+
+    }
+
     // void AddSelfToList()
     // {
     //     if (hideOnEsc)

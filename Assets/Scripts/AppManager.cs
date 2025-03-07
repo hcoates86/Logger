@@ -207,7 +207,8 @@ public class AppManager : MonoBehaviour
 
         shortProfile.Setup(profile);
 
-        if (shortProfileToggle.element.alpha == 0)
+        // shows short profile if it's hidden
+        if (!shortProfileToggle.IsElementVisible())
         {
             shortProfileToggle.ShowElement();
         }

@@ -50,6 +50,21 @@ public class ProfileDisplay : MonoBehaviour
         {
             SetEvents(profile);
         }
+        else
+            ClearEvents();
+    }
+
+    void ClearEvents()
+    {
+        //clears the favorite events on the short profile
+        // checks for null to see if it's short profile instead of length due to fixed array size
+        if (favoriteDisplays[0] != null)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                favoriteDisplays[i].Setup(null, false);
+            }
+        }
     }
 
     public void SetEvents(Profile profile)
@@ -69,10 +84,10 @@ public class ProfileDisplay : MonoBehaviour
         // checks for null to see if it's short profile instead of length due to fixed array size
         if (favoriteDisplays[0] != null)
         {
-            for (int i = 0; i < profile.allEvents.Count; i++)
+            for (int i = 0; i < 3; i++)
             {
-                // if the item exists displays it, otherwise hides display
-                if (profile.allEvents[i] != null)
+                // if the item count is higher than i displays it (errors checking for null), otherwise hides display
+                if (profile.allEvents.Count > i)
                 {
                     favoriteDisplays[i].Setup(profile.allEvents[i], true);
                 }
