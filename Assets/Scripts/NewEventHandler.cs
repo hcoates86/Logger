@@ -50,6 +50,7 @@ public class NewEventHandler : MonoBehaviour
         
         // adds one to events added before setting it as the new event id
         profile.totalEventsAdded++;
+        profile.SaveProfile();
 
         eventItem.profileId = profile.id;
         eventItem.eventId = profile.totalEventsAdded;
@@ -82,7 +83,7 @@ public class NewEventHandler : MonoBehaviour
         eventItem.DisplayOptional(true);
 
 
-        eventItem.SaveEvent(DataType.All);
+        eventItem.SaveEvent();
         profile.allEvents.Add(eventItem);
 
         if (AppManager.Instance.currentProfile.allEvents.Count > 1)
@@ -133,7 +134,7 @@ public class NewEventHandler : MonoBehaviour
         _editingItem.DisplayOptional(true);
 
 
-        _editingItem.SaveEvent(DataType.Edit);
+        _editingItem.SaveEvent();
 
     }
 
@@ -144,6 +145,7 @@ public class NewEventHandler : MonoBehaviour
         startDateInput.text = "";
         dueDateInput.text = "";
         profile = null;
+        editingItem = null;
 
         // hides errors
         AppManager.Instance.error.OkButton();

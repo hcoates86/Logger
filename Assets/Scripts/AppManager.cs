@@ -79,6 +79,8 @@ public class AppManager : MonoBehaviour
         ColorUtility.TryParseHtmlString(NORMAL_HEX, out normalColor);
         ColorUtility.TryParseHtmlString(PRESSED_HEX, out pressedColor);
 
+        Debug.Log($"loading from {path}");
+
     }
 
     public void ChangeEditable(bool changed)
@@ -231,15 +233,20 @@ public class AppManager : MonoBehaviour
                     DateTime dateValue;
                     DateTime.TryParse(data[2], out dateValue);
 
-                    // parses the id
+                    // parses ints/enum
                     int profileId = int.Parse(data[0]);
+                    int totalEvents = int.Parse(data[3]);
+                    // enum loads as string name of enum eg "None"
+                    Enum.TryParse(data[4], out SortBy sortedBy);
+
                     // checks if the profile has an image
                     string imagePath = $"{Application.persistentDataPath}/{profileId}/picture.png";
                     bool profileHasImage = false;
                     if (File.Exists(imagePath)) profileHasImage = true;
 
                     // creates the profile from the prefab but doesn't save it since it just loaded it
-                    CreateProfile(profileId, data[1], dateValue, profileHasImage, false);
+                    // int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save
+                    CreateProfile(profileId, data[1], dateValue, totalEvents, sortedBy, profileHasImage, false);
                     
                 }
             }
@@ -293,11 +300,13 @@ public class AppManager : MonoBehaviour
             return null;
     }
 
-    public void CreateProfile(int id, string newName, DateTime birthDate, bool imageUploaded, bool save)
+    public void CreateProfile(int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save)
     {
         Profile profile = Instantiate(profilePrefab, profileContainer);
         profile.id = id;
         profile.named = newName;
+        profile.totalEventsAdded = totalEventsAdded;
+        profile.eventsSortedBy = eventsSortedBy;
         
         if (imageUploaded)
         {

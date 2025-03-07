@@ -58,7 +58,7 @@ public class InputHandler : MonoBehaviour
             dateTime = today;
         }
 
-        AppManager.Instance.CreateProfile(id, nameInput.text, dateTime, uploadImage.imageUploaded, true);
+        AppManager.Instance.CreateProfile(id, nameInput.text, dateTime, 0, SortBy.None, uploadImage.imageUploaded, true);
         // cgtToHideOnSubmit.HideElement();
         ClearInput(true);
 

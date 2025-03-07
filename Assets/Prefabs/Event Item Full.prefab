@@ -1856,7 +1856,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 4248441025191504978}
         m_TargetAssemblyTypeName: EventItem, Assembly-CSharp
         m_MethodName: ToggleFavorite
         m_Mode: 1

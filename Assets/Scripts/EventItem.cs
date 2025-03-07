@@ -85,6 +85,7 @@ public class EventItem : MonoBehaviour
 
     void ChangeFavorite()
     {
+        Debug.Log("clickety star");
         if (isFavorite)
         {
             favoriteStar.sprite = AppManager.Instance.starFilled;
@@ -93,70 +94,26 @@ public class EventItem : MonoBehaviour
         {
             favoriteStar.sprite = AppManager.Instance.starHollow;
         }
-        SaveEvent(DataType.IsFavorite);
+        SaveEvent();
         // AppManager.Instance.eventEdited = true;
-
     }
 
-    // saves the event according to the datatype
-    public void SaveEvent(DataType dataType)
+    public void SaveEvent()
     {
         AppManager.Instance.eventEdited = true;
         EventData data = new EventData();
-
-        switch (dataType)
-        {
-            case DataType.ProfileID:
-                data.profileId = profileId;
-                break;
-            case DataType.EventID:
-                data.eventId = eventId;
-                break;
-            case DataType.Title:
-                data.title = title.text;
-                break;
-            case DataType.Notes:
-                data.notes = notes.text;
-                break;
-            case DataType.StartDate:
-                data.startDate = startDate.text;
-                break;
-            case DataType.DueDate:
-                data.dueDate = dueDate.text;
-                break;
-            case DataType.HasStart:
-                data.hasStartDate = hasStartDate;
-                break;
-            case DataType.HasDue:
-                data.hasDueDate = hasDueDate;
-                break;
-            case DataType.IsFavorite:
-                data.isFavorite = isFavorite;
-                break;
-            case DataType.All:        
-                data.profileId = profileId;
-                data.eventId = eventId;
-                data.title = title.text;
-                data.notes = notes.text;
-                data.startDate = startDate.text;
-                data.dueDate = dueDate.text;
-                data.hasStartDate = hasStartDate;
-                data.hasDueDate = hasDueDate;
-                data.isFavorite = isFavorite;
-                break;
-            // edit items only, doesn't change ids or favorite value
-            case DataType.Edit:
-                data.title = title.text;
-                data.notes = notes.text;
-                data.startDate = startDate.text;
-                data.dueDate = dueDate.text;
-                data.hasStartDate = hasStartDate;
-                data.hasDueDate = hasDueDate;
-                break;
-        }
+    
+        data.profileId = profileId;
+        data.eventId = eventId;
+        data.title = title.text;
+        data.notes = notes.text;
+        data.startDate = startDate.text;
+        data.dueDate = dueDate.text;
+        data.hasStartDate = hasStartDate;
+        data.hasDueDate = hasDueDate;
+        data.isFavorite = isFavorite;
 
         string json = JsonUtility.ToJson(data);
-        // string path = $"{Application.persistentDataPath}/{profileId}/{eventId}.json";
 
         string directoryPath = $"{Application.persistentDataPath}/{profileId}";
         if (!Directory.Exists(directoryPath))
@@ -167,8 +124,79 @@ public class EventItem : MonoBehaviour
         string filePath = $"{directoryPath}/{eventId}.json";
 
         File.WriteAllText(filePath, json);
-
     }
+
+    // saves the event according to the datatype
+    // public void SaveEvent(DataType dataType)
+    // {
+    //     AppManager.Instance.eventEdited = true;
+    //     EventData data = new EventData();
+
+    //     switch (dataType)
+    //     {
+    //         case DataType.ProfileID:
+    //             data.profileId = profileId;
+    //             break;
+    //         case DataType.EventID:
+    //             data.eventId = eventId;
+    //             break;
+    //         case DataType.Title:
+    //             data.title = title.text;
+    //             break;
+    //         case DataType.Notes:
+    //             data.notes = notes.text;
+    //             break;
+    //         case DataType.StartDate:
+    //             data.startDate = startDate.text;
+    //             break;
+    //         case DataType.DueDate:
+    //             data.dueDate = dueDate.text;
+    //             break;
+    //         case DataType.HasStart:
+    //             data.hasStartDate = hasStartDate;
+    //             break;
+    //         case DataType.HasDue:
+    //             data.hasDueDate = hasDueDate;
+    //             break;
+    //         case DataType.IsFavorite:
+    //             data.isFavorite = isFavorite;
+    //             break;
+    //         case DataType.All:        
+    //             data.profileId = profileId;
+    //             data.eventId = eventId;
+    //             data.title = title.text;
+    //             data.notes = notes.text;
+    //             data.startDate = startDate.text;
+    //             data.dueDate = dueDate.text;
+    //             data.hasStartDate = hasStartDate;
+    //             data.hasDueDate = hasDueDate;
+    //             data.isFavorite = isFavorite;
+    //             break;
+    //         // edit items only, doesn't change ids or favorite value
+    //         case DataType.Edit:
+    //             data.title = title.text;
+    //             data.notes = notes.text;
+    //             data.startDate = startDate.text;
+    //             data.dueDate = dueDate.text;
+    //             data.hasStartDate = hasStartDate;
+    //             data.hasDueDate = hasDueDate;
+    //             break;
+    //     }
+
+    //     string json = JsonUtility.ToJson(data);
+    //     // string path = $"{Application.persistentDataPath}/{profileId}/{eventId}.json";
+
+    //     string directoryPath = $"{Application.persistentDataPath}/{profileId}";
+    //     if (!Directory.Exists(directoryPath))
+    //     {
+    //         // Create the directory
+    //         Directory.CreateDirectory(directoryPath);
+    //     }
+    //     string filePath = $"{directoryPath}/{eventId}.json";
+
+    //     File.WriteAllText(filePath, json);
+
+    // }
 
     // deletes an event. Doesn't need confirmation. Located on onclick of eventitem delete button
     public void DeleteEvent()

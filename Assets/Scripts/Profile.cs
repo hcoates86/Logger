@@ -93,39 +93,39 @@ public class Profile : MonoBehaviour
             AppManager.Instance.SwitchProfile(this);
     }
 
-    public void SaveEventData(string title, bool isFavorite, string notes = "", string startDate = "", string dueDate = "", 
-    bool hasStartDate = false, bool hasDueDate = false)
-    {
-        EventData data = new EventData();
-        // assigns the profile's id
-        data.profileId = id;
+    // public void SaveEventData(string title, bool isFavorite, string notes = "", string startDate = "", string dueDate = "", 
+    // bool hasStartDate = false, bool hasDueDate = false)
+    // {
+    //     EventData data = new EventData();
+    //     // assigns the profile's id
+    //     data.profileId = id;
 
-        int number = totalEventsAdded + 1;
-        data.eventId = number;
+    //     int number = totalEventsAdded + 1;
+    //     data.eventId = number;
 
-        // assigns passed-in data
-        data.title = title;
-        data.notes = notes;
-        data.startDate = startDate;
-        data.dueDate = dueDate;
-        data.hasStartDate = hasStartDate;
-        data.hasDueDate = hasDueDate;
-        data.isFavorite = isFavorite;
+    //     // assigns passed-in data
+    //     data.title = title;
+    //     data.notes = notes;
+    //     data.startDate = startDate;
+    //     data.dueDate = dueDate;
+    //     data.hasStartDate = hasStartDate;
+    //     data.hasDueDate = hasDueDate;
+    //     data.isFavorite = isFavorite;
 
 
-        string json = JsonUtility.ToJson(data);
-        string path = $"{Application.persistentDataPath}/profiles/{id}";
+    //     string json = JsonUtility.ToJson(data);
+    //     string path = $"{Application.persistentDataPath}/profiles/{id}";
 
-        if (!Directory.Exists(path))
-        {
-            // Create the directory
-            Directory.CreateDirectory(path);
-        }
+    //     if (!Directory.Exists(path))
+    //     {
+    //         // Create the directory
+    //         Directory.CreateDirectory(path);
+    //     }
 
-        // File.WriteAllText($"{Application.persistentDataPath}/profiles/{id}/{}.json", json);
-        string itemPath = Path.Combine(path, $"{number}.json");
-        File.WriteAllText(itemPath, json);
-    }
+    //     // File.WriteAllText($"{Application.persistentDataPath}/profiles/{id}/{}.json", json);
+    //     string itemPath = Path.Combine(path, $"{number}.json");
+    //     File.WriteAllText(itemPath, json);
+    // }
 
     public void SaveProfile()
     {
@@ -139,10 +139,6 @@ public class Profile : MonoBehaviour
         data.id = id;
         data.named = named;
         data.birthDate = birthDate.ToString("MM/dd/yyyy");
-        // data.profileImagePath 
-        // data.favoriteEvent1 = favoriteEvents[0];
-        // data.favoriteEvent2 = favoriteEvents[1];
-        // data.favoriteEvent3 = favoriteEvents[2];
         data.totalEventsAdded = totalEventsAdded;
         data.eventsSortedBy = eventsSortedBy;
 
@@ -157,6 +153,7 @@ public class Profile : MonoBehaviour
 
         File.WriteAllText($"{Application.persistentDataPath}/profiles/profile{id}.json", json);
     }
+    
 
     // bool checks if sorting should be forced by script and not clicked. 
     // ^Sets previous to none before sorting again to avoid click-based logic
@@ -399,6 +396,11 @@ public enum SortBy
 {
     // none is effectively a cancel
     None, DueDate, GivenDate, ReverseGivenDate, ReverseDueDate, Created, ReverseCreated
+}
+
+public enum Save
+{
+    ID, Name, BDay, TotalEvents, SortedBy
 }
 
     [System.Serializable]
