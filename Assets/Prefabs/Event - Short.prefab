@@ -234,7 +234,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -344,8 +344,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4285624689
-  m_fontColor: {r: 0.44313726, g: 0.44313726, b: 0.44313726, a: 1}
+    rgba: 4292467161
+  m_fontColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -472,7 +472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c49189576c2000043a201281f5dc53c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  element: {fileID: 0}
+  element: {fileID: 3643242483779705617}
   fadeOut: 0
   fadeIn: 0
   fadeOutSpeed: 0
@@ -496,8 +496,6 @@ MonoBehaviour:
   title: {fileID: 9132505569803004581}
   startDate: {fileID: 2911286976551466880}
   dueDate: {fileID: 5122668166188078325}
-  startDateContainer: {fileID: 0}
-  dueDateContainer: {fileID: 0}
   canvasGroupToggle: {fileID: 2872269304105191999}
   displaySelf: 0
 --- !u!1 &6875474591666946638
@@ -801,8 +799,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4285624689
-  m_fontColor: {r: 0.44313726, g: 0.44313726, b: 0.44313726, a: 1}
+    rgba: 4292467161
+  m_fontColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

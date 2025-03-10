@@ -132,7 +132,7 @@ public class EditButton : MonoBehaviour
                 AppManager.Instance.error.SetError("Name is required. Cannot leave blank.");
                 return;
             }
-            AppManager.Instance.fullProfile.nameText.text = "";
+            AppManager.Instance.fullProfile.nameText.text = editInput.nameInput.text;
         }
         if (dateInput.activeSelf)
         {    
