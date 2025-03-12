@@ -22463,12 +22463,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8779153790243333978, guid: e66a53fa2e422414eaccfd226443444b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9039733490315993144, guid: e66a53fa2e422414eaccfd226443444b, type: 3}
+      propertyPath: optional
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8779153790243333978, guid: e66a53fa2e422414eaccfd226443444b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1631881498}
+    - targetCorrespondingSourceObject: {fileID: 8779153790243333978, guid: e66a53fa2e422414eaccfd226443444b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1631881497}
   m_SourcePrefab: {fileID: 100100000, guid: e66a53fa2e422414eaccfd226443444b, type: 3}
 --- !u!224 &1391810300 stripped
 RectTransform:
@@ -25748,6 +25758,39 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8779153790243333978, guid: e66a53fa2e422414eaccfd226443444b, type: 3}
   m_PrefabInstance: {fileID: 1391810299}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1631881497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1631881496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49189576c2000043a201281f5dc53c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  element: {fileID: 1631881498}
+  fadeOut: 0
+  fadeIn: 0
+  fadeOutSpeed: 0
+  fadeInSpeed: 0
+  startHidden: 1
+  hideAfterSeconds: 0
+  destroyAfterFade: 0
+  destroyAfterFadeDelay: 0
+--- !u!225 &1631881498
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1631881496}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1639021718
 GameObject:
   m_ObjectHideFlags: 0
@@ -26887,8 +26930,8 @@ MonoBehaviour:
   editInput: {fileID: 2031502367}
   uploadImage: {fileID: 461946032}
   floatingInput: {fileID: 2031502368}
-  nameInput: {fileID: 92810592}
-  dateInput: {fileID: 1631881496}
+  nameInput: {fileID: 2123144619}
+  dateInput: {fileID: 1631881497}
 --- !u!114 &1686835121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33394,7 +33437,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1980765025565181157, guid: a93d8de9c3128d747b6f68a3ee41c4aa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2123144620}
+    - targetCorrespondingSourceObject: {fileID: 1980765025565181157, guid: a93d8de9c3128d747b6f68a3ee41c4aa, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2123144619}
   m_SourcePrefab: {fileID: 100100000, guid: a93d8de9c3128d747b6f68a3ee41c4aa, type: 3}
 --- !u!224 &2123144617 stripped
 RectTransform:
@@ -33412,6 +33461,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2123144619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92810592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49189576c2000043a201281f5dc53c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  element: {fileID: 2123144620}
+  fadeOut: 0
+  fadeIn: 0
+  fadeOutSpeed: 0
+  fadeInSpeed: 0
+  startHidden: 1
+  hideAfterSeconds: 0
+  destroyAfterFade: 0
+  destroyAfterFadeDelay: 0
+--- !u!225 &2123144620
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92810592}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2124970076
 GameObject:
   m_ObjectHideFlags: 0

@@ -20,6 +20,8 @@ public class NewEventHandler : MonoBehaviour
     public TMP_InputField startDateInput;
     public TMP_InputField dueDateInput;
 
+    public static string blankDate = "--/--/----";
+
 
     public void OnSubmit()
     {
@@ -65,7 +67,7 @@ public class NewEventHandler : MonoBehaviour
         else
         {
             eventItem.hasStartDate = false;
-            eventItem.startDate.text = "--/--/----";
+            eventItem.startDate.text = blankDate;
         }
 
         if (dueDate != DateTime.MinValue)
@@ -76,7 +78,7 @@ public class NewEventHandler : MonoBehaviour
         else
         {
             eventItem.hasDueDate = false;
-            eventItem.dueDate.text = "--/--/----";
+            eventItem.dueDate.text = blankDate;
         }
 
         // displays the things passed in
@@ -99,9 +101,11 @@ public class NewEventHandler : MonoBehaviour
         titleInput.text = _event.title.text;
         notesInput.text = _event.notes.text;
         // TMP_InputField startInput = startDateValidator.GetComponent<TMP_InputField>();
-        startDateInput.text = _event.startDate.text;
+
+        // if the text is "--/--/----" sets an empty string instead
+        startDateInput.text = _event.startDate.text == blankDate ? string.Empty : _event.startDate.text;
         // TMP_InputField dueInput = dueDateValidator.GetComponent<TMP_InputField>();
-        dueDateInput.text = _event.dueDate.text;
+        dueDateInput.text = _event.dueDate.text  == blankDate ? string.Empty : _event.dueDate.text;
     }
 
     //called on submit
@@ -118,7 +122,7 @@ public class NewEventHandler : MonoBehaviour
         else
         {
             _editingItem.hasStartDate = false;
-            _editingItem.startDate.text = "--/--/----";
+            _editingItem.startDate.text = blankDate;
         }
 
         if (dueDate != DateTime.MinValue)
@@ -129,7 +133,7 @@ public class NewEventHandler : MonoBehaviour
         else
         {
             _editingItem.hasDueDate = false;
-            _editingItem.dueDate.text = "--/--/----";
+            _editingItem.dueDate.text = blankDate;
         }
         _editingItem.DisplayOptional(true);
 

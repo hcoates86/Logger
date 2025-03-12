@@ -98,7 +98,11 @@ public class DateInputValidator : MonoBehaviour
             return true;
         }
         if ((dateInput.text == null || dateInput.text == string.Empty) && optional)
+        {
+            // sets the date to minvalue if it's empty
+            dateValue = DateTime.MinValue;
             return true;
+        }
         // else defaults to false
         AppManager.Instance.error.SetError(1);
         return false;

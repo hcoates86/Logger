@@ -26,8 +26,8 @@ public class EditButton : MonoBehaviour
     public static bool editing;
 
     public CanvasGroupToggle floatingInput;
-    public GameObject nameInput;
-    public GameObject dateInput;
+    public CanvasGroupToggle nameInput;
+    public CanvasGroupToggle dateInput;
 
     void Start()
     {
@@ -103,21 +103,24 @@ public class EditButton : MonoBehaviour
         // takes the current text on the full profile
         editInput.nameInput.text = AppManager.Instance.fullProfile.nameText.text;
         floatingInput.ShowElement();
-        nameInput.SetActive(true);
-        dateInput.SetActive(false);
+        nameInput.ShowElement(true);
+        dateInput.ShowElement(false);
     }
 
     public void EditBday()
     {
         // takes the current text on the full profile
         // if (AppManager.Instance.fullProfile.dateText.text != string.Empty)
-        editInput.dateInput.text = AppManager.Instance.fullProfile.dateText.text;
+        if (AppManager.Instance.fullProfile.dateText.text == NewEventHandler.blankDate)
+            editInput.dateInput.text = string.Empty;
+        else
+            editInput.dateInput.text = AppManager.Instance.fullProfile.dateText.text;
         // else
         //     editInput.dateInput.text = "";
 
         floatingInput.ShowElement();
-        nameInput.SetActive(false);
-        dateInput.SetActive(true);
+        nameInput.ShowElement(false);
+        dateInput.ShowElement(true);
 
     }
 
@@ -125,7 +128,7 @@ public class EditButton : MonoBehaviour
     public void OnConfirm()
     {
         //change the visuals on full profile. don't change actual profile unless submitedit is called
-        if (nameInput.activeSelf)
+        if (nameInput.IsElementVisible())
         {
             if (editInput.nameInput.text == null || editInput.nameInput.text == string.Empty)
             {
@@ -134,12 +137,22 @@ public class EditButton : MonoBehaviour
             }
             AppManager.Instance.fullProfile.nameText.text = editInput.nameInput.text;
         }
-        if (dateInput.activeSelf)
+        if (dateInput.IsElementVisible())
         {    
             if (editInput.dateValidator.SubmitDateValidation())
             {
-                AppManager.Instance.fullProfile.ageText.text = GetAge(editInput.dateValidator.dateValue);
-                AppManager.Instance.fullProfile.dateText.text = editInput.dateValidator.dateValue.ToString("MM/dd/yyyy");
+                // if the date was blank place blank text
+                if (editInput.dateValidator.dateValue == DateTime.MinValue)
+                {
+                    AppManager.Instance.fullProfile.dateText.text = NewEventHandler.blankDate;
+                    AppManager.Instance.fullProfile.ageText.text = "";
+                }
+                else
+                {
+                    AppManager.Instance.fullProfile.ageText.text = GetAge(editInput.dateValidator.dateValue);
+                    AppManager.Instance.fullProfile.dateText.text = editInput.dateValidator.dateValue.ToString("MM/dd/yyyy");
+
+                }
             }
             else return;
         }
@@ -152,12 +165,11 @@ public class EditButton : MonoBehaviour
     public void SubmitEdit()
     {
         Profile profile = AppManager.Instance.currentProfile;
-
+        
         profile.named = editInput.nameInput.text;
         profile.birthDate = editInput.dateValidator.dateValue;
 
-        AppManager.Instance.profileEdited = true;
-
+    
         if (uploadImage.imageUploaded)
         {
             //save the new image
@@ -165,6 +177,7 @@ public class EditButton : MonoBehaviour
             uploadImage.Upload(AppManager.Instance.currentProfile.id);
         }
         profile.SaveProfile();
+        AppManager.Instance.profileEdited = true;
 
         editInput.ClearInput(false);
         editing = false;
@@ -230,9 +243,16 @@ public class EditButton : MonoBehaviour
     // needs to be set on entering edit mode or can accidentally save blank info
     void SetEditInfo()
     {
-        ProfileDisplay disp = AppManager.Instance.fullProfile;
-        disp.nameText.text = AppManager.Instance.currentProfile.named;
-        disp.dateText.text = AppManager.Instance.currentProfile.birthDate.ToString("MM/dd/yyyy");
+        // ProfileDisplay disp = AppManager.Instance.fullProfile;
+        // disp.nameText.text = AppManager.Instance.currentProfile.named;
+        editInput.nameInput.text = AppManager.Instance.fullProfile.nameText.text;
+
+        if (AppManager.Instance.currentProfile.birthDate != DateTime.MinValue)
+            editInput.dateInput.text = AppManager.Instance.fullProfile.dateText.text;
+        else
+            editInput.dateInput.text = string.Empty;
+
+            // disp.dateText.text = AppManager.Instance.currentProfile.birthDate.ToString("MM/dd/yyyy");
     }
 
 }
