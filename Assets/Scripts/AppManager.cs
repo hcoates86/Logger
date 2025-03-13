@@ -433,6 +433,12 @@ public class AppManager : MonoBehaviour
 
         if (profileEdited)
         {
+            // reloads the image in case a new one was uploaded
+            currentProfile.profileImage = LoadImage(currentProfile.id);
+            currentProfile.thumbnail = LoadThumbnail(currentProfile.id);
+
+            shortProfile.Setup(currentProfile);
+
             // grabs and refreshes the small profile item
             ProfileDisplay currentProfDisplay = currentProfile.GetComponent<ProfileDisplay>();
             currentProfDisplay.Setup(currentProfile);

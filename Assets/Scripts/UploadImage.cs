@@ -38,6 +38,7 @@ public class UploadImage : MonoBehaviour
                 displayImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
                 // sets bool true to note an image was uploaded for inputhandler
                 imageUploaded = true;
+                EditButton.editing = true;
             }
         }, "Select an image", "image/*");
 

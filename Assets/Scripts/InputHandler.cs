@@ -20,6 +20,8 @@ public class InputHandler : MonoBehaviour
 
     public CanvasGroupToggle cgtToHideOnSubmit;
 
+    public bool debug = false;
+
 
     public void SubmitNewProfile()
     {
@@ -51,13 +53,26 @@ public class InputHandler : MonoBehaviour
         }
 
         AppManager.Instance.CreateProfile(id, nameInput.text, dateTime, 0, SortBy.None, uploadImage.imageUploaded, true);
-        // cgtToHideOnSubmit.HideElement();
-        ClearInput(true);
+        // if (debug)
+        // {
+        //     Debug.Log($"");
+        //     Debug.Log($"");
+        //     Debug.Log($"");
 
+        // }
+        ClearInput(true);
     }
 
     public void ClearInput(bool andHide)
     {
+        if (debug)
+        {
+            Debug.Log("Cleared input:");
+            Debug.Log($"Name: {nameInput?.text}");
+            Debug.Log($"Date: {dateInput?.text}");
+            Debug.Log($"Age: {ageInput?.text}");
+        }
+
         if (nameInput != null)
             nameInput.text = string.Empty;
         if (dateInput != null)
@@ -74,7 +89,14 @@ public class InputHandler : MonoBehaviour
             uploadImage.imageUploaded = false;
 
         if (andHide)
+        {
             cgtToHideOnSubmit.HideElement();
+            if (debug)
+            {
+                Debug.Log($"Hid {cgtToHideOnSubmit.gameObject.name}");
+
+            }
+        }
             
 
     }

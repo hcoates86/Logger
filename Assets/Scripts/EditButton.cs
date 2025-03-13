@@ -168,13 +168,12 @@ public class EditButton : MonoBehaviour
         
         profile.named = editInput.nameInput.text;
         profile.birthDate = editInput.dateValidator.dateValue;
-
     
         if (uploadImage.imageUploaded)
         {
             //save the new image
-            Debug.Log("attempting to save");
             uploadImage.Upload(AppManager.Instance.currentProfile.id);
+            uploadImage.imageUploaded = false;
         }
         profile.SaveProfile();
         AppManager.Instance.profileEdited = true;
