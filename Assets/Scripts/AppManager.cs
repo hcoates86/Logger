@@ -170,7 +170,7 @@ public class AppManager : MonoBehaviour
             toggle = item.AddComponent<CanvasGroupToggle>();
             toggle.element = canvas;
         }
-
+        toggle.fadeOut = true;
         toggle.destroyAfterFade = true;
         toggle.HideElement();
     }

@@ -15,7 +15,7 @@ public class CanvasGroupToggle : MonoBehaviour
 
     // good for items that only need to be faded when destroyed. Can be set right before deletion also
     public bool destroyAfterFade = false;
-    public float destroyAfterFadeDelay = 0;
+    public float destroyAfterFadeDelay = 0.3f;
 
     // public bool hideOnEsc = false;
 
@@ -31,6 +31,9 @@ public class CanvasGroupToggle : MonoBehaviour
             fadeOutSpeed = 15f;
         if(fadeInSpeed == 0)
             fadeInSpeed = 15f;
+
+        if (destroyAfterFadeDelay == 0)
+            destroyAfterFadeDelay = 0.3f;
 
         if (startHidden)
         {
@@ -112,19 +115,26 @@ public class CanvasGroupToggle : MonoBehaviour
     {
         if (fadingOut)
         {
+            Debug.Log("fadingout start");
             while (element != null && element.alpha > 0)
             {
+            Debug.Log("while loop");
+
                 element.alpha -= 0.1f * fadeOutSpeed * Time.deltaTime;
                 yield return null;
             }
             if (destroyAfterFade)
             {
+            Debug.Log("destroying");
+
                 yield return new WaitForSeconds(destroyAfterFadeDelay);
                 Destroy(gameObject);
             }
         }
         else
         {
+            Debug.Log("else");
+
             while (element != null && element.alpha < 1)
             {
                 element.alpha += 0.1f * fadeInSpeed * Time.deltaTime;
