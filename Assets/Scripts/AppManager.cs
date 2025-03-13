@@ -107,24 +107,6 @@ public class AppManager : MonoBehaviour
         }
     }
 
-
-    // attach to edit button, to go off when pressed again
-    public void SaveEdits()
-    {
-
-    }
-
-    public void EditCurrentProfile(bool nameEdited, bool bdayEdited, bool pictureUploaded, string name = "", string birthDate = "")
-    {
-        if (canEdit)
-        {
-
-
-            shortProfile.Setup(currentProfile);
-        }
-
-    }
-
     public void DeleteProfileConfirm()
     {
         AppManager.Instance.confirm.Show("Are you sure you want to delete this profile?", DeleteProfile);

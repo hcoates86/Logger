@@ -228,11 +228,7 @@ public class EditButton : MonoBehaviour
             if (age.Months < 1)
             {
                 return $"{Mathf.Floor(age.Days / 7)} {pluralWeeks} {age.Days} {pluralDays}";
-
             }
-
-
-
             return $"{age.Months} {pluralMonths} {Mathf.Floor(age.Days / 7)} {pluralWeeks}";
         }
 

@@ -23,6 +23,8 @@ public class Profile : MonoBehaviour
     public List<EventItem> allEvents = new List<EventItem>();
 
     public SortBy eventsSortedBy;
+    // order profile should be displayed on the main page. Repeat numbers are allowed but will display in random order
+    public int customProfileSortNum;
 
     public Image profileBackground;
 
