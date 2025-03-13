@@ -8,16 +8,32 @@ public class ChangeOrder : MonoBehaviour
     public TMP_InputField orderInput;
     public CanvasGroupToggle cgt;
 
+    private string tip = "The default number is 500. Set a higher number to move it further down the list, or a lower number to move it up.";
+
     public void SubmitInput()
     {
         if (orderInput.text == string.Empty)
         {
-            AppManager.Instance.error.SetError("Input a 3 digit number or cancel.");
+            AppManager.Instance.error.SetError("Input a number with up to 3 digits.");
             return;
         }
 
-        AppManager.Instance.currentProfile.customSortNum = int.Parse(orderInput.text);
+        int submittedNum = int.Parse(orderInput.text);
+
+        if (submittedNum <= 0)
+        {
+            AppManager.Instance.error.SetError("Please set an order number from 1-999");
+            return;
+        }
+
+        AppManager.Instance.currentProfile.customSortNum = submittedNum;
         AppManager.Instance.currentProfile.SaveProfile();
+
+        if (AppManager.Instance.profilesSortedBy == SortBy.Custom || AppManager.Instance.profilesSortedBy == SortBy.ReverseCustom)
+        {
+            AppManager.Instance.SortProfilesByCurrentCriteria();
+        }
+
         ClearInput();
     }
 
@@ -35,6 +51,7 @@ public class ChangeOrder : MonoBehaviour
         {
             cgt.ShowElement();
             orderInput.Select();
+            orderInput.text = AppManager.Instance.currentProfile.customSortNum.ToString();
         }
     }
 

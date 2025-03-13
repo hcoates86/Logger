@@ -109,7 +109,7 @@ public class Profile : MonoBehaviour
         data.birthDate = birthDate.ToString("MM/dd/yyyy");
         data.totalEventsAdded = totalEventsAdded;
         data.eventsSortedBy = eventsSortedBy;
-        data.customSortNum = customSortNum;
+        data.customSortNum = customSortNum == 0 ? 500 : customSortNum;
 
         string json = JsonUtility.ToJson(data);
         string path = $"{Application.persistentDataPath}/profiles";
@@ -124,10 +124,12 @@ public class Profile : MonoBehaviour
     }
     
 
-    // bool checks if sorting should be forced by script and not clicked. 
-    // ^Sets previous to none before sorting again to avoid click-based logic
     public void SortEvents(SortBy sortCriteria, bool scriptOnly = false)
     {
+        if (allEvents.Count < 2) return;
+
+    // bool checks if sorting should be forced by script and not clicked. 
+    // ^Sets previous to none before sorting again to avoid click-based logic
         if (scriptOnly)
         {
             eventsSortedBy = SortBy.None;
@@ -155,22 +157,6 @@ public class Profile : MonoBehaviour
             .ToList();
 
             allEvents = new List<EventItem>(sortedEvents);
-
-            // allEvents.Sort((x, y) =>
-            // {
-            //     // First, compare by isfavorite (true first)
-            //     int favoriteComparison = y.isFavorite.CompareTo(x.isFavorite);
-            //     if (favoriteComparison != 0)
-            //         return favoriteComparison;
-
-            //     // Then, compare by enddate closest to now
-            //     DateTime endDateX = DateTime.Parse(x.dueDate.text);
-            //     DateTime endDateY = DateTime.Parse(y.dueDate.text);
-            //     double diffX = (endDateX - now).TotalSeconds;
-            //     double diffY = (endDateY - now).TotalSeconds;
-
-            //     return diffX.CompareTo(diffY);
-            // });
         }
         // if events are already sorted by due date, sort by ascending duedate (for button click)
         // also set explicitely for script setup
@@ -371,8 +357,10 @@ public class Profile : MonoBehaviour
 
 public enum SortBy
 {
-    // none is effectively a cancel
-    None, DueDate, GivenDate, ReverseGivenDate, ReverseDueDate, Created, ReverseCreated
+    // for events and profile
+    None, DueDate, GivenDate, ReverseGivenDate, ReverseDueDate, Created, ReverseCreated,
+    // for profile sorting on appmanager
+    Alphabetical, ReverseAlphabetical, Age, ReverseAge, Custom, ReverseCustom
 }
 
 public enum Save

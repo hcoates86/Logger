@@ -56,6 +56,8 @@ public class AppManager : MonoBehaviour
     public Button deleteProfileButton;
     public Button archiveProfileButton;
 
+    public SortBy profilesSortedBy = SortBy.Custom;
+
 
     void Awake()
     {
@@ -79,12 +81,16 @@ public class AppManager : MonoBehaviour
             Directory.CreateDirectory(path);
         }
         else
+        {
             LoadAllProfiles();
+            SortProfilesByCurrentCriteria();
+
+            Debug.Log($"Loading from {path}");
+        }
 
         ColorUtility.TryParseHtmlString(NORMAL_HEX, out normalColor);
         ColorUtility.TryParseHtmlString(PRESSED_HEX, out pressedColor);
 
-        Debug.Log($"loading from {path}");
 
         ActivateProfileButtons(false);
 
@@ -92,12 +98,6 @@ public class AppManager : MonoBehaviour
 
     public void ChangeEditable(bool changed)
     {
-        // if changing canedit to false, confirm if changes should be saved first
-        // if (changed == false && canEdit == true && profileEdited)
-        // {
-        //     confirm.Show("Do you want to close without saving changes?", SaveEdits, "Save", "Close");
-        // }
-
         canEdit = changed;
 
         if (canEdit)
@@ -247,6 +247,8 @@ public class AppManager : MonoBehaviour
                     // parses ints/enum
                     int profileId = int.Parse(data[0]);
                     int totalEvents = int.Parse(data[3]);
+                    int customSortNum = int.Parse(data[5]);
+
                     // enum loads as string name of enum eg "None"
                     Enum.TryParse(data[4], out SortBy sortedBy);
 
@@ -255,13 +257,42 @@ public class AppManager : MonoBehaviour
                     bool profileHasImage = false;
                     if (File.Exists(imagePath)) profileHasImage = true;
 
+                    if (customSortNum == 0)
+                        customSortNum = 500;
+
                     // creates the profile from the prefab but doesn't save it since it just loaded it
                     // int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save
-                    CreateProfile(profileId, data[1], dateValue, totalEvents, sortedBy, profileHasImage, false);
+                    CreateProfile(profileId, data[1], dateValue, totalEvents, sortedBy, profileHasImage, false, customSortNum);
                     
                 }
             }
         }
+    }
+
+    // currently only sorts profiles by custom sort num
+    public void SortProfiles(SortBy sortBy)
+    {
+        if (allProfiles.Count < 2) return;
+
+        if (sortBy == SortBy.Custom)
+            allProfiles.Sort((a, b) => a.customSortNum.CompareTo(b.customSortNum));
+        if (sortBy == SortBy.ReverseCustom)
+            allProfiles.Sort((a, b) => b.customSortNum.CompareTo(a.customSortNum));
+
+
+        for (int i = 0; i < allProfiles.Count; i++)
+        {
+            allProfiles[i].transform.SetSiblingIndex(i);
+        }
+
+        //TEST
+        LayoutRebuilder.MarkLayoutForRebuild(profileContainer.GetComponent<RectTransform >());
+    }
+
+    public void SortProfilesByCurrentCriteria()
+    {
+        SortProfiles(profilesSortedBy);
+
     }
 
     public void ReloadProfile(int id)
@@ -317,6 +348,7 @@ public class AppManager : MonoBehaviour
                             data.birthDate,
                             data.totalEventsAdded.ToString(),
                             data.eventsSortedBy.ToString(),
+                            data.customSortNum.ToString(),
                 };
 
                 return dataArray;
@@ -350,13 +382,14 @@ public class AppManager : MonoBehaviour
             return null;
     }
 
-    public void CreateProfile(int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save)
+    public void CreateProfile(int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save, int customSortNum)
     {
         Profile profile = Instantiate(profilePrefab, profileContainer);
         profile.id = id;
         profile.named = newName;
         profile.totalEventsAdded = totalEventsAdded;
         profile.eventsSortedBy = eventsSortedBy;
+        profile.customSortNum = customSortNum;
         
         if (imageUploaded)
         {
@@ -539,33 +572,9 @@ public class AppManager : MonoBehaviour
     // enables or disables buttons that can only be used with currentProfile
     public void ActivateProfileButtons(bool activate)
     {
-        // changeOrderButton.interactable = activate;
-        // deleteProfileButton.interactable = activate;
-        // archiveProfileButton.interactable = activate;
-        
-        // a dumb one-liner just for fun
-        changeOrderButton.interactable = deleteProfileButton.interactable = archiveProfileButton.interactable = activate;
+        changeOrderButton.interactable = activate;
+        deleteProfileButton.interactable = activate;
+        archiveProfileButton.interactable = activate;
     }
-
-    // set on the onclick for the full prof's close view button. Refreshes with the current profile
-    // public void RefreshShortProfile()
-    // {
-    //     if (profileEdited)
-    //     {
-    //         // refreshes the short profile
-    //         shortProfile.Setup(currentProfile);
-    //         // grabs and refreshes the small profile item
-    //         ProfileDisplay profileItem = currentProfile.GetComponent<ProfileDisplay>();
-    //         profileItem.Setup(currentProfile);
-
-    //     }
-    //     if (eventEdited)
-    //     {
-    //         shortProfile.SetEvents(currentProfile);
-    //     }
-
-    //     profileEdited = false;
-    //     eventEdited = false;
-    // }
 }
 

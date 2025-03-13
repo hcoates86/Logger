@@ -52,7 +52,7 @@ public class InputHandler : MonoBehaviour
             dateTime = today;
         }
 
-        AppManager.Instance.CreateProfile(id, nameInput.text, dateTime, 0, SortBy.None, uploadImage.imageUploaded, true);
+        AppManager.Instance.CreateProfile(id, nameInput.text, dateTime, 0, SortBy.None, uploadImage.imageUploaded, true, 500);
         // if (debug)
         // {
         //     Debug.Log($"");
