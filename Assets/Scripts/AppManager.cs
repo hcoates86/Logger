@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.IO;
+using UnityEngine.UI;
 
 
 public class AppManager : MonoBehaviour
@@ -51,6 +52,10 @@ public class AppManager : MonoBehaviour
     // signifies name/bday/picture was edited in the full profile and the short profile and profile item need to be refreshed
     public bool profileEdited = false;
 
+    public Button changeOrderButton;
+    public Button deleteProfileButton;
+    public Button archiveProfileButton;
+
 
     void Awake()
     {
@@ -81,6 +86,8 @@ public class AppManager : MonoBehaviour
 
         Debug.Log($"loading from {path}");
 
+        ActivateProfileButtons(false);
+
     }
 
     public void ChangeEditable(bool changed)
@@ -109,7 +116,13 @@ public class AppManager : MonoBehaviour
 
     public void DeleteProfileConfirm()
     {
-        AppManager.Instance.confirm.Show("Are you sure you want to delete this profile?", DeleteProfile);
+        if (currentProfile == null)
+        {
+            error.SetError("Select a profile before deleting it.");
+        }
+        else
+        confirm.Show("Are you sure you want to delete this profile? \nThis will also delete all relevant notifications.", 
+        DeleteProfile);
 
     }
 
@@ -119,13 +132,24 @@ public class AppManager : MonoBehaviour
 
 
         // deletes the profile file
-        string path = $"{Application.persistentDataPath}/profiles/{currentProfile.id}";
+        string path = $"{Application.persistentDataPath}/profiles/profile{currentProfile.id}.json";
         DeleteItemAtPath(path);
+
+        // repoints path to the directory
+        path = $"{Application.persistentDataPath}/{currentProfile.id}";
+        // deletes the profile's directory where image and events are saved
+        if (Directory.Exists(path))
+        {
+            Directory.Delete(path, true);
+        }
 
         FadeAndDestroy(currentProfile.gameObject);
         allProfiles.Remove(currentProfile);
 
         currentProfile = null;
+
+        shortProfileToggle.HideElement();
+        ActivateProfileButtons(false);
     }
 
     public void DeleteItemAtPath(string path)
@@ -196,6 +220,7 @@ public class AppManager : MonoBehaviour
         if (!shortProfileToggle.IsElementVisible())
         {
             shortProfileToggle.ShowElement();
+            ActivateProfileButtons(true);
         }
 
         currentProfile = profile;
@@ -477,7 +502,6 @@ public class AppManager : MonoBehaviour
         return sprite;
     }
 
-
     public Profile FindProfile(int id)
     {
         foreach (Profile profile in allProfiles)
@@ -510,6 +534,17 @@ public class AppManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
+    }
+
+    // enables or disables buttons that can only be used with currentProfile
+    public void ActivateProfileButtons(bool activate)
+    {
+        // changeOrderButton.interactable = activate;
+        // deleteProfileButton.interactable = activate;
+        // archiveProfileButton.interactable = activate;
+        
+        // a dumb one-liner just for fun
+        changeOrderButton.interactable = deleteProfileButton.interactable = archiveProfileButton.interactable = activate;
     }
 
     // set on the onclick for the full prof's close view button. Refreshes with the current profile

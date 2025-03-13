@@ -115,17 +115,14 @@ public class CanvasGroupToggle : MonoBehaviour
     {
         if (fadingOut)
         {
-            Debug.Log("fadingout start");
             while (element != null && element.alpha > 0)
             {
-            Debug.Log("while loop");
-
                 element.alpha -= 0.1f * fadeOutSpeed * Time.deltaTime;
                 yield return null;
             }
             if (destroyAfterFade)
             {
-            Debug.Log("destroying");
+                Debug.Log($"Destroying {gameObject.name}");
 
                 yield return new WaitForSeconds(destroyAfterFadeDelay);
                 Destroy(gameObject);
@@ -133,8 +130,6 @@ public class CanvasGroupToggle : MonoBehaviour
         }
         else
         {
-            Debug.Log("else");
-
             while (element != null && element.alpha < 1)
             {
                 element.alpha += 0.1f * fadeInSpeed * Time.deltaTime;
@@ -156,7 +151,7 @@ public class CanvasGroupToggle : MonoBehaviour
     // {
     //     if (hideOnEsc)
     //     {
-    //         //adds self to a list of CanvasGroupToggles that will loop through and hide (in order?) when esc is pressed
+    //         //adds self to a list of CanvasGroupToggles that will loop through and hide (in order? order in hierarchy probs) when esc is pressed
     //         // intended for popups. Will go on the input method for newinputsystem
     //     }
 

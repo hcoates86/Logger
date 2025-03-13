@@ -24,7 +24,7 @@ public class Profile : MonoBehaviour
 
     public SortBy eventsSortedBy;
     // order profile should be displayed on the main page. Repeat numbers are allowed but will display in random order
-    public int customProfileSortNum;
+    public int customSortNum;
 
     public Image profileBackground;
 
@@ -95,40 +95,6 @@ public class Profile : MonoBehaviour
             AppManager.Instance.SwitchProfile(this);
     }
 
-    // public void SaveEventData(string title, bool isFavorite, string notes = "", string startDate = "", string dueDate = "", 
-    // bool hasStartDate = false, bool hasDueDate = false)
-    // {
-    //     EventData data = new EventData();
-    //     // assigns the profile's id
-    //     data.profileId = id;
-
-    //     int number = totalEventsAdded + 1;
-    //     data.eventId = number;
-
-    //     // assigns passed-in data
-    //     data.title = title;
-    //     data.notes = notes;
-    //     data.startDate = startDate;
-    //     data.dueDate = dueDate;
-    //     data.hasStartDate = hasStartDate;
-    //     data.hasDueDate = hasDueDate;
-    //     data.isFavorite = isFavorite;
-
-
-    //     string json = JsonUtility.ToJson(data);
-    //     string path = $"{Application.persistentDataPath}/profiles/{id}";
-
-    //     if (!Directory.Exists(path))
-    //     {
-    //         // Create the directory
-    //         Directory.CreateDirectory(path);
-    //     }
-
-    //     // File.WriteAllText($"{Application.persistentDataPath}/profiles/{id}/{}.json", json);
-    //     string itemPath = Path.Combine(path, $"{number}.json");
-    //     File.WriteAllText(itemPath, json);
-    // }
-
     public void SaveProfile()
     {
         if (id == 0)
@@ -143,6 +109,7 @@ public class Profile : MonoBehaviour
         data.birthDate = birthDate.ToString("MM/dd/yyyy");
         data.totalEventsAdded = totalEventsAdded;
         data.eventsSortedBy = eventsSortedBy;
+        data.customSortNum = customSortNum;
 
         string json = JsonUtility.ToJson(data);
         string path = $"{Application.persistentDataPath}/profiles";
@@ -421,4 +388,5 @@ public enum Save
         public string birthDate;
         public int totalEventsAdded;
         public SortBy eventsSortedBy;
+        public int customSortNum;
     }
