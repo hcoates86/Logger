@@ -15,7 +15,7 @@ public class ProfileDisplay : MonoBehaviour
 
     public bool useThumbnail = false;
 
-    public Transform eventContainer;
+    public RectTransform eventContainer;
     public FavoriteEventDisplay[] favoriteDisplays = new FavoriteEventDisplay[3];
 
     // private bool canEdit = false;

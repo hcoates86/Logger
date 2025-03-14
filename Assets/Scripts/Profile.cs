@@ -126,10 +126,9 @@ public class Profile : MonoBehaviour
 
     public void SortEvents(SortBy sortCriteria, bool scriptOnly = false)
     {
-        if (allEvents.Count < 2) return;
 
     // bool checks if sorting should be forced by script and not clicked. 
-    // ^Sets previous to none before sorting again to avoid click-based logic
+    // Sets previous to none before sorting again to avoid logic that checks eventsSortedBy
         if (scriptOnly)
         {
             eventsSortedBy = SortBy.None;
@@ -143,21 +142,6 @@ public class Profile : MonoBehaviour
             allEvents.Sort((x, y) => y.isFavorite.CompareTo(x.isFavorite));
         }
 
-        DateTime now = DateTime.Now;
-
-
-
-        if (sortCriteria == SortBy.DueDate)
-        {
-            eventsSortedBy = SortBy.DueDate;
-
-            var sortedEvents = allEvents
-            .OrderByDescending(e => e.isFavorite)
-            .ThenBy(e => e.hasDueDate ? DateTime.Parse(e.dueDate.text) : DateTime.MaxValue)
-            .ToList();
-
-            allEvents = new List<EventItem>(sortedEvents);
-        }
         // if events are already sorted by due date, sort by ascending duedate (for button click)
         // also set explicitely for script setup
         if ((sortCriteria == SortBy.DueDate && eventsSortedBy == SortBy.DueDate)
@@ -171,23 +155,19 @@ public class Profile : MonoBehaviour
             .ToList();
 
             allEvents = new List<EventItem>(sortedEvents);
-
-            // allEvents.Sort((x, y) =>
-            // {
-            //     // First, compare by isfavorite (true first)
-            //     int favoriteComparison = y.isFavorite.CompareTo(x.isFavorite);
-            //     if (favoriteComparison != 0)
-            //         return favoriteComparison;
-
-            //     // Then, compare by enddate closest to now
-            //     DateTime endDateX = DateTime.Parse(x.dueDate.text);
-            //     DateTime endDateY = DateTime.Parse(y.dueDate.text);
-            //     double diffX = (endDateX - now).TotalSeconds;
-            //     double diffY = (endDateY - now).TotalSeconds;
-
-            //     return diffY.CompareTo(diffX);
-            // });
         }
+        else if (sortCriteria == SortBy.DueDate)
+        {
+            eventsSortedBy = SortBy.DueDate;
+
+            var sortedEvents = allEvents
+            .OrderByDescending(e => e.isFavorite)
+            .ThenBy(e => e.hasDueDate ? DateTime.Parse(e.dueDate.text) : DateTime.MaxValue)
+            .ToList();
+
+            allEvents = new List<EventItem>(sortedEvents);
+        }
+
         // if events are already sorted by given date, sort by ascending givendate (for button click)
         // also set explicitely for script setup
         if ((sortCriteria == SortBy.GivenDate && eventsSortedBy == SortBy.GivenDate)
@@ -201,55 +181,20 @@ public class Profile : MonoBehaviour
             .ToList();
 
             allEvents = new List<EventItem>(sortedEvents);
-            // allEvents.Sort((x, y) =>
-            // {
-            //     // First, compare by isfavorite (true first)
-            //     int favoriteComparison = y.isFavorite.CompareTo(x.isFavorite);
-            //     if (favoriteComparison != 0)
-            //         return favoriteComparison;
-
-            //     // Then, compare by enddate closest to now
-            //     DateTime startDateX = DateTime.Parse(x.startDate.text);
-            //     DateTime startDateY = DateTime.Parse(y.startDate.text);
-            //     return startDateX.CompareTo(startDateY);
-            // });
         }
-        if (sortCriteria == SortBy.GivenDate)
+        else if (sortCriteria == SortBy.GivenDate)
         {
             eventsSortedBy = SortBy.GivenDate;
 
-            
             var sortedEvents = allEvents
             .OrderByDescending(e => e.isFavorite)
             .ThenByDescending(e => e.hasStartDate ? DateTime.Parse(e.startDate.text) : DateTime.MinValue)
             .ToList();
 
             allEvents = new List<EventItem>(sortedEvents);
-            // allEvents.Sort((x, y) =>
-            // {
-            //     // First, compare by isfavorite (true first)
-            //     int favoriteComparison = y.isFavorite.CompareTo(x.isFavorite);
-            //     if (favoriteComparison != 0)
-            //         return favoriteComparison;
-
-            //     // Then, compare by enddate closest to now
-            //     DateTime startDateX = DateTime.Parse(x.startDate.text);
-            //     DateTime startDateY = DateTime.Parse(y.startDate.text);
-            //     return startDateY.CompareTo(startDateX);
-            // });
         }
 
-        if (sortCriteria == SortBy.Created)
-        {
-            eventsSortedBy = SortBy.Created;
 
-            var sortedEvents = allEvents
-            .OrderByDescending(e => e.isFavorite)
-            .ThenBy(e => e.eventId)
-            .ToList();
-
-            allEvents = new List<EventItem>(sortedEvents);
-        }
         if ((sortCriteria == SortBy.Created && eventsSortedBy == SortBy.Created)
             || sortCriteria == SortBy.ReverseCreated)
         {
@@ -262,23 +207,38 @@ public class Profile : MonoBehaviour
 
             allEvents = new List<EventItem>(sortedEvents);
         }
+        else if (sortCriteria == SortBy.Created)
+        {
+            eventsSortedBy = SortBy.Created;
 
+            var sortedEvents = allEvents
+            .OrderByDescending(e => e.isFavorite)
+            .ThenBy(e => e.eventId)
+            .ToList();
+
+            allEvents = new List<EventItem>(sortedEvents);
+        }
+
+        // doesn't bother rearranging everything if there are fewer than 2 events
+        if (allEvents.Count < 2) return;
 
         // places the gameobjects in order in the hierarchy
         for (int i = 0; i < allEvents.Count; i++)
         {
             allEvents[i].transform.SetSiblingIndex(i);
         }
+
+        LayoutRebuilder.MarkLayoutForRebuild(AppManager.Instance.fullProfile.eventContainer);
     }
 
     public void SortByCurrentCriteria()
     {
         SortEvents(eventsSortedBy, true);
         // places the gameobjects in order in the hierarchy
-        for (int i = 0; i < allEvents.Count; i++)
-        {
-            allEvents[i].transform.SetSiblingIndex(i);
-        }
+        // for (int i = 0; i < allEvents.Count; i++)
+        // {
+        //     allEvents[i].transform.SetSiblingIndex(i);
+        // }
 
     }
 

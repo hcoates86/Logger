@@ -57,6 +57,7 @@ public class AppManager : MonoBehaviour
     public Button archiveProfileButton;
 
     public SortBy profilesSortedBy = SortBy.Custom;
+    private RectTransform profileContainerRect;
 
 
     void Awake()
@@ -70,6 +71,8 @@ public class AppManager : MonoBehaviour
         {
             Destroy(this.gameObject); // Destroy other instance
         }
+
+        profileContainerRect = profileContainer.GetComponent<RectTransform>();
 
         // creates the profiles directory
         string path = $"{Application.persistentDataPath}/profiles";
@@ -269,29 +272,86 @@ public class AppManager : MonoBehaviour
         }
     }
 
-    // currently only sorts profiles by custom sort num
-    public void SortProfiles(SortBy sortBy)
+    public void SortProfiles(SortBy sortBy, bool scriptOnly = false)
     {
-        if (allProfiles.Count < 2) return;
+        // bool checks if sorting should be forced by script and not clicked. 
+        // Sets previous to none before sorting again to avoid logic that checks profilesSortedBy
+        if (scriptOnly)
+        {
+            profilesSortedBy = SortBy.None;
+        }
 
-        if (sortBy == SortBy.Custom)
-            allProfiles.Sort((a, b) => a.customSortNum.CompareTo(b.customSortNum));
-        if (sortBy == SortBy.ReverseCustom)
+        // if profiles are already sorted by this, sort by ascending (for button click)
+        // also set explicitely for script setup
+        if ((sortBy == SortBy.Alphabetical && profilesSortedBy == SortBy.Alphabetical)
+            || sortBy == SortBy.ReverseAlphabetical)
+        {
+            allProfiles.Sort((a, b) => string.Compare(b.named, a.named, StringComparison.OrdinalIgnoreCase));
+            profilesSortedBy = SortBy.ReverseAlphabetical;
+        }
+        else if (sortBy == SortBy.Alphabetical)
+        {
+            allProfiles.Sort((a, b) => string.Compare(a.named, b.named, StringComparison.OrdinalIgnoreCase));
+            profilesSortedBy = SortBy.Alphabetical;
+        }
+
+        // if profiles are already sorted by this, sort by ascending (for button click)
+        // also set explicitely for script setup
+        if ((sortBy == SortBy.Created && profilesSortedBy == SortBy.Created)
+            || sortBy == SortBy.ReverseCreated)
+        {
+            allProfiles.Sort((a, b) => b.id.CompareTo(a.id));
+            profilesSortedBy = SortBy.ReverseCreated;
+        }
+        else if (sortBy == SortBy.Created)
+        {
+            allProfiles.Sort((a, b) => a.id.CompareTo(b.id));
+            profilesSortedBy = SortBy.Created;
+        }
+
+        // if profiles are already sorted by this, sort by ascending (for button click)
+        // also set explicitely for script setup
+        if ((sortBy == SortBy.Age && profilesSortedBy == SortBy.Age)
+            || sortBy == SortBy.ReverseAge)
+        {
+            allProfiles.Sort((a, b) => a.birthDate.CompareTo(b.birthDate));
+            profilesSortedBy = SortBy.ReverseAge;
+        }
+        else if (sortBy == SortBy.Age)
+        {
+            allProfiles.Sort((a, b) => b.birthDate.CompareTo(a.birthDate));
+            profilesSortedBy = SortBy.Age;
+        }
+
+        // if profiles are already sorted by custom, sort by ascending custom (for button click)
+        // also set explicitely for script setup
+        if ((sortBy == SortBy.Custom && profilesSortedBy == SortBy.Custom)
+            || sortBy == SortBy.ReverseCustom)
+        {
             allProfiles.Sort((a, b) => b.customSortNum.CompareTo(a.customSortNum));
+            profilesSortedBy = SortBy.ReverseCustom;
+        }
+        else if (sortBy == SortBy.Custom)
+        {
+            allProfiles.Sort((a, b) => a.customSortNum.CompareTo(b.customSortNum));
+            profilesSortedBy = SortBy.Custom;
+        }
 
-
+        // doesn't bother rearranging everything if there are fewer than 2 profiles
+        if (allProfiles.Count < 2) return;
+        
+        // places the gameobjects in the order of the list in the hierarchy
         for (int i = 0; i < allProfiles.Count; i++)
         {
             allProfiles[i].transform.SetSiblingIndex(i);
         }
 
-        //TEST
-        LayoutRebuilder.MarkLayoutForRebuild(profileContainer.GetComponent<RectTransform >());
+        LayoutRebuilder.MarkLayoutForRebuild(profileContainerRect);
     }
 
     public void SortProfilesByCurrentCriteria()
     {
-        SortProfiles(profilesSortedBy);
+        SortProfiles(profilesSortedBy, true);
 
     }
 
@@ -327,11 +387,7 @@ public class AppManager : MonoBehaviour
 
             profile.name = data[1];
             profile.birthDate = dateValue;
-
-
         }
-
-
         
     }
 
