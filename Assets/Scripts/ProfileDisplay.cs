@@ -47,19 +47,22 @@ public class ProfileDisplay : MonoBehaviour
             }
         }
 
-
-        if (profile.profileImage != null)
+        if (image != null)
         {
-            if (useThumbnail)
+            if (profile.profileImage != null)
             {
-                image.sprite = profile.thumbnail;
+                if (useThumbnail)
+                {
+                    image.sprite = profile.thumbnail;
+                }
+                else
+                    image.sprite = profile.profileImage;
             }
             else
-                image.sprite = profile.profileImage;
-        }
-        else
-        {
-            image.sprite = AppManager.Instance.defaultImage;
+            {
+                image.sprite = AppManager.Instance.defaultImage;
+            }
+
         }
 
         if (profile.allEvents.Count > 0)

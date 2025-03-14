@@ -176,7 +176,7 @@ public class EditButton : MonoBehaviour
             uploadImage.imageUploaded = false;
         }
         profile.SaveProfile();
-        AppManager.Instance.profileEdited = true;
+        AppManager.Instance.ProfileEdited = true;
 
         editInput.ClearInput(false);
         editing = false;

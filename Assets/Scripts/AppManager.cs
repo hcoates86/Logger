@@ -50,7 +50,24 @@ public class AppManager : MonoBehaviour
     // signifies an event was edited in the full profile and the view needs to be refreshed upon returning to the short profile
     public bool eventEdited = false;
     // signifies name/bday/picture was edited in the full profile and the short profile and profile item need to be refreshed
-    public bool profileEdited = false;
+    // public bool profileEdited = false;
+
+
+    private bool _profileEdited = false;
+    public bool ProfileEdited
+    {
+        get { return _profileEdited; }
+        set
+        {
+            if (_profileEdited != value)
+            {
+                _profileEdited = value;
+                // if it was changed to true triggers action
+                if (_profileEdited)
+                    OnProfileEdit?.Invoke();
+            }
+        }
+    }
 
     public Button changeOrderButton;
     public Button deleteProfileButton;
@@ -58,6 +75,8 @@ public class AppManager : MonoBehaviour
 
     public SortBy profilesSortedBy = SortBy.Created;
     private RectTransform profileContainerRect;
+
+    public event Action OnProfileEdit;
 
 
     void Awake()
@@ -524,7 +543,7 @@ public class AppManager : MonoBehaviour
             return;
         }
 
-        if (eventEdited || profileEdited)
+        if (eventEdited || ProfileEdited)
         {
             // sorts and refreshes the short profile. No need to sort if under two items
             if (currentProfile.allEvents.Count > 1)
@@ -532,7 +551,7 @@ public class AppManager : MonoBehaviour
             shortProfile.Setup(currentProfile);
         }
 
-        if (profileEdited)
+        if (ProfileEdited)
         {
             // reloads the image in case a new one was uploaded
             currentProfile.profileImage = LoadImage(currentProfile.id);
@@ -547,7 +566,7 @@ public class AppManager : MonoBehaviour
 
         fullProfileToggle.HideElement();
 
-        profileEdited = false;
+        ProfileEdited = false;
         eventEdited = false;
 
         //TODO: confirm

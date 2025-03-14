@@ -212,6 +212,7 @@ public class EventItem : MonoBehaviour
 
         AppManager.Instance.FadeAndDestroy(gameObject);
         //reorganize the short events list
+        AppManager.Instance.eventEdited = true;
     }
 
     void HandleNotifications()
