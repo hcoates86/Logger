@@ -56,7 +56,7 @@ public class AppManager : MonoBehaviour
     public Button deleteProfileButton;
     public Button archiveProfileButton;
 
-    public SortBy profilesSortedBy = SortBy.Custom;
+    public SortBy profilesSortedBy = SortBy.Created;
     private RectTransform profileContainerRect;
 
 
@@ -86,6 +86,9 @@ public class AppManager : MonoBehaviour
         else
         {
             LoadAllProfiles();
+            // loads the value with a default fall-back of created
+            string savedSortBy = PlayerPrefs.GetString("profilesSortedBy", "Created");
+            profilesSortedBy = (SortBy) Enum.Parse(typeof(SortBy), savedSortBy);
             SortProfilesByCurrentCriteria();
 
             Debug.Log($"Loading from {path}");
@@ -336,6 +339,8 @@ public class AppManager : MonoBehaviour
             allProfiles.Sort((a, b) => a.customSortNum.CompareTo(b.customSortNum));
             profilesSortedBy = SortBy.Custom;
         }
+
+        PlayerPrefs.SetString("profilesSortedBy", profilesSortedBy.ToString());
 
         // doesn't bother rearranging everything if there are fewer than 2 profiles
         if (allProfiles.Count < 2) return;
