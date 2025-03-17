@@ -29,6 +29,8 @@ public class EditButton : MonoBehaviour
     public CanvasGroupToggle nameInput;
     public CanvasGroupToggle dateInput;
 
+    public GameObject editEventTip;
+
     void Start()
     {
         cbPressed = button.colors;
@@ -50,6 +52,7 @@ public class EditButton : MonoBehaviour
             button.colors = cbPressed;
             text.color = pressedTextColor;
 
+            ToggleEditVisibility(true);
             SetEventDeleteButtonsVisible(true);
             AppManager.Instance.ChangeEditable(true);
             SetEditInfo();
@@ -64,12 +67,21 @@ public class EditButton : MonoBehaviour
             text.color = initialTextColor;
 
             SetEventDeleteButtonsVisible(false);
+            ToggleEditVisibility(false);
 
             if (editing)
                 SubmitEdit();
 
             AppManager.Instance.ChangeEditable(false);
         }
+    }
+
+    void ToggleEditVisibility(bool visible)
+    {
+
+        editEventTip.SetActive(visible);
+
+
     }
 
     // not currently in use. Completely cancels all editing
