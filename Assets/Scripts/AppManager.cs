@@ -50,9 +50,6 @@ public class AppManager : MonoBehaviour
     // signifies an event was edited in the full profile and the view needs to be refreshed upon returning to the short profile
     public bool eventEdited = false;
     // signifies name/bday/picture was edited in the full profile and the short profile and profile item need to be refreshed
-    // public bool profileEdited = false;
-
-
     private bool _profileEdited = false;
     public bool ProfileEdited
     {
@@ -569,7 +566,6 @@ public class AppManager : MonoBehaviour
         ProfileEdited = false;
         eventEdited = false;
 
-        //TODO: confirm
         ChangeEditable(false);
     }
 

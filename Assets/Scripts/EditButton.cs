@@ -60,7 +60,6 @@ public class EditButton : MonoBehaviour
         }
         else
         {
-            // EditProfile();
             pressed = false;
             text.text = initial;
             button.colors = cbNormal;
@@ -122,13 +121,10 @@ public class EditButton : MonoBehaviour
     public void EditBday()
     {
         // takes the current text on the full profile
-        // if (AppManager.Instance.fullProfile.dateText.text != string.Empty)
         if (AppManager.Instance.fullProfile.dateText.text == NewEventHandler.blankDate)
             editInput.dateInput.text = string.Empty;
         else
             editInput.dateInput.text = AppManager.Instance.fullProfile.dateText.text;
-        // else
-        //     editInput.dateInput.text = "";
 
         floatingInput.ShowElement();
         nameInput.ShowElement(false);
@@ -250,16 +246,12 @@ public class EditButton : MonoBehaviour
     // needs to be set on entering edit mode or can accidentally save blank info
     void SetEditInfo()
     {
-        // ProfileDisplay disp = AppManager.Instance.fullProfile;
-        // disp.nameText.text = AppManager.Instance.currentProfile.named;
         editInput.nameInput.text = AppManager.Instance.fullProfile.nameText.text;
 
         if (AppManager.Instance.currentProfile.birthDate != DateTime.MinValue)
             editInput.dateInput.text = AppManager.Instance.fullProfile.dateText.text;
         else
             editInput.dateInput.text = string.Empty;
-
-            // disp.dateText.text = AppManager.Instance.currentProfile.birthDate.ToString("MM/dd/yyyy");
     }
 
 }

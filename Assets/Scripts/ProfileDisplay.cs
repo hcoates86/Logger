@@ -18,9 +18,6 @@ public class ProfileDisplay : MonoBehaviour
     public RectTransform eventContainer;
     public FavoriteEventDisplay[] favoriteDisplays = new FavoriteEventDisplay[3];
 
-    // private bool canEdit = false;
-
-
     public void Setup(Profile profile)
     {
         nameText.text = profile.named;

@@ -13,13 +13,9 @@ public class DateInputValidator : MonoBehaviour
     // submit output
     public DateTime dateValue;
 
-    // private int previousLength, newLength;
-    // private bool slashPlaced = false;
     private string oldInput = string.Empty;
     private string value;
-    // private int maxDateChars = 10;
     public bool optional = false;
-
 
     void Start()
     {
@@ -46,39 +42,6 @@ public class DateInputValidator : MonoBehaviour
         value = dateInput.text;
         RestrictDateInput(value);
     }
-
-    // adds / to dates
-    // void HandleDate(string value)
-    // {
-    //     // string value = dateInput.text;
-    //     newLength = value.Length;
-
-    //     // if a slash was placed last, check if the next character is also a slash and remove it
-    //     if (slashPlaced == true)
-    //     {
-    //         if (value[value.Length - 1] == '/' && value[value.Length - 2] == '/')
-    //         {
-    //             value = value.Remove(value.Length - 1);
-    //             dateInput.text = value;
-    //         }
-    //     }
-    //     slashPlaced = false;
-        
-    //     // checks if the new value is longer than the last to see if user is deleting
-    //     if (previousLength < newLength)
-    //     {
-    //         if (value.Length == 2 || value.Length == 5 && value[value.Length - 1] != '/')
-    //         {
-    //             dateInput.text = value + "/";
-    //             dateInput.MoveToEndOfLine(false, false);
-    //             slashPlaced = true;
-
-    //         }
-    //     }
-    //     previousLength = value.Length;
-    //     oldInput = dateInput.text;
-    // }
-
 
     void RestrictDateInput(string value)
     {

@@ -14,7 +14,6 @@ public class InputHandler : MonoBehaviour
     // for ages, like "5", "12"
     public TMP_InputField ageInput;
 
-    // public string imagePath;
     public Image image;
     public UploadImage uploadImage;
 
@@ -53,13 +52,7 @@ public class InputHandler : MonoBehaviour
         }
 
         AppManager.Instance.CreateProfile(id, nameInput.text, dateTime, 0, SortBy.None, uploadImage.imageUploaded, true, 500);
-        // if (debug)
-        // {
-        //     Debug.Log($"");
-        //     Debug.Log($"");
-        //     Debug.Log($"");
 
-        // }
         ClearInput(true);
     }
 

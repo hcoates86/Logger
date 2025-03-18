@@ -38,7 +38,6 @@ public class NewEventHandler : MonoBehaviour
             return;
         }
 
-        // editingItem = null;
         ClearInput(true);
     }
 
@@ -100,11 +99,9 @@ public class NewEventHandler : MonoBehaviour
         //sets the text to the passed in event values
         titleInput.text = _event.title.text;
         notesInput.text = _event.notes.text;
-        // TMP_InputField startInput = startDateValidator.GetComponent<TMP_InputField>();
 
         // if the text is "--/--/----" sets an empty string instead
         startDateInput.text = _event.startDate.text == blankDate ? string.Empty : _event.startDate.text;
-        // TMP_InputField dueInput = dueDateValidator.GetComponent<TMP_InputField>();
         dueDateInput.text = _event.dueDate.text  == blankDate ? string.Empty : _event.dueDate.text;
     }
 

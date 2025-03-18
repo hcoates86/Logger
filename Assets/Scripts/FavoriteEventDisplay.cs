@@ -7,8 +7,6 @@ public class FavoriteEventDisplay : MonoBehaviour
 {
     public TMP_Text title;
     public TMP_Text startDate, dueDate;
-    // public CanvasGroupToggle startDateContainer;
-    // public CanvasGroupToggle dueDateContainer;
     public CanvasGroupToggle canvasGroupToggle;
     public bool displaySelf;
 
