@@ -143,7 +143,8 @@ public class AppManager : MonoBehaviour
             error.SetError("Select a profile before deleting it.");
         }
         else
-        confirm.Show("Are you sure you want to delete this profile? \nThis will also delete all relevant notifications.", 
+        confirm.Show("Are you sure you want to delete this profile? \nThis will also delete all of its events.",
+        // \nThis will also delete all relevant notifications.", 
         DeleteProfile);
 
     }
