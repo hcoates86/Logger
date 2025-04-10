@@ -5343,7 +5343,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &277225251
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5680,7 +5680,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 285754466}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -26804,8 +26804,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4778968778086294021, guid: 15108521701bab742b1abd471b120770, type: 3}
       propertyPath: m_text
-      value: The default number is 500. Set a higher number to move it further down
-        the list, or a lower number to move it up.
+      value: 'Default is 500. Increase to move down list, decrease to move up.
+
+        List
+        order must be set to CUSTOM to work.'
       objectReference: {fileID: 0}
     - target: {fileID: 5140721015233200650, guid: 15108521701bab742b1abd471b120770, type: 3}
       propertyPath: m_text
@@ -26937,7 +26939,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8426794741867025021, guid: 15108521701bab742b1abd471b120770, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 74.0614
+      value: 76.4929
       objectReference: {fileID: 0}
     - target: {fileID: 8426794741867025021, guid: 15108521701bab742b1abd471b120770, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -42837,7 +42839,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 442.2974, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3209577109967629004
