@@ -529,6 +529,7 @@ public class AppManager : MonoBehaviour
     void CancelEditsAndCloseFullProf()
     {
         EditButton.editing = false;
+        editButton.ToggleButton();
         HideFullProfile();
     }
 

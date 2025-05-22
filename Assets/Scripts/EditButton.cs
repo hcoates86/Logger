@@ -30,6 +30,8 @@ public class EditButton : MonoBehaviour
     public CanvasGroupToggle dateInput;
 
     public GameObject editEventTip;
+[SerializeField]
+    private bool wasDateChanged = false;
 
     void Start()
     {
@@ -48,6 +50,8 @@ public class EditButton : MonoBehaviour
         if (!pressed)
         {
             pressed = true;
+            // Initially sets date changed to false.
+            wasDateChanged = false;
             text.text = done;
             button.colors = cbPressed;
             text.color = pressedTextColor;
@@ -86,6 +90,7 @@ public class EditButton : MonoBehaviour
         //on cancel reload profile
         AppManager.Instance.fullProfile.Setup(AppManager.Instance.currentProfile);
         editing = false;
+        wasDateChanged = false;
     }
 
     void SetEventDeleteButtonsVisible(bool show)
@@ -143,7 +148,8 @@ public class EditButton : MonoBehaviour
             AppManager.Instance.fullProfile.nameText.text = editInput.nameInput.text;
         }
         if (dateInput.IsElementVisible())
-        {    
+        {
+            wasDateChanged = true;
             if (editInput.dateValidator.SubmitDateValidation())
             {
                 // if the date was blank place blank text
@@ -171,8 +177,11 @@ public class EditButton : MonoBehaviour
     {
         Profile profile = AppManager.Instance.currentProfile;
         
-        profile.named = editInput.nameInput.text;
-        profile.birthDate = editInput.dateValidator.dateValue;
+        if (editInput.nameInput.text != string.Empty)
+            profile.named = editInput.nameInput.text;
+
+        if (wasDateChanged)
+            profile.birthDate = editInput.dateValidator.dateValue;
     
         if (uploadImage.imageUploaded)
         {

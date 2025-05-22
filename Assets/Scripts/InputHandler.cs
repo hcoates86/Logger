@@ -19,7 +19,7 @@ public class InputHandler : MonoBehaviour
 
     public CanvasGroupToggle cgtToHideOnSubmit;
 
-    public bool debug = false;
+    private bool debug = false;
 
 
     public void SubmitNewProfile()
