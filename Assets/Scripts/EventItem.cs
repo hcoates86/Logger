@@ -28,44 +28,18 @@ public class EventItem : MonoBehaviour
     public bool hasStartDate;
     public bool hasDueDate;
 
+    public Scrollbar scrollbar;
+
     // public bool getNotificationOnDue;
 
     // displays optional items
     // bool asks if full view is on to show expanded note view
-    public void DisplayOptional(bool fullView)
+    public void DisplayOptional()
     {
         startDateContainer.ShowElement(hasStartDate);
         dueDateContainer.ShowElement(hasDueDate);
-
-        if (fullView)
-        {
-            if (notes.text != string.Empty)
-            {
-                ShowExpanded(true);
-            }
-            else
-                ShowExpanded(false);
-        }
     }
 
-    public void ShowExpanded(bool _showExpanded)
-    {
-        RectTransform containerRect = transform.GetComponent<RectTransform>();
-
-        if (_showExpanded)
-        {
-            expandedContainer.ShowElement();
-            shortBackground.HideElement();
-            // DOES NOT WORK 
-            // containerRect.sizeDelta = new Vector2(0, 250);
-        }
-        else
-        {
-            expandedContainer.HideElement();
-            shortBackground.ShowElement();
-            // containerRect.sizeDelta = new Vector2(0, 100);
-        }
-    }
 
     public void ToggleFavorite()
     {
@@ -90,11 +64,14 @@ public class EventItem : MonoBehaviour
     {
         AppManager.Instance.eventEdited = true;
         EventData data = new EventData();
-    
+
         data.profileId = profileId;
         data.eventId = eventId;
         data.title = title.text;
-        data.notes = notes.text;
+        if (notes != null)
+            data.notes = notes.text;
+        else
+            data.notes = string.Empty;
         data.startDate = startDate.text;
         data.dueDate = dueDate.text;
         data.hasStartDate = hasStartDate;
@@ -151,7 +128,6 @@ public class EventItem : MonoBehaviour
         handler.SetEditEvent(this);
         handler.cgtToHideOnSubmit.ShowElement();
     }
-
 }
 
 [System.Serializable]

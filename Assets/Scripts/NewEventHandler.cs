@@ -46,7 +46,12 @@ public class NewEventHandler : MonoBehaviour
         AppManager.Instance.eventEdited = true;
         profile = AppManager.Instance.currentProfile;
 
-        GameObject newEvent = Instantiate(AppManager.Instance.eventPrefab, AppManager.Instance.fullProfile.eventContainer);
+        GameObject newEvent;
+        if (notes != string.Empty)
+            newEvent = Instantiate(AppManager.Instance.eventPrefab, AppManager.Instance.fullProfile.eventContainer);
+        else
+            newEvent = Instantiate(AppManager.Instance.shortEventPrefab, AppManager.Instance.fullProfile.eventContainer);
+
         EventItem eventItem = newEvent.GetComponentInChildren<EventItem>();
         
         // adds one to events added before setting it as the new event id
@@ -56,7 +61,8 @@ public class NewEventHandler : MonoBehaviour
         eventItem.profileId = profile.id;
         eventItem.eventId = profile.totalEventsAdded;
         eventItem.title.text = title;
-        eventItem.notes.text = notes;
+        if (eventItem.notes != null)
+            eventItem.notes.text = notes;
 
         if (startDate != DateTime.MinValue)
         {
@@ -81,7 +87,7 @@ public class NewEventHandler : MonoBehaviour
         }
 
         // displays the things passed in
-        eventItem.DisplayOptional(true);
+        eventItem.DisplayOptional();
 
 
         eventItem.SaveEvent();
@@ -98,7 +104,8 @@ public class NewEventHandler : MonoBehaviour
         editingItem = _event;
         //sets the text to the passed in event values
         titleInput.text = _event.title.text;
-        notesInput.text = _event.notes.text;
+        if (_event.notes != null)
+            notesInput.text = _event.notes.text;
 
         // if the text is "--/--/----" sets an empty string instead
         startDateInput.text = _event.startDate.text == blankDate ? string.Empty : _event.startDate.text;
@@ -108,8 +115,9 @@ public class NewEventHandler : MonoBehaviour
     //called on submit
     void EditEvent(EventItem _editingItem, string title, DateTime startDate, DateTime dueDate, string notes)
     {
+        if (_editingItem.notes != null)
+            _editingItem.notes.text = notes;
         _editingItem.title.text = title;
-        _editingItem.notes.text = notes;
 
         if (startDate != DateTime.MinValue)
         {
@@ -132,10 +140,26 @@ public class NewEventHandler : MonoBehaviour
             _editingItem.hasDueDate = false;
             _editingItem.dueDate.text = blankDate;
         }
-        _editingItem.DisplayOptional(true);
 
+        // Decides if a new short/expanded event needs to be created due to note change
+        if (_editingItem.notes == null && notes != string.Empty)
+        {
+            AppManager.Instance.currentProfile.CreateEventGameObject(_editingItem, false, notes);
 
-        _editingItem.SaveEvent();
+            // make new short event item and add all info
+        }
+        else if (_editingItem.notes != null && notes == string.Empty)
+        {
+            AppManager.Instance.currentProfile.CreateEventGameObject(_editingItem, true);
+
+        }
+        // else no events need to be created, display the optional parts now
+        else
+        {
+            _editingItem.DisplayOptional();
+            _editingItem.scrollbar.value = 1;
+            _editingItem.SaveEvent();
+        }
 
     }
 

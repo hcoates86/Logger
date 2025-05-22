@@ -30,6 +30,7 @@ public class AppManager : MonoBehaviour
     public Profile profilePrefab;
     public Transform profileContainer;
     public GameObject eventPrefab;
+    public GameObject shortEventPrefab;
 
     public NewEventHandler eventModal;
 
@@ -541,6 +542,8 @@ public class AppManager : MonoBehaviour
             confirm.Show("Do you want to close without saving changes to the profile?", editButton.SubmitEdit, "Save", "Close", CancelEditsAndCloseFullProf);
             return;
         }
+        else
+            editButton.ToggleButton();
 
         if (eventEdited || ProfileEdited)
         {

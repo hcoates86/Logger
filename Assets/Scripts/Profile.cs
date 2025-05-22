@@ -39,8 +39,6 @@ public class Profile : MonoBehaviour
         if (birthDate == DateTime.MinValue)
             return "";
 
-        // DateTime currentDate = DateTime.Now;
-
         // since the age calc can't handle future dates, just list as unborn until date
         if (birthDate > DateTime.Now)
         {
@@ -50,14 +48,9 @@ public class Profile : MonoBehaviour
 
         Age age = new Age(birthDate, DateTime.Now);
 
-        // string pluralDays;
         string pluralWeeks;
         string pluralMonths;
         string pluralYears;
-        // if (age.Days == 1)
-        //     pluralDays = "Day";
-        // else
-        //     pluralDays = "Days";
         if (Mathf.Floor(age.Days / 7) == 1)
             pluralWeeks = "Week";
         else
@@ -271,20 +264,26 @@ public class Profile : MonoBehaviour
     void CreateEventGameObject(int profileId, int eventId, string title, string notes, string startDate, 
     string dueDate, bool hasStartDate, bool hasDueDate, bool isFavorite)
     {
-        // instantiates a new event and adds all info
-        GameObject newEvent = Instantiate(AppManager.Instance.eventPrefab);
+        GameObject newEvent;
+        // instantiates a new event depending on if it should use short or expanded version, and adds all info
+        if (notes != string.Empty)
+            newEvent = Instantiate(AppManager.Instance.eventPrefab);
+        else
+            newEvent = Instantiate(AppManager.Instance.shortEventPrefab);
+
         EventItem eventItem = newEvent.GetComponent<EventItem>();
         eventItem.profileId = profileId;
         eventItem.eventId = eventId;
         eventItem.title.text = title;
-        eventItem.notes.text = notes;
+        if (eventItem.notes != null)
+            eventItem.notes.text = notes;
         eventItem.startDate.text = startDate;
         eventItem.dueDate.text = dueDate;
         eventItem.hasStartDate = hasStartDate;
         eventItem.hasDueDate = hasDueDate;
         eventItem.isFavorite = isFavorite;
 
-        eventItem.DisplayOptional(true);
+        eventItem.DisplayOptional();
         eventItem.ChangeFavorite();
 
         // places event on the full profile
@@ -298,12 +297,49 @@ public class Profile : MonoBehaviour
 
     }
 
+    //for copying over an event when short/expanded event needs to be created on note change
+    // Takes an Event Item as the base item that will be replaced, and a bool depending on if it should use the short or expanded event
+    public void CreateEventGameObject(EventItem baseEvent, bool useShort, string notes = "")
+    {
+        GameObject newEvent;
+        // instantiates a new event depending on if it should use short or expanded version, and adds all info
+        if (!useShort)
+            newEvent = Instantiate(AppManager.Instance.eventPrefab);
+        else
+            newEvent = Instantiate(AppManager.Instance.shortEventPrefab);
+
+        EventItem eventItem = newEvent.GetComponent<EventItem>();
+        // this event should be this profile's, so use own id
+        eventItem.profileId = id;
+        eventItem.eventId = baseEvent.eventId;
+        eventItem.title.text = baseEvent.title.text;
+        if (eventItem.notes != null)
+            eventItem.notes.text = notes;
+        eventItem.startDate.text = baseEvent.startDate.text;
+        eventItem.dueDate.text = baseEvent.dueDate.text;
+        eventItem.hasStartDate = baseEvent.hasStartDate;
+        eventItem.hasDueDate = baseEvent.hasDueDate;
+        eventItem.isFavorite = baseEvent.isFavorite;
+
+        eventItem.DisplayOptional();
+        eventItem.ChangeFavorite();
+
+        // places event on the full profile
+        eventItem.transform.SetParent(AppManager.Instance.fullProfile.eventContainer, false);
+        // Removes the initial event.
+        allEvents.Remove(baseEvent);
+        Destroy(baseEvent.gameObject);
+        // adds the new event to the list and then sorts it
+        allEvents.Add(eventItem);
+        SortByCurrentCriteria();
+        eventItem.SaveEvent();
+    }
+
     // hides or shows all events
     public void ShowAllEvents(bool show)
     {
         foreach (EventItem item in allEvents)
         {
-            //turns elements on or off
             item.gameObject.SetActive(show);
         }
     }
