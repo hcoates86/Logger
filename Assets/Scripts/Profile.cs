@@ -50,14 +50,14 @@ public class Profile : MonoBehaviour
 
         Age age = new Age(birthDate, DateTime.Now);
 
-        string pluralDays;
+        // string pluralDays;
         string pluralWeeks;
         string pluralMonths;
         string pluralYears;
-        if (age.Days == 1)
-            pluralDays = "Day";
-        else
-            pluralDays = "Days";
+        // if (age.Days == 1)
+        //     pluralDays = "Day";
+        // else
+        //     pluralDays = "Days";
         if (Mathf.Floor(age.Days / 7) == 1)
             pluralWeeks = "Week";
         else
@@ -77,7 +77,9 @@ public class Profile : MonoBehaviour
         {
             if (age.Months < 1)
             {
-                return $"{Mathf.Floor(age.Days / 7)} {pluralWeeks} {age.Days} {pluralDays}";
+                // the days left over after it's divided into weeks
+                int days = age.Days % 7;
+                return $"{Mathf.Floor(age.Days / 7)} {pluralWeeks} {days} {(days == 1 ? "day" : "days")}";
 
             }
 
@@ -126,7 +128,6 @@ public class Profile : MonoBehaviour
 
     public void SortEvents(SortBy sortCriteria, bool scriptOnly = false)
     {
-
     // bool checks if sorting should be forced by script and not clicked. 
     // Sets previous to none before sorting again to avoid logic that checks eventsSortedBy
         if (scriptOnly)
@@ -234,12 +235,6 @@ public class Profile : MonoBehaviour
     public void SortByCurrentCriteria()
     {
         SortEvents(eventsSortedBy, true);
-        // places the gameobjects in order in the hierarchy
-        // for (int i = 0; i < allEvents.Count; i++)
-        // {
-        //     allEvents[i].transform.SetSiblingIndex(i);
-        // }
-
     }
 
     public void LoadEvents()
@@ -309,7 +304,6 @@ public class Profile : MonoBehaviour
         foreach (EventItem item in allEvents)
         {
             //turns elements on or off
-            // item.selfCGT.ShowElement(show);
             item.gameObject.SetActive(show);
         }
     }

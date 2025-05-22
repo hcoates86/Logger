@@ -77,10 +77,7 @@ public class EditButton : MonoBehaviour
 
     void ToggleEditVisibility(bool visible)
     {
-
         editEventTip.SetActive(visible);
-
-
     }
 
     // not currently in use. Completely cancels all editing
@@ -208,14 +205,9 @@ public class EditButton : MonoBehaviour
 
         Age age = new Age(birthDate, DateTime.Now);
 
-        string pluralDays;
         string pluralWeeks;
         string pluralMonths;
         string pluralYears;
-        if (age.Days == 1)
-            pluralDays = "Day";
-        else
-            pluralDays = "Days";
         if (Mathf.Floor(age.Days / 7) == 1)
             pluralWeeks = "Week";
         else
@@ -235,7 +227,8 @@ public class EditButton : MonoBehaviour
         {
             if (age.Months < 1)
             {
-                return $"{Mathf.Floor(age.Days / 7)} {pluralWeeks} {age.Days} {pluralDays}";
+                int days = age.Days % 7;
+                return $"{Mathf.Floor(age.Days / 7)} {pluralWeeks} {days} {(days == 1 ? "day" : "days")}";
             }
             return $"{age.Months} {pluralMonths} {Mathf.Floor(age.Days / 7)} {pluralWeeks}";
         }
