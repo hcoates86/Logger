@@ -79,6 +79,8 @@ public class AppManager : MonoBehaviour
 
     public event Action OnProfileEdit;
 
+    public GameObject archivedStatus;
+
 
     void Awake()
     {
@@ -140,6 +142,21 @@ public class AppManager : MonoBehaviour
         }
     }
 
+    public void ArchiveProfileConfirm()
+    {
+        if (!currentProfile.isArchived)
+        {
+            confirm.Show($"Are you sure you want to archive {currentProfile.named}'s profile?\n Their age will no longer be updated.",
+            currentProfile.ArchiveProfile);
+        }
+        else
+        {
+            confirm.Show($"Are you sure you want to remove {currentProfile.named}'s profile from archive?\n Their age will start to be updated again.",
+            currentProfile.RemoveFromArchive);
+        }
+
+    }
+
     public void DeleteProfileConfirm()
     {
         if (currentProfile == null)
@@ -147,10 +164,9 @@ public class AppManager : MonoBehaviour
             error.SetError("Select a profile before deleting it.");
         }
         else
-            confirm.Show($"Are you sure you want to delete {currentProfile.named}'s profile? \nThis will also delete all of its events.",
+            confirm.Show($"Are you sure you want to delete {currentProfile.named}'s profile?\nThis will also delete all of its events.",
             // \nThis will also delete all relevant notifications.", 
             DeleteProfile);
-
     }
 
     void DeleteProfile()
@@ -494,9 +510,6 @@ public class AppManager : MonoBehaviour
         profileDisplay.Setup(profile);
 
         allProfiles.Add(profile);
-
-        // clicks the new profile to display on the short profile and whatever else
-        // SwitchProfile(profile);
     }
 
     public int CreateNewId()

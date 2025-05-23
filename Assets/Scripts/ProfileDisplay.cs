@@ -62,6 +62,9 @@ public class ProfileDisplay : MonoBehaviour
 
         }
 
+        // Sets the archive status object active or not depending on state
+        AppManager.Instance.archivedStatus.SetActive(profile.isArchived);
+
         if (profile.allEvents.Count > 0)
         {
             SetEvents(profile);

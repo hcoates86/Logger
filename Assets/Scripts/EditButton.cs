@@ -184,7 +184,14 @@ public class EditButton : MonoBehaviour
             profile.named = editInput.nameInput.text;
 
         if (wasDateChanged)
+        {
             profile.birthDate = editInput.dateValidator.dateValue;
+            // if the date is edited when the profile is archived, changes the archived age
+            if (profile.isArchived)
+            {
+                profile.archivedAge = AppManager.Instance.GetAge(profile.birthDate);
+            }
+        }
     
         if (uploadImage.imageUploaded)
         {

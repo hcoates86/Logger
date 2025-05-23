@@ -29,63 +29,39 @@ public class Profile : MonoBehaviour
 
     public Image profileBackground;
 
+    public bool isArchived;
+    public string archivedAge;
+
     void Start()
     {
-        Age = AppManager.Instance.GetAge(birthDate);
+        if (isArchived)
+        {
+            Age = archivedAge;
+        }
+        else
+            Age = AppManager.Instance.GetAge(birthDate);
         LoadEvents();
     }
 
-    // string GetAge()
-    // {
-    //     // if date is default value, treat as null
-    //     if (birthDate == DateTime.MinValue)
-    //         return "";
+    // Archives the profile so it'll always display the same age
+    public void ArchiveProfile()
+    {
+        isArchived = true;
+        archivedAge = Age;
+        SaveProfile();
+        //reload short profile
+        AppManager.Instance.shortProfile.Setup(this);
+    }
 
-    //     // since the age calc can't handle future dates, just list as unborn until date
-    //     if (birthDate > DateTime.Now)
-    //     {
-    //         //uses Noda Time to calculate time until birth.
-    //         return "Unborn";
-    //         // TODO: "Due in x weeks/months"
-    //     }
+    public void RemoveFromArchive()
+    {
+        isArchived = false;
+        Age = AppManager.Instance.GetAge(birthDate);
+        SaveProfile();
+        //reload short profile
+        AppManager.Instance.shortProfile.Setup(this);
+    }
 
-    //     Age age = new Age(birthDate, DateTime.Now);
-
-    //     string pluralWeeks;
-    //     string pluralMonths;
-    //     string pluralYears;
-    //     if (Mathf.Floor(age.Days / 7) == 1)
-    //         pluralWeeks = "Week";
-    //     else
-    //         pluralWeeks = "Weeks";
-
-    //     if (age.Months == 1)
-    //         pluralMonths = "Month";
-    //     else
-    //         pluralMonths = "Months";
-    //     if (age.Years == 1)
-    //         pluralYears = "Year";
-    //     else
-    //         pluralYears = "Years";
-
-
-    //     if (age.Years < 1)
-    //     {
-    //         if (age.Months < 1)
-    //         {
-    //             // the days left over after it's divided into weeks
-    //             int days = age.Days % 7;
-    //             return $"{Mathf.Floor(age.Days / 7)} {pluralWeeks} {days} {(days == 1 ? "day" : "days")}";
-
-    //         }
-
-
-
-    //         return $"{age.Months} {pluralMonths} {Mathf.Floor(age.Days / 7)} {pluralWeeks}";
-    //     }
-
-    //     return $"{age.Years} {pluralYears} {age.Months} {pluralMonths}";
-    // }
 
     public void OnClick()
     {
@@ -108,6 +84,8 @@ public class Profile : MonoBehaviour
         data.totalEventsAdded = totalEventsAdded;
         data.eventsSortedBy = eventsSortedBy;
         data.customSortNum = customSortNum == 0 ? 500 : customSortNum;
+        data.isArchived = isArchived;
+        data.archivedAge = archivedAge;
 
         string json = JsonUtility.ToJson(data);
         string path = $"{Application.persistentDataPath}/profiles";
@@ -361,13 +339,16 @@ public enum Save
     ID, Name, BDay, TotalEvents, SortedBy
 }
 
-    [System.Serializable]
-    public class ProfileData
-    {
-        public int id;
-        public string named;
-        public string birthDate;
-        public int totalEventsAdded;
-        public SortBy eventsSortedBy;
-        public int customSortNum;
-    }
+[System.Serializable]
+public class ProfileData
+{
+    public int id;
+    public string named;
+    public string birthDate;
+    public int totalEventsAdded;
+    public SortBy eventsSortedBy;
+    public int customSortNum;
+    public bool isArchived;
+    public string archivedAge;
+        
+}

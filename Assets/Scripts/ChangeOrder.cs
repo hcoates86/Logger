@@ -8,7 +8,7 @@ public class ChangeOrder : MonoBehaviour
     public TMP_InputField orderInput;
     public CanvasGroupToggle cgt;
 
-    private string tip = "The default number is 500. Set a higher number to move it further down the list, or a lower number to move it up.";
+    // private string tip = "The default number is 500. Set a higher number to move it further down the list, or a lower number to move it up.";
 
     public void SubmitInput()
     {
