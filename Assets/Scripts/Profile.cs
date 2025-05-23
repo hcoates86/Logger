@@ -13,7 +13,8 @@ public class Profile : MonoBehaviour
     public string named;
     // must be in day/month/year format
     public DateTime birthDate;
-    public string Age => GetAge();
+    // public string Age => GetAge();
+    public string Age;
     public Sprite profileImage;
     public Sprite thumbnail;
 
@@ -30,59 +31,61 @@ public class Profile : MonoBehaviour
 
     void Start()
     {
+        Age = AppManager.Instance.GetAge(birthDate);
         LoadEvents();
     }
 
-    string GetAge()
-    {
-        // if date is default value, treat as null
-        if (birthDate == DateTime.MinValue)
-            return "";
+    // string GetAge()
+    // {
+    //     // if date is default value, treat as null
+    //     if (birthDate == DateTime.MinValue)
+    //         return "";
 
-        // since the age calc can't handle future dates, just list as unborn until date
-        if (birthDate > DateTime.Now)
-        {
-            return "Unborn";
-            // TODO: "Due in x weeks/months"
-        }
+    //     // since the age calc can't handle future dates, just list as unborn until date
+    //     if (birthDate > DateTime.Now)
+    //     {
+    //         //uses Noda Time to calculate time until birth.
+    //         return "Unborn";
+    //         // TODO: "Due in x weeks/months"
+    //     }
 
-        Age age = new Age(birthDate, DateTime.Now);
+    //     Age age = new Age(birthDate, DateTime.Now);
 
-        string pluralWeeks;
-        string pluralMonths;
-        string pluralYears;
-        if (Mathf.Floor(age.Days / 7) == 1)
-            pluralWeeks = "Week";
-        else
-            pluralWeeks = "Weeks";
+    //     string pluralWeeks;
+    //     string pluralMonths;
+    //     string pluralYears;
+    //     if (Mathf.Floor(age.Days / 7) == 1)
+    //         pluralWeeks = "Week";
+    //     else
+    //         pluralWeeks = "Weeks";
 
-        if (age.Months == 1)
-            pluralMonths = "Month";
-        else
-            pluralMonths = "Months";
-        if (age.Years == 1)
-            pluralYears = "Year";
-        else
-            pluralYears = "Years";
-
-
-        if (age.Years < 1)
-        {
-            if (age.Months < 1)
-            {
-                // the days left over after it's divided into weeks
-                int days = age.Days % 7;
-                return $"{Mathf.Floor(age.Days / 7)} {pluralWeeks} {days} {(days == 1 ? "day" : "days")}";
-
-            }
+    //     if (age.Months == 1)
+    //         pluralMonths = "Month";
+    //     else
+    //         pluralMonths = "Months";
+    //     if (age.Years == 1)
+    //         pluralYears = "Year";
+    //     else
+    //         pluralYears = "Years";
 
 
+    //     if (age.Years < 1)
+    //     {
+    //         if (age.Months < 1)
+    //         {
+    //             // the days left over after it's divided into weeks
+    //             int days = age.Days % 7;
+    //             return $"{Mathf.Floor(age.Days / 7)} {pluralWeeks} {days} {(days == 1 ? "day" : "days")}";
 
-            return $"{age.Months} {pluralMonths} {Mathf.Floor(age.Days / 7)} {pluralWeeks}";
-        }
+    //         }
 
-        return $"{age.Years} {pluralYears} {age.Months} {pluralMonths}";
-    }
+
+
+    //         return $"{age.Months} {pluralMonths} {Mathf.Floor(age.Days / 7)} {pluralWeeks}";
+    //     }
+
+    //     return $"{age.Years} {pluralYears} {age.Months} {pluralMonths}";
+    // }
 
     public void OnClick()
     {

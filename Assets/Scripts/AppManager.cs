@@ -4,6 +4,9 @@ using UnityEngine;
 using System;
 using System.IO;
 using UnityEngine.UI;
+using NodaTime;
+using NodaTime.TimeZones;
+using Faisalman.AgeCalc;
 
 
 public class AppManager : MonoBehaviour
@@ -105,7 +108,7 @@ public class AppManager : MonoBehaviour
             LoadAllProfiles();
             // loads the value with a default fall-back of created
             string savedSortBy = PlayerPrefs.GetString("profilesSortedBy", "Created");
-            profilesSortedBy = (SortBy) Enum.Parse(typeof(SortBy), savedSortBy);
+            profilesSortedBy = (SortBy)Enum.Parse(typeof(SortBy), savedSortBy);
             SortProfilesByCurrentCriteria();
 
             Debug.Log($"Loading from {path}");
@@ -144,9 +147,9 @@ public class AppManager : MonoBehaviour
             error.SetError("Select a profile before deleting it.");
         }
         else
-        confirm.Show($"Are you sure you want to delete {currentProfile.named}'s profile? \nThis will also delete all of its events.",
-        // \nThis will also delete all relevant notifications.", 
-        DeleteProfile);
+            confirm.Show($"Are you sure you want to delete {currentProfile.named}'s profile? \nThis will also delete all of its events.",
+            // \nThis will also delete all relevant notifications.", 
+            DeleteProfile);
 
     }
 
@@ -287,7 +290,7 @@ public class AppManager : MonoBehaviour
                     // creates the profile from the prefab but doesn't save it since it just loaded it
                     // int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save
                     CreateProfile(profileId, data[1], dateValue, totalEvents, sortedBy, profileHasImage, false, customSortNum);
-                    
+
                 }
             }
         }
@@ -362,7 +365,7 @@ public class AppManager : MonoBehaviour
 
         // doesn't bother rearranging everything if there are fewer than 2 profiles
         if (allProfiles.Count < 2) return;
-        
+
         // places the gameobjects in the order of the list in the hierarchy
         for (int i = 0; i < allProfiles.Count; i++)
         {
@@ -411,39 +414,41 @@ public class AppManager : MonoBehaviour
             profile.name = data[1];
             profile.birthDate = dateValue;
         }
-        
+
     }
 
     public string[] LoadProfileData(string path)
     {
-        if (File.Exists(path)) {
-                string json = File.ReadAllText(path);
-                ProfileData data = JsonUtility.FromJson<ProfileData>(json);
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            ProfileData data = JsonUtility.FromJson<ProfileData>(json);
 
-                string[] dataArray = new string[]
-                {
+            string[] dataArray = new string[]
+            {
                             data.id.ToString(),
                             data.named,
                             data.birthDate,
                             data.totalEventsAdded.ToString(),
                             data.eventsSortedBy.ToString(),
                             data.customSortNum.ToString(),
-                };
+            };
 
-                return dataArray;
-            }
+            return dataArray;
+        }
         else
             return null;
     }
 
     public string[] LoadEventData(string path)
     {
-        if (File.Exists(path)) {
-                string json = File.ReadAllText(path);
-                EventData data = JsonUtility.FromJson<EventData>(json);
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            EventData data = JsonUtility.FromJson<EventData>(json);
 
-                string[] dataArray = new string[]
-                {
+            string[] dataArray = new string[]
+            {
                             data.profileId.ToString(),
                             data.eventId.ToString(),
                             data.title,
@@ -453,10 +458,10 @@ public class AppManager : MonoBehaviour
                             data.hasStartDate.ToString(),
                             data.hasDueDate.ToString(),
                             data.isFavorite.ToString()
-                };
+            };
 
-                return dataArray;
-            }
+            return dataArray;
+        }
         else
             return null;
     }
@@ -469,7 +474,7 @@ public class AppManager : MonoBehaviour
         profile.totalEventsAdded = totalEventsAdded;
         profile.eventsSortedBy = eventsSortedBy;
         profile.customSortNum = customSortNum;
-        
+
         if (imageUploaded)
         {
             profile.profileImage = LoadImage(profile.id);
@@ -530,7 +535,8 @@ public class AppManager : MonoBehaviour
     void CancelEditsAndCloseFullProf()
     {
         EditButton.editing = false;
-        editButton.ToggleButton();
+        if (editButton.pressed)
+            editButton.ToggleButton();
         HideFullProfile();
     }
 
@@ -543,7 +549,10 @@ public class AppManager : MonoBehaviour
             return;
         }
         else
-            editButton.ToggleButton();
+        {
+            if (editButton.pressed)
+                editButton.ToggleButton();
+        }
 
         if (eventEdited || ProfileEdited)
         {
@@ -555,9 +564,14 @@ public class AppManager : MonoBehaviour
 
         if (ProfileEdited)
         {
-            // reloads the image in case a new one was uploaded
-            currentProfile.profileImage = LoadImage(currentProfile.id);
-            currentProfile.thumbnail = LoadThumbnail(currentProfile.id);
+
+            // reloads the image if a new one was uploaded
+            if (EditButton.profileImageReplaced)
+            {
+                currentProfile.profileImage = LoadImage(currentProfile.id);
+                currentProfile.thumbnail = LoadThumbnail(currentProfile.id);
+                EditButton.profileImageReplaced = false;
+            }
 
             shortProfile.Setup(currentProfile);
 
@@ -585,24 +599,25 @@ public class AppManager : MonoBehaviour
 
     Sprite LoadThumbnail(int profileId)
     {
-        string thumbnailPath =  $"{Application.persistentDataPath}/{profileId}/thumbnail.png";
+        string thumbnailPath = $"{Application.persistentDataPath}/{profileId}/thumbnail.png";
         Sprite sprite = LoadPNG(thumbnailPath);
 
         return sprite;
     }
 
-    public Sprite LoadPNG(string filePath) 
+    public Sprite LoadPNG(string filePath)
     {
         Texture2D tex = null;
         byte[] fileData;
 
         Sprite sprite = null;
 
-        if (File.Exists(filePath)) 	{
+        if (File.Exists(filePath))
+        {
             fileData = File.ReadAllBytes(filePath);
-            tex = new Texture2D (2, 2, TextureFormat.BGRA32,false);
+            tex = new Texture2D(2, 2, TextureFormat.BGRA32, false);
             //this will auto-resize the texture dimensions.
-            tex.LoadImage(fileData); 
+            tex.LoadImage(fileData);
         }
         else
         {
@@ -656,6 +671,79 @@ public class AppManager : MonoBehaviour
         changeOrderButton.interactable = activate;
         deleteProfileButton.interactable = activate;
         archiveProfileButton.interactable = activate;
+    }
+
+    string GetFutureDate(DateTime birthDate)
+    {
+        // Convert both dates to NodaTime LocalDate
+        LocalDate today = LocalDate.FromDateTime(DateTime.Today);
+        LocalDate future = LocalDate.FromDateTime(birthDate);
+
+        // Calculate the period between today and the future date
+        Period period = Period.Between(today, future, PeriodUnits.Years | PeriodUnits.Months | PeriodUnits.Days);
+
+        string returnString = "Due in ";
+        if (period.Years > 0)
+            returnString += $"{period.Years} {(period.Years == 1 ? "Year" : "Years")} ";
+        // if period has more than 1 year, include (0) months, otherwise exlude 0 from months
+        if (period.Months > 0 || period.Years > 0)
+            returnString += $"{period.Months} {(period.Months == 1 ? "Month" : "Months")} ";
+        // int weeksLeft = Mathf.FloorToInt(period.Days / 7);
+        int weeksLeft = period.Days % 7;
+        // To display only two measurements at a time, doesn't add weeks if there are more than 0 years
+        if ((weeksLeft > 0 || period.Months > 0) && period.Years < 1)
+            returnString += $"{weeksLeft} {(weeksLeft == 1 ? "Week" : "Weeks")} ";
+        // doesn't add days if there are more than 0 years or months
+        if ((period.Days > 0 || weeksLeft > 0) && period.Years < 1 && period.Months < 1)
+            returnString += $"{period.Days} {(period.Days == 1 ? "Day" : "Days")}";
+        return returnString;
+    }
+
+    public string GetAge(DateTime birthDate)
+    {
+        // if date is default value, treat as null
+        if (birthDate == DateTime.MinValue)
+            return "";
+
+        // since the age calc can't handle future dates, just list as unborn until date
+        if (birthDate > DateTime.Now)
+        {
+            //uses Noda Time to calculate time until birth.
+            return GetFutureDate(birthDate);
+        }
+
+        Age age = new Age(birthDate, DateTime.Now);
+
+        string pluralWeeks;
+        string pluralMonths;
+        string pluralYears;
+        if (Mathf.Floor(age.Days / 7) == 1)
+            pluralWeeks = "Week";
+        else
+            pluralWeeks = "Weeks";
+
+        if (age.Months == 1)
+            pluralMonths = "Month";
+        else
+            pluralMonths = "Months";
+        if (age.Years == 1)
+            pluralYears = "Year";
+        else
+            pluralYears = "Years";
+
+
+        if (age.Years < 1)
+        {
+            if (age.Months < 1)
+            {
+                // the days left over after it's divided into weeks
+                int days = age.Days % 7;
+                return $"{Mathf.Floor(age.Days / 7)} {pluralWeeks} {days} {(days == 1 ? "day" : "days")}";
+
+            }
+            return $"{age.Months} {pluralMonths} {Mathf.Floor(age.Days / 7)} {pluralWeeks}";
+        }
+        return $"{age.Years} {pluralYears} {age.Months} {pluralMonths}";
     }
 }
 

@@ -32,6 +32,8 @@ public class EditButton : MonoBehaviour
     public GameObject editEventTip;
 [SerializeField]
     private bool wasDateChanged = false;
+    public static bool profileImageReplaced = false;
+
 
     void Start()
     {
@@ -160,7 +162,8 @@ public class EditButton : MonoBehaviour
                 }
                 else
                 {
-                    AppManager.Instance.fullProfile.ageText.text = GetAge(editInput.dateValidator.dateValue);
+                    // AppManager.Instance.fullProfile.ageText.text = GetAge(editInput.dateValidator.dateValue);
+                    AppManager.Instance.fullProfile.ageText.text = AppManager.Instance.GetAge(editInput.dateValidator.dateValue);
                     AppManager.Instance.fullProfile.dateText.text = editInput.dateValidator.dateValue.ToString("MM/dd/yyyy");
 
                 }
@@ -185,6 +188,7 @@ public class EditButton : MonoBehaviour
     
         if (uploadImage.imageUploaded)
         {
+            profileImageReplaced = true;
             //save the new image
             uploadImage.Upload(AppManager.Instance.currentProfile.id);
             uploadImage.imageUploaded = false;
@@ -197,53 +201,53 @@ public class EditButton : MonoBehaviour
     }
 
     //copy of the one on profile
-    string GetAge(DateTime birthDate)
-    {
-        // if date is default value, treat as null
-        if (birthDate == DateTime.MinValue)
-            return "";
+    // string GetAge(DateTime birthDate)
+    // {
+    //     // if date is default value, treat as null
+    //     if (birthDate == DateTime.MinValue)
+    //         return "";
 
-        // DateTime currentDate = DateTime.Now;
+    //     // DateTime currentDate = DateTime.Now;
 
-        // since the age calc can't handle future dates, just list as unborn until date
-        if (birthDate > DateTime.Now)
-        {
-            return "Unborn";
-            // TODO: "Due in x weeks/months"
-        }
+    //     // since the age calc can't handle future dates, just list as unborn until date
+    //     if (birthDate > DateTime.Now)
+    //     {
+    //         return "Unborn";
+    //         // TODO: "Due in x weeks/months"
+    //     }
 
-        Age age = new Age(birthDate, DateTime.Now);
+    //     Age age = new Age(birthDate, DateTime.Now);
 
-        string pluralWeeks;
-        string pluralMonths;
-        string pluralYears;
-        if (Mathf.Floor(age.Days / 7) == 1)
-            pluralWeeks = "Week";
-        else
-            pluralWeeks = "Weeks";
+    //     string pluralWeeks;
+    //     string pluralMonths;
+    //     string pluralYears;
+    //     if (Mathf.Floor(age.Days / 7) == 1)
+    //         pluralWeeks = "Week";
+    //     else
+    //         pluralWeeks = "Weeks";
 
-        if (age.Months == 1)
-            pluralMonths = "Month";
-        else
-            pluralMonths = "Months";
-        if (age.Years == 1)
-            pluralYears = "Year";
-        else
-            pluralYears = "Years";
+    //     if (age.Months == 1)
+    //         pluralMonths = "Month";
+    //     else
+    //         pluralMonths = "Months";
+    //     if (age.Years == 1)
+    //         pluralYears = "Year";
+    //     else
+    //         pluralYears = "Years";
 
 
-        if (age.Years < 1)
-        {
-            if (age.Months < 1)
-            {
-                int days = age.Days % 7;
-                return $"{Mathf.Floor(age.Days / 7)} {pluralWeeks} {days} {(days == 1 ? "day" : "days")}";
-            }
-            return $"{age.Months} {pluralMonths} {Mathf.Floor(age.Days / 7)} {pluralWeeks}";
-        }
+    //     if (age.Years < 1)
+    //     {
+    //         if (age.Months < 1)
+    //         {
+    //             int days = age.Days % 7;
+    //             return $"{Mathf.Floor(age.Days / 7)} {pluralWeeks} {days} {(days == 1 ? "day" : "days")}";
+    //         }
+    //         return $"{age.Months} {pluralMonths} {Mathf.Floor(age.Days / 7)} {pluralWeeks}";
+    //     }
 
-        return $"{age.Years} {pluralYears} {age.Months} {pluralMonths}";
-    }
+    //     return $"{age.Years} {pluralYears} {age.Months} {pluralMonths}";
+    // }
 
     // needs to be set on entering edit mode or can accidentally save blank info
     void SetEditInfo()
