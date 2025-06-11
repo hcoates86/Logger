@@ -40,11 +40,15 @@ public class Profile : MonoBehaviour
     // Archives the profile so it'll always display the same age
     public void ArchiveProfile()
     {
-        isArchived = true;
         archivedAge = Age;
+        isArchived = true;
         SaveProfile();
         //reload short profile
         AppManager.Instance.shortProfile.Setup(this);
+        // Reloads the full profile if it's up.
+        if (AppManager.Instance.fullProfileToggle.IsElementVisible())
+            AppManager.Instance.fullProfile.Setup(this);
+
     }
 
     public void RemoveFromArchive()
@@ -53,6 +57,9 @@ public class Profile : MonoBehaviour
         SaveProfile();
         //reload short profile
         AppManager.Instance.shortProfile.Setup(this);
+        // Reloads the full profile if it's up.
+        if (AppManager.Instance.fullProfileToggle.IsElementVisible())
+            AppManager.Instance.fullProfile.Setup(this);
     }
 
 

@@ -88,7 +88,7 @@ namespace Michsky.MUIP
         // Helpers
         bool isInitialized = false;
         Button targetButton;
-        bool isPointerOn;
+        // bool isPointerOn;
         bool waitingForDoubleClickInput;
         const int navHelper = 1; 
 
@@ -390,7 +390,7 @@ namespace Michsky.MUIP
             if (enableButtonSounds && useHoverSound && soundSource != null) { soundSource.PlayOneShot(hoverSound); }
             if (animationSolution == AnimationSolution.ScriptBased) { StartCoroutine(nameof(SetHighlight)); }
          
-            isPointerOn = true;
+            // isPointerOn = true;
             onHover.Invoke();
         }
 
@@ -399,7 +399,7 @@ namespace Michsky.MUIP
             if (!isInteractable) { return; }
             if (animationSolution == AnimationSolution.ScriptBased) { StartCoroutine(nameof(SetNormal)); }
 
-            isPointerOn = false;
+            // isPointerOn = false;
             onLeave.Invoke();
         }
 

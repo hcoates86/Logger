@@ -1077,6 +1077,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0.3
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!225 &43379945
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4532,6 +4538,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &202009221
 GameObject:
   m_ObjectHideFlags: 0
@@ -4745,6 +4757,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0.3
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &230773129
 GameObject:
   m_ObjectHideFlags: 0
@@ -5897,6 +5915,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!225 &285754469
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6649,6 +6673,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!225 &337358345
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -6824,6 +6854,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0.3
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &358922670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9320,6 +9356,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &461946029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10481,6 +10523,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!225 &534926973
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -11056,6 +11104,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &557720435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11785,6 +11839,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!225 &569435494
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -16579,6 +16639,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &826761262
 GameObject:
   m_ObjectHideFlags: 0
@@ -16805,7 +16871,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fixOnEnable: 1
-  fixWithDelay: 1
+  fixWithDelay: 0
 --- !u!114 &839319628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17361,6 +17427,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &851088663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19434,6 +19506,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!225 &941623410
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -22127,6 +22205,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1087194840
 GameObject:
   m_ObjectHideFlags: 0
@@ -30084,6 +30168,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0.3
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!225 &1461441780
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -33212,6 +33302,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!225 &1631881498
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -33510,6 +33606,24 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 839319627}
+        m_TargetAssemblyTypeName: Michsky.MUIP.LayoutGroupFix, Assembly-CSharp
+        m_MethodName: FixLayout
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1642653022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33586,6 +33700,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0.3
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!225 &1643382304
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -36102,6 +36222,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1766094821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37106,6 +37232,7 @@ MonoBehaviour:
   archivedStatus: {fileID: 1205033292}
   archivedStatusFull: {fileID: 1276864467}
   birthdayNames: 
+  debugMode: 0
 --- !u!4 &1819958741
 Transform:
   m_ObjectHideFlags: 0
@@ -41145,6 +41272,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!225 &2031502369
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -42224,6 +42357,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!225 &2105271865
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -42662,6 +42801,12 @@ MonoBehaviour:
   hideAfterSeconds: 0
   destroyAfterFade: 0
   destroyAfterFadeDelay: 0
+  onVisible:
+    m_PersistentCalls:
+      m_Calls: []
+  onInvisible:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!225 &2123144620
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -43998,7 +44143,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 442.2974, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3209577109967629004

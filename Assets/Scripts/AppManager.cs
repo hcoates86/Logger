@@ -199,6 +199,7 @@ public class AppManager : MonoBehaviour
         currentProfile = null;
 
         shortProfileToggle.HideElement();
+        fullProfileToggle.HideElement();
         ActivateProfileButtons(false);
     }
 
@@ -311,8 +312,8 @@ public class AppManager : MonoBehaviour
                         customSortNum = 500;
 
                     // creates the profile from the prefab but doesn't save it since it just loaded it
-                    // int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save
-                    CreateProfile(profileId, data[1], dateValue, totalEvents, sortedBy, profileHasImage, false, customSortNum);
+                    // int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save, bool isarchived, string archivedAge
+                    CreateProfile(profileId, data[1], dateValue, totalEvents, sortedBy, profileHasImage, false, customSortNum, bool.Parse(data[6]), data[7]);
 
                 }
             }
@@ -455,6 +456,8 @@ public class AppManager : MonoBehaviour
                             data.totalEventsAdded.ToString(),
                             data.eventsSortedBy.ToString(),
                             data.customSortNum.ToString(),
+                            data.isArchived.ToString(),
+                            data.archivedAge,
             };
 
             return dataArray;
@@ -489,7 +492,7 @@ public class AppManager : MonoBehaviour
             return null;
     }
 
-    public void CreateProfile(int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save, int customSortNum)
+    public void CreateProfile(int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save, int customSortNum, bool isArchived, string archivedAge)
     {
         Profile profile = Instantiate(profilePrefab, profileContainer);
         profile.id = id;
@@ -497,6 +500,8 @@ public class AppManager : MonoBehaviour
         profile.totalEventsAdded = totalEventsAdded;
         profile.eventsSortedBy = eventsSortedBy;
         profile.customSortNum = customSortNum;
+        profile.isArchived = isArchived;
+        profile.archivedAge = archivedAge;
 
         if (imageUploaded)
         {
@@ -765,23 +770,5 @@ public class AppManager : MonoBehaviour
         }
         return $"{age.Years} {pluralYears} {age.Months} {pluralMonths}";
     }
-
-    // public void CheckIfBirthday(DateTime birthDate)
-    // {
-    //     DateTime today = DateTime.Today;
-        
-
-    //     bool isBirthday = birthDate.Month == today.Month && birthDate.Day == today.Day;
-
-    //     if (isBirthday)
-    //     {
-    //         if (birthdayNames.Length > 0)
-    //         {
-                
-    //         }
-
-    //     }
-
-    // }
 }
 

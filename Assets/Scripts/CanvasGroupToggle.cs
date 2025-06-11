@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CanvasGroupToggle : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class CanvasGroupToggle : MonoBehaviour
     public float destroyAfterFadeDelay = 0.3f;
 
     // public bool hideOnEsc = false;
+    public UnityEvent onVisible;
+    public UnityEvent onInvisible;
 
     void Awake()
     {
@@ -27,9 +30,9 @@ public class CanvasGroupToggle : MonoBehaviour
             element = GetComponent<CanvasGroup>();
         }
         //sets default fade speeds at start
-        if(fadeOutSpeed == 0)
+        if (fadeOutSpeed == 0)
             fadeOutSpeed = 15f;
-        if(fadeInSpeed == 0)
+        if (fadeInSpeed == 0)
             fadeInSpeed = 15f;
 
         if (destroyAfterFadeDelay == 0)
@@ -51,7 +54,7 @@ public class CanvasGroupToggle : MonoBehaviour
             HideElement();
         else
             ShowElement();
-            
+
     }
 
     public void ShowElement()
@@ -60,9 +63,10 @@ public class CanvasGroupToggle : MonoBehaviour
             StartCoroutine(FadeElement(false));
         else
             element.alpha = 1;
-            
+
         element.interactable = true;
         element.blocksRaycasts = true;
+        Visible();
 
         if (hideAfterSeconds > 0)
         {
@@ -91,9 +95,10 @@ public class CanvasGroupToggle : MonoBehaviour
             StartCoroutine(FadeElement(true));
         else
             element.alpha = 0;
-        
+
         element.interactable = false;
         element.blocksRaycasts = false;
+        Invisible();
     }
 
     public void HideElementImmediate()
@@ -101,6 +106,7 @@ public class CanvasGroupToggle : MonoBehaviour
         element.alpha = 0;
         element.interactable = false;
         element.blocksRaycasts = false;
+        Invisible();
     }
 
     public void ShowElementImmediate()
@@ -108,6 +114,7 @@ public class CanvasGroupToggle : MonoBehaviour
         element.alpha = 1;
         element.interactable = true;
         element.blocksRaycasts = true;
+        Visible();
     }
 
     // bool controls whether fading in or out
@@ -145,6 +152,17 @@ public class CanvasGroupToggle : MonoBehaviour
             return false;
         else return true;
 
+    }
+
+    public void Visible()
+    {
+        onVisible.Invoke();
+
+    }
+
+    public void Invisible()
+    {
+        onInvisible.Invoke();
     }
 
     // void AddSelfToList()
