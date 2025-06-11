@@ -25,18 +25,26 @@ public class NewEventHandler : MonoBehaviour
 
     public void OnSubmit()
     {
-        // receives true if dates are valid (includes null for optional dates)
-        if (startDateValidator.SubmitDateValidation() && dueDateValidator.SubmitDateValidation())
+        if (titleInput.text == string.Empty)
         {
-            if (editingItem == null)
-                CreateEvent(titleInput.text, startDateValidator.dateValue, dueDateValidator.dateValue, notesInput.text);
-            else
-                EditEvent(editingItem, titleInput.text, startDateValidator.dateValue, dueDateValidator.dateValue, notesInput.text);
-        }
-        else
-        {
+            AppManager.Instance.error.SetError("Title is required.");
             return;
         }
+
+        // receives true if dates are valid (includes null for optional dates)
+            if (startDateValidator.SubmitDateValidation() && dueDateValidator.SubmitDateValidation())
+            {
+                if (editingItem == null)
+                {
+                    CreateEvent(titleInput.text, startDateValidator.dateValue, dueDateValidator.dateValue, notesInput.text);
+                }
+                else
+                    EditEvent(editingItem, titleInput.text, startDateValidator.dateValue, dueDateValidator.dateValue, notesInput.text);
+            }
+            else
+            {
+                return;
+            }
 
         ClearInput(true);
     }
@@ -157,7 +165,8 @@ public class NewEventHandler : MonoBehaviour
         else
         {
             _editingItem.DisplayOptional();
-            _editingItem.scrollbar.value = 1;
+            if (_editingItem.scrollbar != null)
+                _editingItem.scrollbar.value = 1;
             _editingItem.SaveEvent();
         }
 

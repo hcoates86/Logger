@@ -44,6 +44,9 @@ public class AppManager : MonoBehaviour
 
     public bool canEdit = false;
 
+    // Options
+    public bool showArchivedBirthdays = true;
+
     // colors of the pressed and unpressed profile items
     private const string PRESSED_HEX = "#696A8C";
     private const string NORMAL_HEX = "#758398";
@@ -80,6 +83,11 @@ public class AppManager : MonoBehaviour
     public event Action OnProfileEdit;
 
     public GameObject archivedStatus;
+    public GameObject archivedStatusFull;
+
+    public string birthdayNames;
+
+    public bool debugMode;
 
 
     void Awake()
@@ -118,7 +126,6 @@ public class AppManager : MonoBehaviour
 
         ColorUtility.TryParseHtmlString(NORMAL_HEX, out normalColor);
         ColorUtility.TryParseHtmlString(PRESSED_HEX, out pressedColor);
-
 
         ActivateProfileButtons(false);
 
@@ -758,5 +765,23 @@ public class AppManager : MonoBehaviour
         }
         return $"{age.Years} {pluralYears} {age.Months} {pluralMonths}";
     }
+
+    // public void CheckIfBirthday(DateTime birthDate)
+    // {
+    //     DateTime today = DateTime.Today;
+        
+
+    //     bool isBirthday = birthDate.Month == today.Month && birthDate.Day == today.Day;
+
+    //     if (isBirthday)
+    //     {
+    //         if (birthdayNames.Length > 0)
+    //         {
+                
+    //         }
+
+    //     }
+
+    // }
 }
 

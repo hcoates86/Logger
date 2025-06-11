@@ -40,7 +40,6 @@ public class ProfileDisplay : MonoBehaviour
                 string[] ageSplit = profile.Age.Split(" ");
                 string shortAge = $"{ageSplit[0]} {ageSplit[1]}";
                 ageText.text = shortAge;
-
             }
         }
 
@@ -64,6 +63,8 @@ public class ProfileDisplay : MonoBehaviour
 
         // Sets the archive status object active or not depending on state
         AppManager.Instance.archivedStatus.SetActive(profile.isArchived);
+        //TEST
+        AppManager.Instance.archivedStatusFull.SetActive(profile.isArchived);
 
         if (profile.allEvents.Count > 0)
         {

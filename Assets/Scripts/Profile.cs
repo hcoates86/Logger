@@ -13,8 +13,8 @@ public class Profile : MonoBehaviour
     public string named;
     // must be in day/month/year format
     public DateTime birthDate;
-    // public string Age => GetAge();
-    public string Age;
+    public string Age => isArchived ? archivedAge : AppManager.Instance.GetAge(birthDate);
+
     public Sprite profileImage;
     public Sprite thumbnail;
 
@@ -34,12 +34,6 @@ public class Profile : MonoBehaviour
 
     void Start()
     {
-        if (isArchived)
-        {
-            Age = archivedAge;
-        }
-        else
-            Age = AppManager.Instance.GetAge(birthDate);
         LoadEvents();
     }
 
@@ -56,7 +50,6 @@ public class Profile : MonoBehaviour
     public void RemoveFromArchive()
     {
         isArchived = false;
-        Age = AppManager.Instance.GetAge(birthDate);
         SaveProfile();
         //reload short profile
         AppManager.Instance.shortProfile.Setup(this);
@@ -98,12 +91,12 @@ public class Profile : MonoBehaviour
 
         File.WriteAllText($"{Application.persistentDataPath}/profiles/profile{id}.json", json);
     }
-    
+
 
     public void SortEvents(SortBy sortCriteria, bool scriptOnly = false)
     {
-    // bool checks if sorting should be forced by script and not clicked. 
-    // Sets previous to none before sorting again to avoid logic that checks eventsSortedBy
+        // bool checks if sorting should be forced by script and not clicked. 
+        // Sets previous to none before sorting again to avoid logic that checks eventsSortedBy
         if (scriptOnly)
         {
             eventsSortedBy = SortBy.None;
@@ -218,8 +211,14 @@ public class Profile : MonoBehaviour
         string getJson = "*.json";
 
         AppManager.Instance.LoadEventData(path);
+        if (AppManager.Instance.debugMode)
+        {
+            Debug.Log("Attempting to load events from " + path);
+            Debug.Log("Path exists? " + Directory.Exists(path));
 
-         if (Directory.Exists(path))
+        }
+
+        if (Directory.Exists(path))
         {
             string[] filePaths = Directory.GetFiles(path, getJson);
             if (filePaths.Length > 0)
@@ -231,6 +230,9 @@ public class Profile : MonoBehaviour
                     // parses the ids
                     int profileId = int.Parse(data[0]);
                     int eventId = int.Parse(data[1]);
+                    
+                    if (AppManager.Instance.debugMode)
+                        Debug.Log($"Loading event with: {profileId}, {eventId}, {data[2]}, {data[3]}, {data[4]}, {data[5]}, {bool.Parse(data[6])}, {bool.Parse(data[7])}, {bool.Parse(data[8])}");
 
                     // creates the event from the prefab but doesn't save it since it just loaded it
                     CreateEventGameObject(profileId, eventId, data[2], data[3], data[4], data[5], bool.Parse(data[6]), bool.Parse(data[7]), bool.Parse(data[8]));
@@ -242,7 +244,7 @@ public class Profile : MonoBehaviour
     }
 
 
-    void CreateEventGameObject(int profileId, int eventId, string title, string notes, string startDate, 
+    void CreateEventGameObject(int profileId, int eventId, string title, string notes, string startDate,
     string dueDate, bool hasStartDate, bool hasDueDate, bool isFavorite)
     {
         GameObject newEvent;
@@ -324,6 +326,30 @@ public class Profile : MonoBehaviour
             item.gameObject.SetActive(show);
         }
     }
+    
+
+    // void CheckIfBirthday()
+    // {
+    //     DateTime today = DateTime.Today;
+        
+
+    //     bool isBirthday = birthDate.Month == today.Month && birthDate.Day == today.Day;
+
+    //     if (isBirthday)
+    //     {
+    //         // If it already contains names add an "and" and space
+    //         if (AppManager.Instance.birthdayNames.Length > 0)
+    //         {
+    //             AppManager.Instance.birthdayNames += $"and {named}";
+    //         }
+    //         else
+    //             AppManager.Instance.birthdayNames += named;
+
+
+    //     }
+
+    // }
+
 }
 
 public enum SortBy
