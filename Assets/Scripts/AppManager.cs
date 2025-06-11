@@ -85,7 +85,7 @@ public class AppManager : MonoBehaviour
     public GameObject archivedStatus;
     public GameObject archivedStatusFull;
 
-    public string birthdayNames;
+    // public string birthdayNames;
 
     public bool debugMode;
 

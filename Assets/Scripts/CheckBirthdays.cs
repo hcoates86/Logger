@@ -2,9 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CheckBirthdays : MonoBehaviour
 {
+    private string birthdayNames = string.Empty;
+    [SerializeField] private TMP_Text birthdayText;
+    [SerializeField] private CanvasGroupToggle birthdayContainerToggle;
+
     private DateTime today;
     // Start is called before the first frame update
     void Start()
@@ -12,6 +17,11 @@ public class CheckBirthdays : MonoBehaviour
         today = DateTime.Today;
 
         CheckAllBirthdays(AppManager.Instance.showArchivedBirthdays);
+        if (birthdayNames.Length > 0)
+        {
+            birthdayText.text += birthdayNames + "!";
+            birthdayContainerToggle.ShowElement();
+        }
     }
 
     void CheckAllBirthdays(bool includeArchived)
@@ -26,18 +36,17 @@ public class CheckBirthdays : MonoBehaviour
             if (CheckIfBirthday(profile.birthDate))
             {
                 // If string already contains names add an "and" and space
-                if (AppManager.Instance.birthdayNames.Length > 0)
+                if (birthdayNames.Length > 0)
                 {
-                    AppManager.Instance.birthdayNames += $"and {profile.named}";
+                    birthdayNames += $" and {profile.named}";
                 }
                 else
-                    AppManager.Instance.birthdayNames += profile.named;
+                    birthdayNames += profile.named;
             }
 
         }
 
     }
-
 
 
     bool CheckIfBirthday(DateTime birthDate)
