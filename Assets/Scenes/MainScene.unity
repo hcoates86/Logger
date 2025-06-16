@@ -7113,6 +7113,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1184647356}
+        m_TargetAssemblyTypeName: Audio, Assembly-CSharp
+        m_MethodName: PlayCancel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &358922671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8614,10 +8626,10 @@ RectTransform:
   - {fileID: 664247101}
   m_Father: {fileID: 1677435386}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 51.03, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 51.03, y: -25}
+  m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &441117018
 MonoBehaviour:
@@ -23067,7 +23079,7 @@ MonoBehaviour:
   confirm: {fileID: 8300000, guid: 5910a626e2b9a8341a95adf58494e9d4, type: 3}
   click: {fileID: 8300000, guid: 3e699a344b70e514986d9347d580b400, type: 3}
   switchProfile: {fileID: 8300000, guid: 0e39daebfe277e840a42627f09f80690, type: 3}
-  sort: {fileID: 8300000, guid: beb30ffb96af592449d80a75d14fd8ff, type: 3}
+  sort: {fileID: 8300000, guid: c524d772b54c5504abe96ee69092a46c, type: 3}
   errorClip: {fileID: 8300000, guid: 1684363db68ec2144a0d5b7ac3f4f668, type: 3}
   fullView: {fileID: 8300000, guid: 8d6607d35b223a24f8bcdd0d9a82bc3c, type: 3}
 --- !u!1 &1189160186
@@ -29273,7 +29285,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1184647356}
         m_TargetAssemblyTypeName: Audio, Assembly-CSharp
-        m_MethodName: PlayClick
+        m_MethodName: PlayCancel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -34017,10 +34029,10 @@ RectTransform:
   - {fileID: 448475337}
   m_Father: {fileID: 1572602107}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 764.97, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 764.97, y: -25}
+  m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1677435387
 MonoBehaviour:
@@ -34131,6 +34143,18 @@ MonoBehaviour:
       - m_Target: {fileID: 43379944}
         m_TargetAssemblyTypeName: CanvasGroupToggle, Assembly-CSharp
         m_MethodName: HideElement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1184647356}
+        m_TargetAssemblyTypeName: Audio, Assembly-CSharp
+        m_MethodName: PlayCancel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -34507,6 +34531,18 @@ MonoBehaviour:
       - m_Target: {fileID: 229420963}
         m_TargetAssemblyTypeName: CanvasGroupToggle, Assembly-CSharp
         m_MethodName: HideElement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1184647356}
+        m_TargetAssemblyTypeName: Audio, Assembly-CSharp
+        m_MethodName: PlayCancel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -39552,7 +39588,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1184647356}
         m_TargetAssemblyTypeName: Audio, Assembly-CSharp
-        m_MethodName: PlayClick
+        m_MethodName: PlayCancel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -42120,6 +42156,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1184647356}
+        m_TargetAssemblyTypeName: Audio, Assembly-CSharp
+        m_MethodName: PlayCancel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onDoubleClick:
     m_PersistentCalls:
       m_Calls: []
@@ -43198,7 +43246,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 442.2974, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3209577109967629004

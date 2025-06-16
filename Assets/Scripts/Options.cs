@@ -8,11 +8,9 @@ public class Options : MonoBehaviour
 {
     public Toggle soundToggle;
     public Toggle archivedToggle;
-    // public static bool mainScreenNormalView = true;
+
     public static bool playSounds = true;
     public static bool showArchivedBirthdays = true;
-
-    private int currentInt;
 
     void Start()
     {
@@ -25,10 +23,16 @@ public class Options : MonoBehaviour
         LoadOptions();
     }
 
+    public void CheckSounds()
+    {
+
+            Debug.Log($"playSounds: {playSounds}");
+        
+    }
+
     // Saves on toggle
     public void ChangeSounds(bool isOn)
     {
-        Debug.Log("ChangeSounds Bool value: " + isOn);
         if (isOn)
         {
             playSounds = true;
@@ -36,14 +40,13 @@ public class Options : MonoBehaviour
         }
         else
         {
-            playSounds = true;
-            PlayerPrefs.SetInt("playSounds", 0);    
+            playSounds = false;
+            PlayerPrefs.SetInt("playSounds", 0);
         }
     }
 
     public void ChangeArchived(bool isOn)
     {
-        Debug.Log("ChangeArchived Bool value: " + isOn);
         if (isOn)
         {
             showArchivedBirthdays = true;
@@ -55,12 +58,6 @@ public class Options : MonoBehaviour
             PlayerPrefs.SetInt("showArchivedBirthdays", 0);    
 
         }
-    }
-
-    public void CheckPlayerPrefsValues()
-    {
-        Debug.Log("playSounds " + PlayerPrefs.GetInt("playSounds"));
-        Debug.Log("showArchivedBirthdays " + PlayerPrefs.GetInt("showArchivedBirthdays"));
     }
 
     void LoadOptions()

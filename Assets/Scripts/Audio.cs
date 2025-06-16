@@ -33,42 +33,58 @@ public class Audio : MonoBehaviour
 
     public void PlayClip(AudioClip audioClip)
     {
+        if (Options.playSounds)
         audioSource.PlayOneShot(audioClip);
     }
 
+
     public void PlayCancel()
     {
+        if (Options.playSounds)
         audioSource.PlayOneShot(cancel);
-
     }
+    
     public void PlayConfirm()
     {
-        audioSource.PlayOneShot(confirm);
-
+        if (Options.playSounds)
+            audioSource.PlayOneShot(confirm);
     }
+    
     public void PlayButtonClick()
     {
-        audioSource.PlayOneShot(buttonClick);
+        if (Options.playSounds)
+            audioSource.PlayOneShot(buttonClick);
     }
+
     public void PlayClick()
     {
-        audioSource.PlayOneShot(click);
+        if (Options.playSounds)
+            audioSource.PlayOneShot(click);
     }
+
     public void PlayError()
     {
+        if (Options.playSounds)
         audioSource.PlayOneShot(errorClip);
     }
+
     public void PlaySort()
     {
+        if (Options.playSounds)
         audioSource.PlayOneShot(sort);
     }
+
     public void PlaySwitch()
     {
+        if (Options.playSounds)
         audioSource.PlayOneShot(switchProfile);
     }
+
     public void PlayFullView()
     {
+        if (Options.playSounds)
         audioSource.PlayOneShot(fullView);
     }
+
 
 }
