@@ -16,7 +16,7 @@ public class CheckBirthdays : MonoBehaviour
     {
         today = DateTime.Today;
 
-        CheckAllBirthdays(AppManager.Instance.showArchivedBirthdays);
+        CheckAllBirthdays(Options.showArchivedBirthdays);
         if (birthdayNames.Length > 0)
         {
             birthdayText.text += birthdayNames + "!";

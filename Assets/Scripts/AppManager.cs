@@ -45,7 +45,7 @@ public class AppManager : MonoBehaviour
     public bool canEdit = false;
 
     // Options
-    public bool showArchivedBirthdays = true;
+    // public bool showArchivedBirthdays = true;
 
     // colors of the pressed and unpressed profile items
     private const string PRESSED_HEX = "#696A8C";
