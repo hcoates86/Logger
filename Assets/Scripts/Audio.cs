@@ -16,6 +16,7 @@ public class Audio : MonoBehaviour
     public AudioClip switchProfile;
     public AudioClip sort;
     public AudioClip errorClip;
+    public AudioClip fullView;
 
     void Awake()
     {
@@ -65,4 +66,9 @@ public class Audio : MonoBehaviour
     {
         audioSource.PlayOneShot(switchProfile);
     }
+    public void PlayFullView()
+    {
+        audioSource.PlayOneShot(fullView);
+    }
+
 }
