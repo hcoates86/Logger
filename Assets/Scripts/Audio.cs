@@ -7,12 +7,15 @@ public class Audio : MonoBehaviour
     public static Audio Instance { get; private set; }
 
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip buttonClick;
-    [SerializeField] private AudioClip deleteEvent;
-    [SerializeField] private AudioClip deleteProfile;
-    [SerializeField] private AudioClip cancel;
-    [SerializeField] private AudioClip confirm;
-    [SerializeField] private AudioClip click;
+    public AudioClip buttonClick;
+    public AudioClip deleteEvent;
+    public AudioClip deleteProfile;
+    public AudioClip cancel;
+    public AudioClip confirm;
+    public AudioClip click;
+    public AudioClip switchProfile;
+    public AudioClip sort;
+    public AudioClip errorClip;
 
     void Awake()
     {
@@ -30,5 +33,36 @@ public class Audio : MonoBehaviour
     public void PlayClip(AudioClip audioClip)
     {
         audioSource.PlayOneShot(audioClip);
+    }
+
+    public void PlayCancel()
+    {
+        audioSource.PlayOneShot(cancel);
+
+    }
+    public void PlayConfirm()
+    {
+        audioSource.PlayOneShot(confirm);
+
+    }
+    public void PlayButtonClick()
+    {
+        audioSource.PlayOneShot(buttonClick);
+    }
+    public void PlayClick()
+    {
+        audioSource.PlayOneShot(click);
+    }
+    public void PlayError()
+    {
+        audioSource.PlayOneShot(errorClip);
+    }
+    public void PlaySort()
+    {
+        audioSource.PlayOneShot(sort);
+    }
+    public void PlaySwitch()
+    {
+        audioSource.PlayOneShot(switchProfile);
     }
 }

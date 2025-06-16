@@ -201,6 +201,8 @@ public class AppManager : MonoBehaviour
         shortProfileToggle.HideElement();
         fullProfileToggle.HideElement();
         ActivateProfileButtons(false);
+
+        Audio.Instance.PlayClip(Audio.Instance.deleteProfile);
     }
 
     public void DeleteItemAtPath(string path)
@@ -252,6 +254,7 @@ public class AppManager : MonoBehaviour
 
     public void SwitchProfile(Profile profile)
     {
+        Audio.Instance.PlayClip(Audio.Instance.switchProfile);
         canEdit = false;
         if (editButton.pressed)
             editButton.ToggleButton();

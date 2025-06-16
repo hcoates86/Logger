@@ -156,13 +156,15 @@ public class CanvasGroupToggle : MonoBehaviour
 
     public void Visible()
     {
-        onVisible.Invoke();
+        if (onVisible != null)
+            onVisible.Invoke();
 
     }
 
     public void Invisible()
     {
-        onInvisible.Invoke();
+        if (onInvisible != null)
+            onInvisible.Invoke();
     }
 
     // void AddSelfToList()

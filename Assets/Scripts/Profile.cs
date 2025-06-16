@@ -333,30 +333,6 @@ public class Profile : MonoBehaviour
             item.gameObject.SetActive(show);
         }
     }
-    
-
-    // void CheckIfBirthday()
-    // {
-    //     DateTime today = DateTime.Today;
-        
-
-    //     bool isBirthday = birthDate.Month == today.Month && birthDate.Day == today.Day;
-
-    //     if (isBirthday)
-    //     {
-    //         // If it already contains names add an "and" and space
-    //         if (AppManager.Instance.birthdayNames.Length > 0)
-    //         {
-    //             AppManager.Instance.birthdayNames += $"and {named}";
-    //         }
-    //         else
-    //             AppManager.Instance.birthdayNames += named;
-
-
-    //     }
-
-    // }
-
 }
 
 public enum SortBy
