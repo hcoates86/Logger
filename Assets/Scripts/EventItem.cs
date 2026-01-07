@@ -111,13 +111,6 @@ public class EventItem : MonoBehaviour
         Audio.Instance.PlayClip(Audio.Instance.deleteEvent);
     }
 
-    void HandleNotifications()
-    {
-        string newID = profileId.ToString() + eventId.ToString();
-        var notificationID = int.Parse(newID);
-        // AndroidNotificationCenter.SendNotificationWithExplicitID(notification, "channel_id", notificationId);
-    }
-
     // brings up the event modal. Attached to edit button on eventitems prefabs
     public void StartEditEvent()
     {
