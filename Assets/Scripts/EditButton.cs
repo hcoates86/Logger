@@ -207,55 +207,6 @@ public class EditButton : MonoBehaviour
         editing = false;
     }
 
-    //copy of the one on profile
-    // string GetAge(DateTime birthDate)
-    // {
-    //     // if date is default value, treat as null
-    //     if (birthDate == DateTime.MinValue)
-    //         return "";
-
-    //     // DateTime currentDate = DateTime.Now;
-
-    //     // since the age calc can't handle future dates, just list as unborn until date
-    //     if (birthDate > DateTime.Now)
-    //     {
-    //         return "Unborn";
-    //         // TODO: "Due in x weeks/months"
-    //     }
-
-    //     Age age = new Age(birthDate, DateTime.Now);
-
-    //     string pluralWeeks;
-    //     string pluralMonths;
-    //     string pluralYears;
-    //     if (Mathf.Floor(age.Days / 7) == 1)
-    //         pluralWeeks = "Week";
-    //     else
-    //         pluralWeeks = "Weeks";
-
-    //     if (age.Months == 1)
-    //         pluralMonths = "Month";
-    //     else
-    //         pluralMonths = "Months";
-    //     if (age.Years == 1)
-    //         pluralYears = "Year";
-    //     else
-    //         pluralYears = "Years";
-
-
-    //     if (age.Years < 1)
-    //     {
-    //         if (age.Months < 1)
-    //         {
-    //             int days = age.Days % 7;
-    //             return $"{Mathf.Floor(age.Days / 7)} {pluralWeeks} {days} {(days == 1 ? "day" : "days")}";
-    //         }
-    //         return $"{age.Months} {pluralMonths} {Mathf.Floor(age.Days / 7)} {pluralWeeks}";
-    //     }
-
-    //     return $"{age.Years} {pluralYears} {age.Months} {pluralMonths}";
-    // }
-
     // needs to be set on entering edit mode or can accidentally save blank info
     void SetEditInfo()
     {

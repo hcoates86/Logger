@@ -12,11 +12,19 @@ public class UploadImage : MonoBehaviour
 
     public bool imageUploaded = false;
     private Texture2D texture;
+    private const int imageSize = 1024;
+    private const int thumbnailSize = 256;
 
     void OnDisable()
     {
         imageUploaded = false;
         texture = null;
+    }
+
+    void ResizePolicy(ref int width, ref int height)
+    {
+        width = imageSize;
+        height = imageSize;
     }
 
     public void PickImage()
@@ -33,9 +41,40 @@ public class UploadImage : MonoBehaviour
                 {
                     return;
                 }
+        // ImageCropper.Instance.Show( Texture image, CropResult onCrop, Settings settings = null, ImageResizePolicy croppedImageResizePolicy = null )
+			if( ImageCropper.Instance.IsOpen ) return;
+
+                ImageCropper.Instance.Show(
+                image: texture,
+                onCrop: (bool result, Texture original, Texture2D cropped) =>
+                {
+                    if (!result)
+                    {
+                        Debug.Log("Cropping canceled.");
+                        return;
+                    }
+
+                    // assign to UI Image using a Sprite:
+                    displayImage.sprite = Sprite.Create(cropped, new Rect(0, 0, cropped.width, cropped.height), new Vector2(0.5f, 0.5f));
+                },
+                settings: new ImageCropper.Settings()
+                {
+                    // autoZoomEnabled = true,
+                    // imageBackground = Color.clear, // transparent background
+                    markTextureNonReadable = false,
+                    // square selection
+                    selectionMinAspectRatio = 1,
+                    selectionMaxAspectRatio = 1
+                },
+                croppedImageResizePolicy: ( ref int width, ref int height ) =>
+                {
+                    width = imageSize;
+                    height = imageSize;
+                }
+            );
                 //resizes the image to fit
-                texture = ResizeTexture(texture, 800, 800);
-                displayImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+                // texture = ResizeTexture(texture, 800, 800);
+                // displayImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
                 // sets bool true to note an image was uploaded for inputhandler
                 imageUploaded = true;
                 EditButton.editing = true;
@@ -62,7 +101,7 @@ public class UploadImage : MonoBehaviour
 
     void SaveThumbnail(int profileId)
     {
-        texture = ResizeTexture(texture, 300, 300);
+        texture = ResizeTexture(texture, thumbnailSize, thumbnailSize);
         byte[] imageData = texture.EncodeToPNG();
         string imagepath = $"{Application.persistentDataPath}/{profileId}";
         if (!Directory.Exists(imagepath))
