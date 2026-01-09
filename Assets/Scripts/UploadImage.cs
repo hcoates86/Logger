@@ -54,6 +54,7 @@ public class UploadImage : MonoBehaviour
                         return;
                     }
 
+                    texture = cropped;
                     // assign to UI Image using a Sprite:
                     displayImage.sprite = Sprite.Create(cropped, new Rect(0, 0, cropped.width, cropped.height), new Vector2(0.5f, 0.5f));
                 },
@@ -72,9 +73,6 @@ public class UploadImage : MonoBehaviour
                     height = imageSize;
                 }
             );
-                //resizes the image to fit
-                // texture = ResizeTexture(texture, 800, 800);
-                // displayImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
                 // sets bool true to note an image was uploaded for inputhandler
                 imageUploaded = true;
                 EditButton.editing = true;

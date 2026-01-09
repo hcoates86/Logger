@@ -59,6 +59,7 @@ public class CanvasGroupToggle : MonoBehaviour
 
     public void ShowElement()
     {
+        Visible();
         if (fadeIn)
             StartCoroutine(FadeElement(false));
         else
@@ -66,7 +67,6 @@ public class CanvasGroupToggle : MonoBehaviour
 
         element.interactable = true;
         element.blocksRaycasts = true;
-        Visible();
 
         if (hideAfterSeconds > 0)
         {
@@ -111,10 +111,10 @@ public class CanvasGroupToggle : MonoBehaviour
 
     public void ShowElementImmediate()
     {
+        Visible();
         element.alpha = 1;
         element.interactable = true;
         element.blocksRaycasts = true;
-        Visible();
     }
 
     // bool controls whether fading in or out

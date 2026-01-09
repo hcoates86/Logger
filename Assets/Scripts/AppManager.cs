@@ -48,8 +48,10 @@ public class AppManager : MonoBehaviour
     // public bool showArchivedBirthdays = true;
 
     // colors of the pressed and unpressed profile items
-    private const string PRESSED_HEX = "#696A8C";
-    private const string NORMAL_HEX = "#758398";
+    // private const string PRESSED_HEX = "#696A8C";
+    // private const string NORMAL_HEX = "#758398";
+    private const string PRESSED_HEX = "#5A2E82";
+    private const string NORMAL_HEX = "#FE5E78";
 
     private Color pressedColor;
     private Color normalColor;
