@@ -75,9 +75,10 @@ public class AppManager : MonoBehaviour
         }
     }
 
-    public Button changeOrderButton;
-    public Button deleteProfileButton;
-    public Button archiveProfileButton;
+    // changing this
+    // public ButtonHandler changeOrderButton;
+    public ButtonHandler deleteProfileButton;
+    public ButtonHandler archiveProfileButton;
 
     public SortBy profilesSortedBy = SortBy.Created;
     private RectTransform profileContainerRect;
@@ -698,9 +699,16 @@ public class AppManager : MonoBehaviour
     // enables or disables buttons that can only be used with currentProfile
     public void ActivateProfileButtons(bool activate)
     {
-        changeOrderButton.interactable = activate;
-        deleteProfileButton.interactable = activate;
-        archiveProfileButton.interactable = activate;
+        if (activate)
+        {
+            deleteProfileButton.EnableButton();
+            archiveProfileButton.EnableButton();
+        }
+        else
+        {
+            deleteProfileButton.DisableButton();
+            archiveProfileButton.DisableButton();
+        }
     }
 
     string GetFutureDate(DateTime birthDate)

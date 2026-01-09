@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ImportExport : MonoBehaviour
 {
-    const string FILENAME = "petlog.bak";
+    const string FILENAME = "petlog.prof";
     // changeable by user
     string path;
 
@@ -14,7 +14,8 @@ public class ImportExport : MonoBehaviour
 
     void ImportFile()
     {
-        // unwrap save and place in folder, BUT don't overwrite other files. Maybe assign new random large ID on export?
+        // unwrap save and place in folder, BUT don't overwrite other files
+        // or place in own imported folder and load them after initial profiles
 
     }
 

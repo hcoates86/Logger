@@ -29,8 +29,5 @@ public class FavoriteEventDisplay : MonoBehaviour
             dueDate.text = "";
 
         canvasGroupToggle.ShowElement();
-         
-
     }
-
 }

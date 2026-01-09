@@ -43,9 +43,7 @@ public class CheckBirthdays : MonoBehaviour
                 else
                     birthdayNames += profile.named;
             }
-
         }
-
     }
 
 
@@ -58,6 +56,5 @@ public class CheckBirthdays : MonoBehaviour
             return true;
         }
         else return false;
-
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class CanvasGroupToggle : MonoBehaviour
 {
@@ -18,17 +19,36 @@ public class CanvasGroupToggle : MonoBehaviour
     public bool destroyAfterFade = false;
     public float destroyAfterFadeDelay = 0.3f;
 
-    // public bool hideOnEsc = false;
-    public UnityEvent onVisible;
-    public UnityEvent onInvisible;
+    public bool addSelf = true;
+
+    // Global registry of active CanvasGroupToggles, added only if hideOnEsc is true
+    public static readonly HashSet<CanvasGroupToggle> cgtHash = new HashSet<CanvasGroupToggle>();
+    public bool hideOnEsc = false;
+    public bool fixLayoutOnVisible = false;
+    RectTransform rect;
+    float fixDelay = 0.025f;
+
+    public UnityEvent onVisible = new UnityEvent();
+    public UnityEvent onInvisible = new UnityEvent();
 
     void Awake()
     {
-        // if element isn't set, attempts to get the canvas group on the gameobject it's attached to
-        if (element == null)
+        if (addSelf && element == null)
         {
-            element = GetComponent<CanvasGroup>();
+            // Checks if CanvasGroup is present and adds it if not.
+            if (!TryGetComponent<CanvasGroup>(out element))
+            {
+                element = gameObject.AddComponent<CanvasGroup>();
+            }
         }
+        else if (!addSelf && element == null)
+        {
+            Debug.LogError($"Element on CanvasGroupToggle on {gameObject.name} has not been set and addSelf is off.");
+        }
+
+        if (fixLayoutOnVisible)
+            rect = GetComponent<RectTransform>();
+
         //sets default fade speeds at start
         if (fadeOutSpeed == 0)
             fadeOutSpeed = 15f;
@@ -46,11 +66,13 @@ public class CanvasGroupToggle : MonoBehaviour
         {
             ShowElementImmediate();
         }
+
+        AddSelfToList();
     }
 
     public void ToggleShow()
     {
-        if (element.alpha == 1)
+        if (IsElementVisible())
             HideElement();
         else
             ShowElement();
@@ -59,15 +81,12 @@ public class CanvasGroupToggle : MonoBehaviour
 
     public void ShowElement()
     {
-        Visible();
         if (fadeIn)
             StartCoroutine(FadeElement(false));
         else
-            element.alpha = 1;
-
-        element.interactable = true;
-        element.blocksRaycasts = true;
-
+        {
+            ShowElementImmediate();
+        }
         if (hideAfterSeconds > 0)
         {
             StartCoroutine(HideAfterDelay());
@@ -84,23 +103,40 @@ public class CanvasGroupToggle : MonoBehaviour
 
     IEnumerator HideAfterDelay()
     {
-        yield return new WaitForSeconds(hideAfterSeconds);
+        yield return new WaitForSecondsRealtime(hideAfterSeconds);
         HideElement();
-
     }
 
     public void HideElement()
     {
+        element.interactable = false;
+        element.blocksRaycasts = false;
+
         if (fadeOut)
             StartCoroutine(FadeElement(true));
         else
+        {
             element.alpha = 0;
-
-        element.interactable = false;
-        element.blocksRaycasts = false;
-        Invisible();
+            Invisible();
+        }
     }
 
+    // if there's a delay, waits before hiding it
+    public void HideElement(float delay)
+    {
+        element.interactable = false;
+        element.blocksRaycasts = false;
+
+        StartCoroutine(HideDelayed(delay));
+    }
+
+    IEnumerator HideDelayed(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay);
+        HideElement();
+    }
+
+    // Bypasses any fadeouts set.
     public void HideElementImmediate()
     {
         element.alpha = 0;
@@ -109,12 +145,33 @@ public class CanvasGroupToggle : MonoBehaviour
         Invisible();
     }
 
+    // Bypasses any fadeouts set.
     public void ShowElementImmediate()
     {
+        if (fixLayoutOnVisible)
+        {
+            StartCoroutine(WaitForFrameThenShowElement());
+        }
+        else
+        {
+            Visible();
+            element.alpha = 1;
+            element.interactable = true;
+            element.blocksRaycasts = true;
+        }
+    }
+
+    IEnumerator WaitForFrameThenShowElement()
+    {
         Visible();
-        element.alpha = 1;
+        // changes these first as some UI changes when interactable is changed
         element.interactable = true;
         element.blocksRaycasts = true;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+        // waits a short time
+        yield return new WaitForSecondsRealtime(fixDelay);
+        element.alpha = 1;
+
     }
 
     // bool controls whether fading in or out
@@ -124,25 +181,30 @@ public class CanvasGroupToggle : MonoBehaviour
         {
             while (element != null && element.alpha > 0)
             {
-                element.alpha -= 0.1f * fadeOutSpeed * Time.deltaTime;
+                element.alpha -= 0.1f * fadeOutSpeed * Time.unscaledDeltaTime;
                 yield return null;
             }
+            Invisible();
             if (destroyAfterFade)
             {
                 Debug.Log($"Destroying {gameObject.name}");
 
-                yield return new WaitForSeconds(destroyAfterFadeDelay);
+                yield return new WaitForSecondsRealtime(destroyAfterFadeDelay);
                 Destroy(gameObject);
             }
         }
         else
         {
+            Visible();
+            // marks as dirty
+            if (fixLayoutOnVisible)
+                LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+                
             while (element != null && element.alpha < 1)
             {
-                element.alpha += 0.1f * fadeInSpeed * Time.deltaTime;
+                element.alpha += 0.1f * fadeInSpeed * Time.unscaledDeltaTime;
                 yield return null;
             }
-
         }
     }
 
@@ -151,7 +213,6 @@ public class CanvasGroupToggle : MonoBehaviour
         if (element.alpha == 0)
             return false;
         else return true;
-
     }
 
     public void Visible()
@@ -167,14 +228,47 @@ public class CanvasGroupToggle : MonoBehaviour
             onInvisible.Invoke();
     }
 
-    // void AddSelfToList()
-    // {
-    //     if (hideOnEsc)
-    //     {
-    //         //adds self to a list of CanvasGroupToggles that will loop through and hide (in order? order in hierarchy probs) when esc is pressed
-    //         // intended for popups. Will go on the input method for newinputsystem
-    //     }
+    // conducts a check before hiding
+    public void HideIfVisibile()
+    {
+        if (IsElementVisible())
+            HideElement();
+    }
 
+    // intended for popups
+    void AddSelfToList()
+    {
+        if (hideOnEsc)
+        {
+            //adds self to a list of CanvasGroupToggles that will loop through and hide (in order? order in hierarchy probs) when esc is pressed
+            cgtHash.Add(this);
+        }
+    }
+
+// this needs to be on a game manager to not run multiple times
+    // void HideFromVisible()
+    // {
+    //     int currentMax = 0;
+    //     int currentIndex;
+    //     CanvasGroupToggle currentItem = null;
+
+    //     if (cgtHash.Count > 0)
+    //     {
+    //         foreach (CanvasGroupToggle item in cgtHash)
+    //         {
+    //             if (item.IsElementVisible())
+    //             {
+    //                 currentIndex = item.transform.GetSiblingIndex();
+    //                 if (currentIndex > currentMax)
+    //                 {
+    //                     currentMax = currentIndex;
+    //                     currentItem = item;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     if (currentItem != null)
+    //         currentItem.HideElement();
     // }
 
 
