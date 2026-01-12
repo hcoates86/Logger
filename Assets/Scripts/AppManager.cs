@@ -15,9 +15,6 @@ public class AppManager : MonoBehaviour
 
     public Error error;
     public ConfirmationDialog confirm;
-    public CanvasGroupToggle editImage;
-    public CanvasGroupToggle editName;
-    public CanvasGroupToggle editBirthdate;
     public Profile currentProfile;
 
     public Sprite defaultImage;
@@ -44,12 +41,7 @@ public class AppManager : MonoBehaviour
 
     public bool canEdit = false;
 
-    // Options
-    // public bool showArchivedBirthdays = true;
-
     // colors of the pressed and unpressed profile items
-    // private const string PRESSED_HEX = "#696A8C";
-    // private const string NORMAL_HEX = "#758398";
     private const string PRESSED_HEX = "#5A2E82";
     private const string NORMAL_HEX = "#FE5E78";
 
@@ -87,8 +79,6 @@ public class AppManager : MonoBehaviour
 
     public GameObject archivedStatus;
     public GameObject archivedStatusFull;
-
-    // public string birthdayNames;
 
     public bool debugMode;
 
@@ -132,24 +122,6 @@ public class AppManager : MonoBehaviour
 
         ActivateProfileButtons(false);
 
-    }
-
-    public void ChangeEditable(bool changed)
-    {
-        canEdit = changed;
-
-        if (canEdit)
-        {
-            editImage.ShowElement();
-            editName.ShowElement();
-            editBirthdate.ShowElement();
-        }
-        else
-        {
-            editImage.HideElement();
-            editName.HideElement();
-            editBirthdate.HideElement();
-        }
     }
 
     public void ArchiveProfileConfirm()
@@ -258,9 +230,9 @@ public class AppManager : MonoBehaviour
     public void SwitchProfile(Profile profile)
     {
         Audio.Instance.PlayClip(Audio.Instance.switchProfile);
-        canEdit = false;
-        if (editButton.pressed)
-            editButton.ToggleButton();
+
+        editButton.SetEventDeleteButtonsVisible(false);
+        EditButton.isEventDeleteVisible = false;
 
         if (currentProfile != null)
         {
@@ -562,29 +534,9 @@ public class AppManager : MonoBehaviour
         fullProfileToggle.ShowElement();
     }
 
-
-    void CancelEditsAndCloseFullProf()
-    {
-        EditButton.editing = false;
-        if (editButton.pressed)
-            editButton.ToggleButton();
-        HideFullProfile();
-    }
-
     // set on the onclick for the full prof's close view button. Refreshes with the current profile
     public void HideFullProfile()
     {
-        if (EditButton.editing)
-        {
-            confirm.Show("Do you want to close without saving changes to the profile?", editButton.SubmitEdit, "Save", "Close", CancelEditsAndCloseFullProf);
-            return;
-        }
-        else
-        {
-            if (editButton.pressed)
-                editButton.ToggleButton();
-        }
-
         if (eventEdited || ProfileEdited)
         {
             // sorts and refreshes the short profile. No need to sort if under two items
@@ -595,7 +547,6 @@ public class AppManager : MonoBehaviour
 
         if (ProfileEdited)
         {
-
             // reloads the image if a new one was uploaded
             if (EditButton.profileImageReplaced)
             {
@@ -615,8 +566,6 @@ public class AppManager : MonoBehaviour
 
         ProfileEdited = false;
         eventEdited = false;
-
-        ChangeEditable(false);
     }
 
     // loads the image files, picture and thumbnail from the id
@@ -769,7 +718,6 @@ public class AppManager : MonoBehaviour
         else
             pluralYears = "Years";
 
-
         if (age.Years < 1)
         {
             if (age.Months < 1)
@@ -777,11 +725,32 @@ public class AppManager : MonoBehaviour
                 // the days left over after it's divided into weeks
                 int days = age.Days % 7;
                 return $"{Mathf.Floor(age.Days / 7)} {pluralWeeks} {days} {(days == 1 ? "day" : "days")}";
-
             }
             return $"{age.Months} {pluralMonths} {Mathf.Floor(age.Days / 7)} {pluralWeeks}";
         }
         return $"{age.Years} {pluralYears} {age.Months} {pluralMonths}";
+    }
+
+    // still have to set this
+    [SerializeField] CanvasGroupToggle editingBackground;
+
+    public void AllowEditOrder()
+    {
+        // changes to custom sorting
+        SortProfiles(SortBy.Custom, true);
+        editingBackground.ShowElement();
+    }
+
+    // attached to order confirm button
+    // reassigns order number according to current index
+    public void AssignButtonOrder()
+    {
+        editingBackground.HideElement();
+        for (int i = 0; i < allProfiles.Count; i++)
+        {
+            allProfiles[i].customSortNum = i;
+            allProfiles[i].SaveProfile();
+        }
     }
 }
 

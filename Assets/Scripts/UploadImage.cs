@@ -21,12 +21,6 @@ public class UploadImage : MonoBehaviour
         texture = null;
     }
 
-    void ResizePolicy(ref int width, ref int height)
-    {
-        width = imageSize;
-        height = imageSize;
-    }
-
     public void PickImage()
     {
         if (NativeGallery.IsMediaPickerBusy())
@@ -75,7 +69,6 @@ public class UploadImage : MonoBehaviour
             );
                 // sets bool true to note an image was uploaded for inputhandler
                 imageUploaded = true;
-                EditButton.editing = true;
             }
         }, "Select an image", "image/*");
 
@@ -110,8 +103,6 @@ public class UploadImage : MonoBehaviour
         string picturePath = $"{imagepath}/thumbnail.png";
         System.IO.File.WriteAllBytes(picturePath, imageData);
         Debug.Log($"thumbnail saved to {imagepath}");
-
-
     }
 
     Texture2D ResizeTexture(Texture2D source, int newWidth, int newHeight)

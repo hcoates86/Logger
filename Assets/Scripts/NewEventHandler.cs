@@ -61,7 +61,7 @@ public class NewEventHandler : MonoBehaviour
             newEvent = Instantiate(AppManager.Instance.shortEventPrefab, AppManager.Instance.fullProfile.eventContainer);
 
         EventItem eventItem = newEvent.GetComponentInChildren<EventItem>();
-        
+
         // adds one to events added before setting it as the new event id
         profile.totalEventsAdded++;
         profile.SaveProfile();
@@ -102,8 +102,14 @@ public class NewEventHandler : MonoBehaviour
         profile.allEvents.Add(eventItem);
 
         if (AppManager.Instance.currentProfile.allEvents.Count > 1)
-                AppManager.Instance.currentProfile.SortByCurrentCriteria();
+            AppManager.Instance.currentProfile.SortByCurrentCriteria();
         AppManager.Instance.shortProfile.Setup(AppManager.Instance.currentProfile);
+
+        // turns on the edit features if edit event is on
+        if (EditButton.isEventDeleteVisible)
+        {
+            eventItem.deleteButtonCGT.ShowElement();
+        }
     }
 
     // Sets the event to edit

@@ -9,21 +9,12 @@ using Faisalman.AgeCalc;
 
 public class EditButton : MonoBehaviour
 {
-    private ColorBlock cbPressed; 
-    private ColorBlock cbNormal;
     public TMP_Text text;
     public Button button;
-
-    private Color initialTextColor;
-    private Color pressedTextColor;
-    
-    private string initial = "Edit";
-    private string done = "Finish";
     public bool pressed = false;
 
     public InputHandler editInput;
     public UploadImage uploadImage;
-    public static bool editing;
 
     public CanvasGroupToggle floatingInput;
     public CanvasGroupToggle nameInput;
@@ -35,51 +26,39 @@ public class EditButton : MonoBehaviour
     public static bool profileImageReplaced = false;
 
 
-    void Start()
-    {
-        cbPressed = button.colors;
-        cbNormal = button.colors;
-        //saves the initial colors selected in inspector
-        cbPressed.normalColor = cbPressed.pressedColor;
-        cbPressed.selectedColor = cbPressed.pressedColor;
+    // public void ToggleButton()
+    // {
+    //     if (!pressed)
+    //     {
+    //         pressed = true;
+    //         // Initially sets date changed to false.
+    //         wasDateChanged = false;
+    //         text.text = done;
+    //         button.colors = cbPressed;
+    //         text.color = pressedTextColor;
 
-        initialTextColor = text.color;
-        pressedTextColor = new Color32(233, 233, 233, 255);
-    }
+    //         ToggleEditVisibility(true);
+    //         SetEventDeleteButtonsVisible(true);
+    //         AppManager.Instance.ChangeEditable(true);
+    //         SetEditInfo();
 
-    public void ToggleButton()
-    {
-        if (!pressed)
-        {
-            pressed = true;
-            // Initially sets date changed to false.
-            wasDateChanged = false;
-            text.text = done;
-            button.colors = cbPressed;
-            text.color = pressedTextColor;
+    //     }
+    //     else
+    //     {
+    //         pressed = false;
+    //         text.text = initial;
+    //         button.colors = cbNormal;
+    //         text.color = initialTextColor;
 
-            ToggleEditVisibility(true);
-            SetEventDeleteButtonsVisible(true);
-            AppManager.Instance.ChangeEditable(true);
-            SetEditInfo();
+    //         SetEventDeleteButtonsVisible(false);
+    //         ToggleEditVisibility(false);
 
-        }
-        else
-        {
-            pressed = false;
-            text.text = initial;
-            button.colors = cbNormal;
-            text.color = initialTextColor;
+    //         if (editing)
+    //             SubmitEdit();
 
-            SetEventDeleteButtonsVisible(false);
-            ToggleEditVisibility(false);
-
-            if (editing)
-                SubmitEdit();
-
-            AppManager.Instance.ChangeEditable(false);
-        }
-    }
+    //         AppManager.Instance.ChangeEditable(false);
+    //     }
+    // }
 
     void ToggleEditVisibility(bool visible)
     {
@@ -91,11 +70,10 @@ public class EditButton : MonoBehaviour
     {
         //on cancel reload profile
         AppManager.Instance.fullProfile.Setup(AppManager.Instance.currentProfile);
-        editing = false;
         wasDateChanged = false;
     }
 
-    void SetEventDeleteButtonsVisible(bool show)
+    public void SetEventDeleteButtonsVisible(bool show)
     {
         if (AppManager.Instance.currentProfile == null ||
             AppManager.Instance.currentProfile.allEvents.Count < 1) return;
@@ -111,6 +89,15 @@ public class EditButton : MonoBehaviour
                 item.deleteButtonCGT.HideElement();
             }
         }
+    }
+
+    public static bool isEventDeleteVisible = false;
+
+    // on the event button
+    public void ShowEventDeleteToggle()
+    {
+        isEventDeleteVisible = !isEventDeleteVisible;
+        SetEventDeleteButtonsVisible(isEventDeleteVisible);
     }
 
     public void EditName()
@@ -133,13 +120,12 @@ public class EditButton : MonoBehaviour
         floatingInput.ShowElement();
         nameInput.ShowElement(false);
         dateInput.ShowElement(true);
-
     }
 
     // attached to the confirm button on the floating input on full profile
     public void OnConfirm()
     {
-        //change the visuals on full profile. don't change actual profile unless submitedit is called
+        //change the visuals on full profile
         if (nameInput.IsElementVisible())
         {
             if (editInput.nameInput.text == null || editInput.nameInput.text == string.Empty)
@@ -162,7 +148,6 @@ public class EditButton : MonoBehaviour
                 }
                 else
                 {
-                    // AppManager.Instance.fullProfile.ageText.text = GetAge(editInput.dateValidator.dateValue);
                     AppManager.Instance.fullProfile.ageText.text = AppManager.Instance.GetAge(editInput.dateValidator.dateValue);
                     AppManager.Instance.fullProfile.dateText.text = editInput.dateValidator.dateValue.ToString("MM/dd/yyyy");
 
@@ -170,12 +155,11 @@ public class EditButton : MonoBehaviour
             }
             else return;
         }
-
+        // saves submission
+        SubmitEdit();
         floatingInput.HideElement();
-        editing = true;
     }
 
-    // this is called from the second edit button press
     public void SubmitEdit()
     {
         Profile profile = AppManager.Instance.currentProfile;
@@ -204,7 +188,6 @@ public class EditButton : MonoBehaviour
         AppManager.Instance.ProfileEdited = true;
 
         editInput.ClearInput(false);
-        editing = false;
     }
 
     // needs to be set on entering edit mode or can accidentally save blank info
@@ -217,5 +200,4 @@ public class EditButton : MonoBehaviour
         else
             editInput.dateInput.text = string.Empty;
     }
-
 }
