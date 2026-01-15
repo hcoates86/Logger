@@ -33,18 +33,7 @@ public class CanvasGroupToggle : MonoBehaviour
 
     void Awake()
     {
-        if (addSelf && element == null)
-        {
-            // Checks if CanvasGroup is present and adds it if not.
-            if (!TryGetComponent<CanvasGroup>(out element))
-            {
-                element = gameObject.AddComponent<CanvasGroup>();
-            }
-        }
-        else if (!addSelf && element == null)
-        {
-            Debug.LogError($"Element on CanvasGroupToggle on {gameObject.name} has not been set and addSelf is off.");
-        }
+        AddCanvasGroup();
 
         if (fixLayoutOnVisible)
             rect = GetComponent<RectTransform>();
@@ -68,6 +57,24 @@ public class CanvasGroupToggle : MonoBehaviour
         }
 
         AddSelfToList();
+    }
+
+    // called in editor when component is added
+    void Reset()
+    {
+        AddCanvasGroup();
+    }
+
+    void AddCanvasGroup()
+    {
+        if (addSelf && element == null)
+        {
+            // Checks if CanvasGroup is present and adds it if not.
+            if (!TryGetComponent<CanvasGroup>(out element))
+            {
+                element = gameObject.AddComponent<CanvasGroup>();
+            }
+        }
     }
 
     public void ToggleShow()
@@ -179,6 +186,9 @@ public class CanvasGroupToggle : MonoBehaviour
     {
         if (fadingOut)
         {
+            element.interactable = false;
+            element.blocksRaycasts = false;
+            
             while (element != null && element.alpha > 0)
             {
                 element.alpha -= 0.1f * fadeOutSpeed * Time.unscaledDeltaTime;
@@ -199,12 +209,15 @@ public class CanvasGroupToggle : MonoBehaviour
             // marks as dirty
             if (fixLayoutOnVisible)
                 LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
-                
+
             while (element != null && element.alpha < 1)
             {
                 element.alpha += 0.1f * fadeInSpeed * Time.unscaledDeltaTime;
                 yield return null;
             }
+
+            element.interactable = true;
+            element.blocksRaycasts = true;
         }
     }
 
@@ -245,7 +258,8 @@ public class CanvasGroupToggle : MonoBehaviour
         }
     }
 
-// this needs to be on a game manager to not run multiple times
+    // this needs to be on a game manager to not run multiple times
+    // removes in order from top to bottom
     // void HideFromVisible()
     // {
     //     int currentMax = 0;
@@ -258,6 +272,7 @@ public class CanvasGroupToggle : MonoBehaviour
     //         {
     //             if (item.IsElementVisible())
     //             {
+    // // hides the topmost item first
     //                 currentIndex = item.transform.GetSiblingIndex();
     //                 if (currentIndex > currentMax)
     //                 {
@@ -269,6 +284,17 @@ public class CanvasGroupToggle : MonoBehaviour
     //     }
     //     if (currentItem != null)
     //         currentItem.HideElement();
+    // }
+    // hides all
+    //     void HideFromVisible()
+    // {
+    //     if (CanvasGroupToggle.cgtHash.Count > 0)
+    //     {
+    //         foreach (CanvasGroupToggle item in CanvasGroupToggle.cgtHash)
+    //         {
+    //             item.HideIfVisibile();
+    //         }
+    //     }
     // }
 
 

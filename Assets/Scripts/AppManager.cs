@@ -16,6 +16,7 @@ public class AppManager : MonoBehaviour
     public Error error;
     public ConfirmationDialog confirm;
     public Profile currentProfile;
+    public Canvas appCanvas;
 
     public Sprite defaultImage;
 
@@ -731,26 +732,52 @@ public class AppManager : MonoBehaviour
         return $"{age.Years} {pluralYears} {age.Months} {pluralMonths}";
     }
 
-    // still have to set this
     [SerializeField] CanvasGroupToggle editingBackground;
+    [SerializeField] CanvasGroupToggle editOrderButtonContainer;
+    public bool hasEditedOrder = false;
 
     public void AllowEditOrder()
     {
+        // hides the full profile
+        HideFullProfile();
         // changes to custom sorting
         SortProfiles(SortBy.Custom, true);
         editingBackground.ShowElement();
-    }
-
-    // attached to order confirm button
-    // reassigns order number according to current index
-    public void AssignButtonOrder()
-    {
-        editingBackground.HideElement();
-        for (int i = 0; i < allProfiles.Count; i++)
+        editOrderButtonContainer.ShowElement();
+        // hides the short profile so no profile is showing
+        shortProfileToggle.HideElement();
+        // nulls out the current profile
+        currentProfile = null;
+        ProfileDisplay profileDisplay;
+        
+        foreach (var item in allProfiles)
         {
-            allProfiles[i].customSortNum = i;
-            allProfiles[i].SaveProfile();
+            profileDisplay = item.GetComponent<ProfileDisplay>();
+            profileDisplay.draggable.SetActive(true);
         }
     }
-}
 
+    // attached to order confirm button (the background image lol)
+    // reassigns order number according to current index if it was changed
+    public void ConfirmEditOrder()
+    {
+        editingBackground.HideElement();
+        editOrderButtonContainer.HideElement();
+        ProfileDisplay profileDisplay;
+
+        for (int i = 0; i < allProfiles.Count; i++)
+        {
+            if (hasEditedOrder)
+            {
+                // if order was changed change number to index and save profiles
+                allProfiles[i].customSortNum = i;
+                allProfiles[i].SaveProfile();
+            }
+            // turns off draggable
+            profileDisplay = allProfiles[i].GetComponent<ProfileDisplay>();
+            profileDisplay.draggable.SetActive(false);
+        }
+
+        hasEditedOrder = false;
+    }
+}

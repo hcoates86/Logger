@@ -14,6 +14,8 @@ public class ProfileDisplay : MonoBehaviour
     public Image image;
 
     public bool useThumbnail = false;
+    // only for small profile items. Turned on when editing order is on.
+    public GameObject draggable;
 
     public RectTransform eventContainer;
     public FavoriteEventDisplay[] favoriteDisplays = new FavoriteEventDisplay[3];
