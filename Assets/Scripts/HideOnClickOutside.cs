@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+// do not use with toggle buttons! they will cancel each other out
 public class HideOnClickOutside : MonoBehaviour
 {
     private GraphicRaycaster raycaster;

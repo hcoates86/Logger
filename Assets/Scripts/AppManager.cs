@@ -17,6 +17,7 @@ public class AppManager : MonoBehaviour
     public ConfirmationDialog confirm;
     public Profile currentProfile;
     public Canvas appCanvas;
+    public GameObject profileOutlinePrefab;
 
     public Sprite defaultImage;
 
