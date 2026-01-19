@@ -4081,6 +4081,7 @@ RectTransform:
   - {fileID: 1229043700}
   - {fileID: 847323791}
   - {fileID: 410967518}
+  - {fileID: 967804489}
   m_Father: {fileID: 154508701}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -14928,7 +14929,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 43.7, y: 26.2}
+  m_AnchoredPosition: {x: 43.69995, y: 26.199997}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &851088663
@@ -16643,6 +16644,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963470060}
   m_CullTransparentMesh: 0
+--- !u!1 &967804488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 967804489}
+  m_Layer: 5
+  m_Name: Active Dragging
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &967804489
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967804488}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 225394005}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0.00012207031}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &987370433
 GameObject:
   m_ObjectHideFlags: 0
@@ -18311,7 +18347,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 92.36, y: -37.5}
-  m_SizeDelta: {x: 0, y: 65}
+  m_SizeDelta: {x: 64.72, y: 65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1069173462
 MonoBehaviour:
@@ -28464,7 +28500,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0.00012207031, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1578096060
@@ -29936,7 +29972,7 @@ MonoBehaviour:
     m_Left: 10
     m_Right: 10
     m_Top: 20
-    m_Bottom: 0
+    m_Bottom: 150
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
@@ -29957,6 +29993,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DropHandler
   targetContainer: {fileID: 1647857400}
+  gridLayoutGroup: {fileID: 1647857404}
+  scrollOnEdge: 1
+  scrollValue: 0.05
+  scrollbar: {fileID: 410967520}
+  clampedContainer: {fileID: 967804489}
+  corners:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  speedTest: 3200
 --- !u!1001 &1648193332
 PrefabInstance:
   m_ObjectHideFlags: 0
