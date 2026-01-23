@@ -27,6 +27,8 @@ public class AppManager : MonoBehaviour
     public CanvasGroupToggle fullProfileToggle;
 
     public EditButton editButton;
+    // the expanded event that can be viewed by clicking any event
+    public CanvasGroupToggle eventPopup;
 
     public List<Profile> allProfiles = new List<Profile>();
     public Profile profilePrefab;
@@ -539,6 +541,8 @@ public class AppManager : MonoBehaviour
     // set on the onclick for the full prof's close view button. Refreshes with the current profile
     public void HideFullProfile()
     {
+        canEdit = false;
+
         if (eventEdited || ProfileEdited)
         {
             // sorts and refreshes the short profile. No need to sort if under two items
@@ -750,7 +754,7 @@ public class AppManager : MonoBehaviour
         // nulls out the current profile
         currentProfile = null;
         ProfileDisplay profileDisplay;
-        
+
         foreach (var item in allProfiles)
         {
             profileDisplay = item.GetComponent<ProfileDisplay>();

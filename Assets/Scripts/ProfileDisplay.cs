@@ -100,7 +100,6 @@ public class ProfileDisplay : MonoBehaviour
             {
                 item.gameObject.SetActive(true);
                 item.transform.SetParent(eventContainer, false);
-                
             }
         }
 

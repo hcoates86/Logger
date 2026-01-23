@@ -111,16 +111,54 @@ public class EventItem : MonoBehaviour
         Audio.Instance.PlayClip(Audio.Instance.deleteEvent);
     }
 
-    // brings up the event modal. Attached to edit button on eventitems prefabs
+    // brings up the event modal. Attached to eventitem prefab's onclick
     public void StartEditEvent()
     {
-        //if can't edit exits
-        if (!AppManager.Instance.canEdit) return;
+        //if can't edit opens the popup
+        if (!AppManager.Instance.canEdit)
+        {
+            OpenPopup();
+            return;
+        }
 
         // opens modal and sets event info
         NewEventHandler handler = AppManager.Instance.eventModal;
         handler.SetEditEvent(this);
         handler.cgtToHideOnSubmit.ShowElement();
+    }
+
+    // public void SetEventInfo(string titleTxt, string descriptionTxt, string givenDateTxt, string dueDateTxt)
+    // {
+    //     title.text = titleTxt;
+    //     notes.text = descriptionTxt;
+    //     startDate.text = givenDateTxt;
+    //     dueDate.text = dueDateTxt;
+    // }
+
+    public void SetEventInfo(EventItem eventItem)
+    {
+        title.text = eventItem.title.text;
+        // not all events have notes text areas
+        if (notes != null && eventItem.notes != null)
+        notes.text = eventItem.notes.text;
+        startDate.text = eventItem.startDate.text;
+        dueDate.text = eventItem.dueDate.text;
+    }
+
+    public void SetEventInfo(FavoriteEventDisplay eventItem)
+    {
+        title.text = eventItem.title.text;
+        if (notes != null)
+        notes.text = eventItem.note;
+        startDate.text = eventItem.startDate.text;
+        dueDate.text = eventItem.dueDate.text;
+    }
+
+// placed on event onclick
+    public void OpenPopup()
+    {
+        AppManager.Instance.eventPopup.GetComponent<EventItem>().SetEventInfo(this);
+        AppManager.Instance.eventPopup.ShowElement();
     }
 }
 

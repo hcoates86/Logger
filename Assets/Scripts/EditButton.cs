@@ -25,41 +25,6 @@ public class EditButton : MonoBehaviour
     private bool wasDateChanged = false;
     public static bool profileImageReplaced = false;
 
-
-    // public void ToggleButton()
-    // {
-    //     if (!pressed)
-    //     {
-    //         pressed = true;
-    //         // Initially sets date changed to false.
-    //         wasDateChanged = false;
-    //         text.text = done;
-    //         button.colors = cbPressed;
-    //         text.color = pressedTextColor;
-
-    //         ToggleEditVisibility(true);
-    //         SetEventDeleteButtonsVisible(true);
-    //         AppManager.Instance.ChangeEditable(true);
-    //         SetEditInfo();
-
-    //     }
-    //     else
-    //     {
-    //         pressed = false;
-    //         text.text = initial;
-    //         button.colors = cbNormal;
-    //         text.color = initialTextColor;
-
-    //         SetEventDeleteButtonsVisible(false);
-    //         ToggleEditVisibility(false);
-
-    //         if (editing)
-    //             SubmitEdit();
-
-    //         AppManager.Instance.ChangeEditable(false);
-    //     }
-    // }
-
     void ToggleEditVisibility(bool visible)
     {
         editEventTip.SetActive(visible);
@@ -98,6 +63,7 @@ public class EditButton : MonoBehaviour
     {
         isEventDeleteVisible = !isEventDeleteVisible;
         SetEventDeleteButtonsVisible(isEventDeleteVisible);
+        AppManager.Instance.canEdit = !AppManager.Instance.canEdit;
     }
 
     public void EditName()

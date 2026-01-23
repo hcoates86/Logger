@@ -79,7 +79,6 @@ public class ImportExport : MonoBehaviour
         // Copy all files
         foreach (string file in Directory.GetFiles(sourceDir, "*.*", SearchOption.AllDirectories))
         {
-            Debug.Log($"entered loop");
             string ext = Path.GetExtension(file);
             string fileName = Path.GetFileNameWithoutExtension(file);
             string name = Path.GetFileName(file);
