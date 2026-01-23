@@ -53,7 +53,6 @@ public class Dragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         out localPointerPos);
 
         float dist = Vector2.Distance(localPointerPos, rectTransform.anchoredPosition);
-        Debug.Log(dist);
         // if too far from dragged obj hides the placeholder
         if (dist > hideDistance)
         {

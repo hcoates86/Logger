@@ -74,7 +74,7 @@ public class HideOnClickOutside : MonoBehaviour
             if (r.gameObject.transform == transform ||
                 r.gameObject.transform.IsChildOf(transform))
             {
-                return;
+                return; 
             }
         }
 

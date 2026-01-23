@@ -68,7 +68,6 @@ public class DropHandler : MonoBehaviour
             SpawnPlaceholder();
         //moves to location then activates
         placeHolder.transform.SetSiblingIndex(index);
-        Debug.Log("ShowPlaceholder" + index);
         placeHolder.SetActive(true);
     }
 
