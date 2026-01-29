@@ -237,7 +237,7 @@ public class Profile : MonoBehaviour
                     // parses the ids
                     int profileId = int.Parse(data[0]);
                     int eventId = int.Parse(data[1]);
-                    
+
                     if (AppManager.Instance.debugMode)
                         Debug.Log($"Loading event with: {profileId}, {eventId}, {data[2]}, {data[3]}, {data[4]}, {data[5]}, {bool.Parse(data[6])}, {bool.Parse(data[7])}, {bool.Parse(data[8])}");
 
@@ -332,6 +332,17 @@ public class Profile : MonoBehaviour
         {
             item.gameObject.SetActive(show);
         }
+    }
+
+    // used for deleting the gameobjects when profile is deleted
+    public void DeleteEventObjects()
+    {
+        foreach (EventItem item in allEvents)
+        {
+            Destroy(item.gameObject);
+            
+        }
+
     }
 }
 

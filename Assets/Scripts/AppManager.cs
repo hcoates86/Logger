@@ -159,6 +159,8 @@ public class AppManager : MonoBehaviour
     {
         //delete related notifications
 
+        // deletes this profile's events on the display
+        currentProfile.DeleteEventObjects();
 
         // deletes the profile file
         string path = $"{Application.persistentDataPath}/profiles/profile{currentProfile.id}.json";
