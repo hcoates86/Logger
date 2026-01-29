@@ -49,7 +49,16 @@ public class CheckBirthdays : MonoBehaviour
 
     bool CheckIfBirthday(DateTime birthDate)
     {
-        bool isBirthday = birthDate.Month == today.Month && birthDate.Day == today.Day;
+        bool isBirthday = false;
+        // checks for a leap day birthdate. Considers both the 28th and 1st as a birthday for the 29th.
+        if (birthDate.Month == 2 && birthDate.Day == 29)
+        {
+            if ((today.Month == 2 && today.Day == 28) ||
+            (today.Month == 3 && today.Day == 1))
+            isBirthday = true;
+        }
+        if (birthDate.Month == today.Month && birthDate.Day == today.Day)
+            isBirthday = true;
 
         if (isBirthday)
         {
