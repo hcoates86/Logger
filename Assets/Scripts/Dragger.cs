@@ -212,9 +212,9 @@ Vector2 initialAnchoredPosition;
 
         desiredAnchoredPos.y = clampedY;
         // scrolls
-        if (desiredAnchoredPos.y <= DropHandler.minY)
+        if (desiredAnchoredPos.y <= minY)
             dropHandler.Scroll(Direction.Down);
-        else if (desiredAnchoredPos.y >= DropHandler.maxY)
+        else if (desiredAnchoredPos.y >= maxY)
             dropHandler.Scroll(Direction.Up);
         return desiredAnchoredPos;
     }

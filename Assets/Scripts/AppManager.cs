@@ -96,7 +96,9 @@ public class AppManager : MonoBehaviour
         }
         else if (Instance != this)
         {
-            Destroy(this.gameObject); // Destroy other instance
+            Destroy(Instance.gameObject); // Destroy other instance
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
 
         profileContainerRect = profileContainer.GetComponent<RectTransform>();

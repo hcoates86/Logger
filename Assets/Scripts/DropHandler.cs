@@ -15,8 +15,7 @@ public class DropHandler : MonoBehaviour
     public Scrollbar scrollbar;
     // the container dragged item should be clamped to. Will scroll based on this.
     public RectTransform clampedContainer;
-    public static float minY;
-    public static float maxY;
+
     // the speed at which the dragger returns in animation
     public const float RETURN_SPEED = 3200;
 
@@ -75,6 +74,7 @@ public class DropHandler : MonoBehaviour
     {
         if (!scrollOnEdge) return;
 
+            Debug.Log(direction.ToString());
         switch (direction)
         {
             case Direction.Up:

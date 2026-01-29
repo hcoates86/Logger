@@ -527,8 +527,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f988e88434414e4baaf089ef22ec5f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Dragger
+  thisParent: {fileID: 0}
   rectTransform: {fileID: 6868110975959512633}
-  offset: {x: 0, y: 5}
 --- !u!1 &8883477004662933665
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,6 +543,7 @@ GameObject:
   - component: {fileID: 9216023986072376086}
   - component: {fileID: 8523991558992381885}
   - component: {fileID: 4403549338818434817}
+  - component: {fileID: 2497365147553425515}
   m_Layer: 5
   m_Name: Profile Item
   m_TagString: Untagged
@@ -713,3 +714,27 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2497365147553425515}
+        m_TargetAssemblyTypeName: DebugTest, Assembly-CSharp
+        m_MethodName: CheckClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2497365147553425515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8883477004662933665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55874a37d52b3244eb664d6ee0e4791e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DebugTest

@@ -160,7 +160,8 @@ public class ImportExport : MonoBehaviour
         // saves new total prof number, the highest key in dictionary before wiping dict
         dict.Clear();
 
-        // loads profiles after importing
+        // reloads scene after importing
+        SceneManager.LoadScene(0);
     }
 
     void CopyAllFiles(string from, string to)
