@@ -565,7 +565,7 @@ public class AppManager : MonoBehaviour
                 currentProfile.SortByCurrentCriteria();
             shortProfile.Setup(currentProfile);
         }
-
+// this should probably be moved
         if (ProfileEdited)
         {
             // reloads the image if a new one was uploaded

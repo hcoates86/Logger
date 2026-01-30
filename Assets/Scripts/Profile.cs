@@ -20,7 +20,6 @@ public class Profile : MonoBehaviour
 
     // keeps a count of the total events for event id and sorting
     public int totalEventsAdded;
-    // public Transform eventContainer;
     public List<EventItem> allEvents = new List<EventItem>();
 
     public SortBy eventsSortedBy;

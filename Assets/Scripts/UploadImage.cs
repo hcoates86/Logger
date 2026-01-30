@@ -14,11 +14,19 @@ public class UploadImage : MonoBehaviour
     private Texture2D texture;
     private const int imageSize = 1024;
     private const int thumbnailSize = 256;
+    // this is set when image is being replaced
+    bool saveOnPick = false;
 
     void OnDisable()
     {
         imageUploaded = false;
         texture = null;
+    }
+
+// on the image edit click and resets on cancel
+    public void ChangingImage(bool _toChange)
+    {
+        saveOnPick = _toChange;
     }
 
     public void PickImage()
@@ -35,8 +43,8 @@ public class UploadImage : MonoBehaviour
                 {
                     return;
                 }
-        // ImageCropper.Instance.Show( Texture image, CropResult onCrop, Settings settings = null, ImageResizePolicy croppedImageResizePolicy = null )
-			if( ImageCropper.Instance.IsOpen ) return;
+                // ImageCropper.Instance.Show( Texture image, CropResult onCrop, Settings settings = null, ImageResizePolicy croppedImageResizePolicy = null )
+                if (ImageCropper.Instance.IsOpen) return;
 
                 ImageCropper.Instance.Show(
                 image: texture,
@@ -45,12 +53,26 @@ public class UploadImage : MonoBehaviour
                     if (!result)
                     {
                         Debug.Log("Cropping canceled.");
+                        ChangingImage(false);
                         return;
                     }
+                    // sets bool true to note an image was uploaded for inputhandler
+                    imageUploaded = true;
 
                     texture = cropped;
                     // assign to UI Image using a Sprite:
                     displayImage.sprite = Sprite.Create(cropped, new Rect(0, 0, cropped.width, cropped.height), new Vector2(0.5f, 0.5f));
+                    // saves now if image is being changed out
+                    if (saveOnPick)
+                    {
+                        EditButton.profileImageReplaced = true;
+                        // saves under current profile
+                        Upload(AppManager.Instance.currentProfile.id);
+                        // sets false to prevent double saving
+                        imageUploaded = false;
+                        // resets bool
+                        saveOnPick = false;
+                    }
                 },
                 settings: new ImageCropper.Settings()
                 {
@@ -61,14 +83,14 @@ public class UploadImage : MonoBehaviour
                     selectionMinAspectRatio = 1,
                     selectionMaxAspectRatio = 1
                 },
-                croppedImageResizePolicy: ( ref int width, ref int height ) =>
+                croppedImageResizePolicy: (ref int width, ref int height) =>
                 {
                     width = imageSize;
                     height = imageSize;
                 }
             );
-                // sets bool true to note an image was uploaded for inputhandler
-                imageUploaded = true;
+                // // sets bool true to note an image was uploaded for inputhandler
+                // imageUploaded = true;
             }
         }, "Select an image", "image/*");
 

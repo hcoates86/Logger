@@ -137,12 +137,11 @@ public class EditButton : MonoBehaviour
                 profile.archivedAge = AppManager.Instance.GetAge(profile.birthDate);
             }
         }
-    
         if (uploadImage.imageUploaded)
         {
             profileImageReplaced = true;
             //save the new image
-            uploadImage.Upload(AppManager.Instance.currentProfile.id);
+            uploadImage.Upload(profile.id);
             uploadImage.imageUploaded = false;
         }
         profile.SaveProfile();
