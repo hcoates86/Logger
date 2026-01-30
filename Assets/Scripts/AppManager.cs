@@ -713,10 +713,10 @@ public class AppManager : MonoBehaviour
         if (birthDate == DateTime.MinValue)
             return "";
 
-        // since the age calc can't handle future dates, just list as unborn until date
+        // if date is in the future calculates due date
         if (birthDate > DateTime.Now)
         {
-            //uses Noda Time to calculate time until birth.
+            //since the default age calc can't handle future dates, uses Noda Time to calculate time until birth.
             return GetFutureDate(birthDate);
         }
 
@@ -725,7 +725,10 @@ public class AppManager : MonoBehaviour
         string pluralWeeks;
         string pluralMonths;
         string pluralYears;
-        if (Mathf.Floor(age.Days / 7) == 1)
+
+        float weeks = Mathf.Floor(age.Days / 7);
+
+        if (weeks == 1)
             pluralWeeks = "Week";
         else
             pluralWeeks = "Weeks";
@@ -745,9 +748,14 @@ public class AppManager : MonoBehaviour
             {
                 // the days left over after it's divided into weeks
                 int days = age.Days % 7;
-                return $"{Mathf.Floor(age.Days / 7)} {pluralWeeks} {days} {(days == 1 ? "day" : "days")}";
+
+                if (weeks > 0)
+                    return $"{weeks} {pluralWeeks} {days} {(days == 1 ? "day" : "days")}";
+                else
+                    return $"{days} {(days == 1 ? "day" : "days")}";
+
             }
-            return $"{age.Months} {pluralMonths} {Mathf.Floor(age.Days / 7)} {pluralWeeks}";
+            return $"{age.Months} {pluralMonths} {weeks} {pluralWeeks}";
         }
         return $"{age.Years} {pluralYears} {age.Months} {pluralMonths}";
     }

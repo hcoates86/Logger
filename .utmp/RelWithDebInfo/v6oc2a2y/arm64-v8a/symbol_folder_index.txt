@@ -1,0 +1,1 @@
+C:\Users\hcoates\Desktop\Create with Code\Logger\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\build\intermediates\cxx\RelWithDebInfo\v6oc2a2y\obj\arm64-v8a
