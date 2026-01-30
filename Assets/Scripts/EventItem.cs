@@ -27,10 +27,35 @@ public class EventItem : MonoBehaviour
 
     public bool hasStartDate;
     public bool hasDueDate;
-
+    // the notes scroll bar
     public Scrollbar scrollbar;
 
-    // public bool getNotificationOnDue;
+    public Image bgImage;
+    Color normalColor;
+    Color editableColor = new Color32(163, 255, 163, 255);
+
+
+    void Start()
+    {
+        ResetScrollbar();
+        if (bgImage != null)
+        normalColor = bgImage.color;
+    }
+
+    // sets the visual changes when edit event is on
+    public void SetEditChanges(bool _editable)
+    {
+        deleteButtonCGT.ShowElement(_editable);
+
+        if (_editable)
+        {
+            bgImage.color = editableColor;
+        }
+        else
+        {
+            bgImage.color = normalColor;
+        }
+    }
 
     // displays optional items
     // bool asks if full view is on to show expanded note view
@@ -38,6 +63,12 @@ public class EventItem : MonoBehaviour
     {
         startDateContainer.ShowElement(hasStartDate);
         dueDateContainer.ShowElement(hasDueDate);
+    }
+
+    public void ResetScrollbar()
+    {
+        if (scrollbar != null)
+            scrollbar.value = 1;
     }
 
 
@@ -127,20 +158,15 @@ public class EventItem : MonoBehaviour
         handler.cgtToHideOnSubmit.ShowElement();
     }
 
-    // public void SetEventInfo(string titleTxt, string descriptionTxt, string givenDateTxt, string dueDateTxt)
-    // {
-    //     title.text = titleTxt;
-    //     notes.text = descriptionTxt;
-    //     startDate.text = givenDateTxt;
-    //     dueDate.text = dueDateTxt;
-    // }
-
     public void SetEventInfo(EventItem eventItem)
     {
         title.text = eventItem.title.text;
         // not all events have notes text areas
         if (notes != null && eventItem.notes != null)
-        notes.text = eventItem.notes.text;
+        {
+            notes.text = eventItem.notes.text;
+            ResetScrollbar();
+        }
         startDate.text = eventItem.startDate.text;
         dueDate.text = eventItem.dueDate.text;
     }
@@ -149,7 +175,10 @@ public class EventItem : MonoBehaviour
     {
         title.text = eventItem.title.text;
         if (notes != null)
-        notes.text = eventItem.note;
+        {
+            notes.text = eventItem.note;
+            ResetScrollbar();
+        }
         startDate.text = eventItem.startDate.text;
         dueDate.text = eventItem.dueDate.text;
     }

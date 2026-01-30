@@ -9,8 +9,6 @@ using Faisalman.AgeCalc;
 
 public class EditButton : MonoBehaviour
 {
-    public TMP_Text text;
-    public Button button;
     public bool pressed = false;
 
     public InputHandler editInput;
@@ -24,10 +22,13 @@ public class EditButton : MonoBehaviour
 [SerializeField]
     private bool wasDateChanged = false;
     public static bool profileImageReplaced = false;
+    // the bg panel that will also be able to close edit events
+    public GameObject panel;
 
     void ToggleEditVisibility(bool visible)
     {
         editEventTip.SetActive(visible);
+        panel.SetActive(visible);
     }
 
     // not currently in use. Completely cancels all editing
@@ -44,24 +45,18 @@ public class EditButton : MonoBehaviour
             AppManager.Instance.currentProfile.allEvents.Count < 1) return;
 
         foreach (EventItem item in AppManager.Instance.currentProfile.allEvents)
-        {
-            if (show)
-            {
-                item.deleteButtonCGT.ShowElement();
-            }
-            else
-            {
-                item.deleteButtonCGT.HideElement();
-            }
+        {            
+                item.SetEditChanges(show);
         }
     }
 
     public static bool isEventDeleteVisible = false;
 
-    // on the event button
+    // on the event button and panel once edit event is on
     public void ShowEventDeleteToggle()
     {
         isEventDeleteVisible = !isEventDeleteVisible;
+        ToggleEditVisibility(isEventDeleteVisible);
         SetEventDeleteButtonsVisible(isEventDeleteVisible);
         AppManager.Instance.canEdit = !AppManager.Instance.canEdit;
     }

@@ -787,6 +787,7 @@ MonoBehaviour:
   hasStartDate: 0
   hasDueDate: 0
   scrollbar: {fileID: 0}
+  bgImage: {fileID: 3209498432576173001}
 --- !u!1 &5096601501912609188
 GameObject:
   m_ObjectHideFlags: 0
