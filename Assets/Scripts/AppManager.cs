@@ -235,6 +235,15 @@ public class AppManager : MonoBehaviour
         toggle.HideElement();
     }
 
+    // specifically for use when the change order button is pressed
+    void ResetProfileColor()
+    {
+        if (currentProfile == null) return;
+        
+        if (currentProfile.profileBackground.color != normalColor)
+            currentProfile.profileBackground.color = normalColor;
+    }
+
     public void SwitchProfile(Profile profile)
     {
         Audio.Instance.PlayClip(Audio.Instance.switchProfile);
@@ -293,9 +302,6 @@ public class AppManager : MonoBehaviour
                     string imagePath = $"{Application.persistentDataPath}/{profileId}/picture.png";
                     bool profileHasImage = false;
                     if (File.Exists(imagePath)) profileHasImage = true;
-
-                    // if (customSortNum == 0)
-                    //     customSortNum = 500;
 
                     // creates the profile from the prefab but doesn't save it since it just loaded it
                     // int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save, bool isarchived, string archivedAge
@@ -752,6 +758,8 @@ public class AppManager : MonoBehaviour
 
     public void AllowEditOrder()
     {
+        // changes the current profile's color back to normal
+        ResetProfileColor();
         // hides the full profile
         HideFullProfile();
         // changes to custom sorting
