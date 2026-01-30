@@ -294,8 +294,8 @@ public class AppManager : MonoBehaviour
                     bool profileHasImage = false;
                     if (File.Exists(imagePath)) profileHasImage = true;
 
-                    if (customSortNum == 0)
-                        customSortNum = 500;
+                    // if (customSortNum == 0)
+                    //     customSortNum = 500;
 
                     // creates the profile from the prefab but doesn't save it since it just loaded it
                     // int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save, bool isarchived, string archivedAge
@@ -508,6 +508,11 @@ public class AppManager : MonoBehaviour
         profileDisplay.Setup(profile);
 
         allProfiles.Add(profile);
+        // changes scroll behavior for change order
+        if (allProfiles.Count > 3)
+        {
+            DropHandler.scrollOnEdge = true;
+        }
     }
 
     public int CreateNewId()

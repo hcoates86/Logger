@@ -83,7 +83,7 @@ public class Profile : MonoBehaviour
         data.birthDate = birthDate.ToString("MM/dd/yyyy");
         data.totalEventsAdded = totalEventsAdded;
         data.eventsSortedBy = eventsSortedBy;
-        data.customSortNum = customSortNum == 0 ? 500 : customSortNum;
+        data.customSortNum = customSortNum;
         data.isArchived = isArchived;
         data.archivedAge = archivedAge;
 

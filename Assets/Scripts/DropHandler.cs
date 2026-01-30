@@ -9,7 +9,7 @@ public class DropHandler : MonoBehaviour
     // the item that will be placed as a placeholder in the container. Spawned as needed.
     public GameObject placeHolder { get; private set; }
     // whether to auto scroll when dragged to edge (in this case only checked up/down)
-    public bool scrollOnEdge;
+    public static bool scrollOnEdge;
     // scrolls by this amount
     public float scrollValue;
     public Scrollbar scrollbar;
@@ -25,6 +25,11 @@ public class DropHandler : MonoBehaviour
             targetContainer = transform;
         if (gridLayoutGroup == null)
             gridLayoutGroup = targetContainer.GetComponent<GridLayoutGroup>();
+
+        if (AppManager.Instance.allProfiles.Count < 4)
+        {
+            scrollOnEdge = false;
+        }
     }
 
     // spawns at the index on first drag so it can get the corners too
