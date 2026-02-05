@@ -360,8 +360,8 @@ namespace Michsky.MUIP
 #if UNITY_IOS || UNITY_ANDROID
             if (animationSolution == AnimationSolution.ScriptBased) { StartCoroutine(nameof(SetHighlight)); }
             if (useRipple)
-#else
-            if (useRipple && isPointerOn)
+// #else
+//             if (useRipple && isPointerOn)
 #endif
 #if ENABLE_LEGACY_INPUT_MANAGER
                 if (targetCanvas != null && (targetCanvas.renderMode == RenderMode.ScreenSpaceCamera || targetCanvas.renderMode == RenderMode.WorldSpace)) { CreateRipple(targetCanvas.worldCamera.ScreenToWorldPoint(Input.mousePosition)); }

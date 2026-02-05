@@ -60,14 +60,25 @@ public class UploadImage : MonoBehaviour
                     imageUploaded = true;
 
                     texture = cropped;
-                    // assign to UI Image using a Sprite:
-                    displayImage.sprite = Sprite.Create(cropped, new Rect(0, 0, cropped.width, cropped.height), new Vector2(0.5f, 0.5f));
+                    // assign to display using a Sprite:
+                    Sprite newImage = Sprite.Create(cropped, new Rect(0, 0, cropped.width, cropped.height), new Vector2(0.5f, 0.5f));
+                    displayImage.sprite = newImage;
                     // saves now if image is being changed out
                     if (saveOnPick)
                     {
+                        Profile current = AppManager.Instance.currentProfile;
                         EditButton.profileImageReplaced = true;
                         // saves under current profile
-                        Upload(AppManager.Instance.currentProfile.id);
+                        Upload(current.id);
+                        // sets the image on short profile as well
+                        current.profileImage = newImage;
+                        AppManager.Instance.shortProfile.Setup(current);
+                        // and loads the thumbnail on the profile item
+                        AppManager.Instance.LoadThumbnail();
+                        // grabs and refreshes the small profile item
+                        ProfileDisplay currentProfDisplay = current.GetComponent<ProfileDisplay>();
+                        currentProfDisplay.Setup(current);
+
                         // sets false to prevent double saving
                         imageUploaded = false;
                         // resets bool

@@ -553,6 +553,12 @@ public class AppManager : MonoBehaviour
         fullProfileToggle.ShowElement();
     }
 
+    // loads the thumbnail on the current profile, for editing
+    public void LoadThumbnail()
+    {
+        currentProfile.thumbnail = LoadThumbnail(currentProfile.id);
+    }
+
     // set on the onclick for the full prof's close view button. Refreshes with the current profile
     public void HideFullProfile()
     {
@@ -565,23 +571,23 @@ public class AppManager : MonoBehaviour
                 currentProfile.SortByCurrentCriteria();
             shortProfile.Setup(currentProfile);
         }
-// this should probably be moved
-        if (ProfileEdited)
-        {
-            // reloads the image if a new one was uploaded
-            if (EditButton.profileImageReplaced)
-            {
-                currentProfile.profileImage = LoadImage(currentProfile.id);
-                currentProfile.thumbnail = LoadThumbnail(currentProfile.id);
-                EditButton.profileImageReplaced = false;
-            }
+        // this should probably be moved
+        // if (ProfileEdited)
+        // {
+        //     // // reloads the image if a new one was uploaded
+        //     // if (EditButton.profileImageReplaced)
+        //     // {
+        //     //     currentProfile.profileImage = LoadImage(currentProfile.id);
+        //     //     currentProfile.thumbnail = LoadThumbnail(currentProfile.id);
+        //     //     EditButton.profileImageReplaced = false;
+        //     // }
 
-            shortProfile.Setup(currentProfile);
+        //     shortProfile.Setup(currentProfile);
 
-            // grabs and refreshes the small profile item
-            ProfileDisplay currentProfDisplay = currentProfile.GetComponent<ProfileDisplay>();
-            currentProfDisplay.Setup(currentProfile);
-        }
+        //     // grabs and refreshes the small profile item
+        //     ProfileDisplay currentProfDisplay = currentProfile.GetComponent<ProfileDisplay>();
+        //     currentProfDisplay.Setup(currentProfile);
+        // }
 
         fullProfileToggle.HideElement();
 
