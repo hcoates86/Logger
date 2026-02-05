@@ -10573,7 +10573,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 91.03, y: -27.5}
-  m_SizeDelta: {x: 0, y: 45}
+  m_SizeDelta: {x: 62.06, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &689815303
 MonoBehaviour:
@@ -15900,9 +15900,9 @@ RectTransform:
   - {fileID: 183694667}
   - {fileID: 1172860270}
   - {fileID: 1766094819}
+  - {fileID: 1039417046}
   - {fileID: 337358343}
   - {fileID: 941623408}
-  - {fileID: 1039417046}
   - {fileID: 1880047446}
   - {fileID: 1642653016}
   - {fileID: 43379943}
@@ -16391,6 +16391,7 @@ GameObject:
   - component: {fileID: 1039417049}
   - component: {fileID: 1039417048}
   - component: {fileID: 1039417047}
+  - component: {fileID: 1039417050}
   m_Layer: 5
   m_Name: Menu Button
   m_TagString: Untagged
@@ -16436,7 +16437,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -16523,6 +16524,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1039417045}
   m_CullTransparentMesh: 1
+--- !u!114 &1039417050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039417045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0.4339623, g: 0.11258457, b: 0.38963437, a: 1}
+  m_EffectDistance: {x: 1.5, y: -1.5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1052084091
 GameObject:
   m_ObjectHideFlags: 0
@@ -16925,7 +16941,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 92.36, y: -37.5}
-  m_SizeDelta: {x: 0, y: 65}
+  m_SizeDelta: {x: 64.72, y: 65}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1069173462
 MonoBehaviour:

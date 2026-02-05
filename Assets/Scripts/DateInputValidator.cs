@@ -43,15 +43,38 @@ public class DateInputValidator : MonoBehaviour
         RestrictDateInput(value);
     }
 
+    int prevLength;
+    void AddSlash(string value)
+    {
+        // checks the length but also that it's typing and not deleting
+        if ((value.Length == 2 || value.Length == 5) && prevLength < value.Length)
+        {
+            if (value[value.Length - 1] != '/')
+            {
+                dateInput.text = value + "/";
+                // moves the caret over visually
+                dateInput.caretPosition++;
+                // moves the position over
+                dateInput.stringPosition = dateInput.caretPosition;
+            }
+        }
+
+        // saves the length after checks/changes
+        prevLength = dateInput.text.Length;
+    }
+
     void RestrictDateInput(string value)
     {
         oldInput = value;
-        // Allow only numbers and slash (/) with a max number of characters
-        if (!Regex.IsMatch(value, @"^[\d/]+$"))
+        // Allow only numbers and slashes (/) with a max number of characters
+        if (!Regex.IsMatch(value, @"^[\d/]+$") || value.Length > 10)
         {
             //resets input if it fails validation
             dateInput.text = oldInput;
         }
+        // if it passes validation checks if it should add a slash
+        else
+            AddSlash(value);
     }
 
     public bool SubmitDateValidation()
