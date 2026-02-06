@@ -64,6 +64,8 @@ public class Profile : MonoBehaviour
 
     public void OnClick()
     {
+        if (AppManager.Instance.isReordering) return;
+
         if (AppManager.Instance.currentProfile != this)
             AppManager.Instance.SwitchProfile(this);
     }

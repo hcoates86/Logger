@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class Dragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     GraphicRaycaster raycaster;
-    Canvas canvas;
     // cloudy image over the draggable that activates on drag
     Image image;
     // the Transform whose index is being used
@@ -33,7 +32,6 @@ public class Dragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
             rectTransform = thisParent.GetComponent<RectTransform>();
         image = GetComponent<Image>();
 
-        canvas = AppManager.Instance.appCanvas;
         image.color = transparentDefault;
         // the parent that holds the profile and sibling index
         thisParent = transform.parent;
@@ -56,7 +54,7 @@ public class Dragger : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         // if too far from dragged obj hides the placeholder
         if (dist > hideDistance)
         {
-            dropHandler.GetIndexAndHide();
+            dropHandler.placeHolder.SetActive(false);
 
             // if touch pulls away too far from the dragged obj, ends drag and sends item back to initial position
             if (dist > detachDistance)
@@ -127,24 +125,38 @@ Vector2 lastLocalPointerPos;
         currDragger = null;
         image.color = transparentDefault;
         // uses the returned index to place itself in the placeholder's spot
-        int index = dropHandler.GetIndexAndHide();
+        int index = dropHandler.GetIndex();
         if (index != -1)
         {
+                // turns off layout group before reordering
+                dropHandler.gridLayoutGroup.enabled = false;
+                thisParent.SetParent(dropHandler.targetContainer, true);
+                thisParent.SetSiblingIndex(index);
             // animates move to the selected location before placing it there
             Vector2 endPos = dropHandler.placeHolder.GetComponent<RectTransform>().anchoredPosition;
             float speed = Vector2.Distance(rectTransform.anchoredPosition, endPos) / DropHandler.RETURN_SPEED;
+
+
+        // Save scroll state
+        Vector2 savedNormalized = dropHandler.scroll.normalizedPosition;
+
+            
             Tween.UIAnchoredPosition(rectTransform, endValue: endPos, duration: speed).OnComplete(() =>
             {
-                // turns off layout group before reordering
-                dropHandler.gridLayoutGroup.enabled = false;
-                thisParent.SetParent(dropHandler.targetContainer);
-                thisParent.SetSiblingIndex(index);
+                dropHandler.placeHolder.SetActive(false);
+
                 dropHandler.gridLayoutGroup.enabled = true;
+                
+        // Force a layout pass, then restore scroll
+        Canvas.ForceUpdateCanvases();
+
+        // return to normalizedPosition
+        dropHandler.scroll.normalizedPosition = savedNormalized;
+
             });
         }
-        else
-            Debug.LogWarning("No placeholder found in DropHandler.");
     }
+
 Vector2 initialAnchoredPosition;
     // resets the dragged item to the same initial position
     void ResetDrag()

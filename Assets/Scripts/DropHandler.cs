@@ -13,6 +13,8 @@ public class DropHandler : MonoBehaviour
     // scrolls by this amount
     public float scrollValue;
     public Scrollbar scrollbar;
+    public ScrollRect scroll;
+
     // the container dragged item should be clamped to. Will scroll based on this.
     public RectTransform clampedContainer;
 
@@ -57,8 +59,8 @@ public class DropHandler : MonoBehaviour
             placeHolder.transform.SetSiblingIndex(index);
     }
 
-    // hides the placeholder and returns its index
-    public int GetIndexAndHide()
+    // returns placeholder index
+    public int GetIndex()
     {
         if (placeHolder == null) return -1;
 

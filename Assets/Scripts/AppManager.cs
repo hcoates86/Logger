@@ -767,11 +767,13 @@ public class AppManager : MonoBehaviour
     }
 
     [SerializeField] CanvasGroupToggle editingBackground;
-    [SerializeField] CanvasGroupToggle editOrderButtonContainer;
+    // [SerializeField] CanvasGroupToggle editOrderButtonContainer;
     public bool hasEditedOrder = false;
+    public bool isReordering = false;
 
     public void AllowEditOrder()
     {
+        isReordering = true;
         // changes the current profile's color back to normal
         ResetProfileColor();
         // hides the full profile
@@ -779,7 +781,7 @@ public class AppManager : MonoBehaviour
         // changes to custom sorting
         SortProfiles(SortBy.Custom, true);
         editingBackground.ShowElement();
-        editOrderButtonContainer.ShowElement();
+        // editOrderButtonContainer.ShowElement();
         // hides the short profile so no profile is showing
         shortProfileToggle.HideElement();
         // nulls out the current profile
@@ -797,8 +799,9 @@ public class AppManager : MonoBehaviour
     // reassigns order number according to current index if it was changed
     public void ConfirmEditOrder()
     {
+        isReordering = false;
         editingBackground.HideElement();
-        editOrderButtonContainer.HideElement();
+        // editOrderButtonContainer.HideElement();
         ProfileDisplay profileDisplay;
 
         for (int i = 0; i < allProfiles.Count; i++)

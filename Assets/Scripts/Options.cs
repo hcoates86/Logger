@@ -9,8 +9,6 @@ public class Options : MonoBehaviour
 {
     public Toggle soundToggle;
     public Toggle archivedToggle;
-    // TODO
-    public Theme theme;
 
     public static bool playSounds = false;
     public static bool showArchivedBirthdays = true;
@@ -22,18 +20,10 @@ public class Options : MonoBehaviour
             PlayerPrefs.SetInt("playSounds", 0);
         if (!PlayerPrefs.HasKey("showArchivedBirthdays"))
             PlayerPrefs.SetInt("showArchivedBirthdays", 1);
-        if (!PlayerPrefs.HasKey("theme"))
-            PlayerPrefs.SetString("theme", theme.ToString());
 
         LoadOptions();
     }
 
-    public void ChangeTheme(string newTheme)
-    {
-        theme = (Theme)Enum.Parse(typeof(Theme), newTheme);
-        PlayerPrefs.SetString("theme", theme.ToString());
-
-    }
 
     public void CheckSounds()
     {
@@ -88,17 +78,5 @@ public class Options : MonoBehaviour
             // Makes the custom toggle visually update;
             archivedToggle.GetComponent<CustomToggle>().UpdateState();
         }
-
-        string loadedTheme = PlayerPrefs.GetString("theme");
-
-        if (loadedTheme != "Pastel")
-        {
-            theme = (Theme)Enum.Parse(typeof(Theme), loadedTheme);
-        }
     }
-}
-
-public enum Theme
-{
-    Pastel, Dark, Light
 }
