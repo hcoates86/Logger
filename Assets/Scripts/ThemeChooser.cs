@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class ThemeChooser : MonoBehaviour
 {
-    public static UnityEvent onChangeTheme;
+    public static UnityEvent onChangeTheme = new UnityEvent();
 
     public static ThemeType currentTheme = ThemeType.Default;
 
@@ -33,6 +33,12 @@ public class ThemeChooser : MonoBehaviour
         Enum.TryParse(themeType, out currentTheme);
         onChangeTheme?.Invoke();
         SaveTheme();
+    }
+
+    public static void ChangeToGrayscale(ref Color _color)
+    {
+        float grayValue = _color.grayscale;
+        _color = new Color(grayValue, grayValue, grayValue, _color.a);
     }
 }
 

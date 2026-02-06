@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// changes the current color
 public class ColorChooser : MonoBehaviour
 {
     public TMP_Text text;
@@ -9,6 +10,13 @@ public class ColorChooser : MonoBehaviour
 
     // The default is saved at start
     Color defaultText, defaultImage;
+
+    // called in editor when component is added
+    void Reset()
+    {
+        TryGetComponent(out text);
+        TryGetComponent(out image);
+    }
 
     void Awake()
     {
@@ -18,6 +26,7 @@ public class ColorChooser : MonoBehaviour
         if (image != null)
             defaultImage = image.color;
     }
+
 
     void ChangeColors()
     {
@@ -40,8 +49,7 @@ public class ColorChooser : MonoBehaviour
                 {
                     float grayTextValue = defaultText.grayscale;
                     Color grayText = new Color(grayTextValue, grayTextValue, grayTextValue, 255);
-                    // since text will likely be either white or black, don't change it for grayscale
-                    // text.color =
+                    text.color = grayText;
                 }
                 break;
         }

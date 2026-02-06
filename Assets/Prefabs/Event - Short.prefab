@@ -630,6 +630,7 @@ GameObject:
   - component: {fileID: 5850695158331570789}
   - component: {fileID: 2565039372359013507}
   - component: {fileID: 5725841594322824526}
+  - component: {fileID: 1999265250510494958}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -709,6 +710,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1.74, y: -3.12}
   m_UseGraphicAlpha: 1
+--- !u!114 &1999265250510494958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6875474591666946638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec4b1d9a392028a41bf98a9f1411c593, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColorChooser
+  text: {fileID: 0}
+  image: {fileID: 2565039372359013507}
 --- !u!1 &7709048366192839562
 GameObject:
   m_ObjectHideFlags: 0

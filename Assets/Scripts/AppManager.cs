@@ -49,8 +49,9 @@ public class AppManager : MonoBehaviour
     private const string PRESSED_HEX = "#5A2E82";
     private const string NORMAL_HEX = "#FE5E78";
 
-    private Color pressedColor;
-    private Color normalColor;
+    public Color pressedColor;
+    public Color normalColor;
+    Color[] defaultColors = new Color[2];
 
     // signifies an event was edited in the full profile and the view needs to be refreshed upon returning to the short profile
     public bool eventEdited = false;
@@ -126,8 +127,27 @@ public class AppManager : MonoBehaviour
         ColorUtility.TryParseHtmlString(NORMAL_HEX, out normalColor);
         ColorUtility.TryParseHtmlString(PRESSED_HEX, out pressedColor);
 
-        ActivateProfileButtons(false);
+        defaultColors[0] = normalColor;
+        defaultColors[1] = pressedColor;
 
+        ThemeChooser.onChangeTheme.AddListener(ChangeColors);
+
+        ActivateProfileButtons(false);
+    }
+
+    void ChangeColors()
+    {
+        switch (ThemeChooser.currentTheme)
+        {
+            case ThemeType.Default:
+                normalColor = defaultColors[0];
+                pressedColor = defaultColors[1];
+                break;
+            case ThemeType.Dark:
+                ThemeChooser.ChangeToGrayscale(ref pressedColor);
+                ThemeChooser.ChangeToGrayscale(ref normalColor);
+                break;
+        }
     }
 
     public void ArchiveProfileConfirm()
