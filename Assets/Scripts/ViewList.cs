@@ -7,10 +7,7 @@ using UnityEngine.UI;
 public class ViewList : MonoBehaviour
 {
     public RectTransform container;
-    public ProfileDisplay listItem;
-    public CanvasGroupToggle listcgt;
-
-    private ProfileDisplay profileDisplay;
+    public ListItem listItem;
 
     void Start ()
     {
@@ -22,23 +19,26 @@ public class ViewList : MonoBehaviour
 
     public void FillList()
     {
-        if (AppManager.Instance.allProfiles.Count == 0) return;
+        // if (AppManager.Instance.allProfiles.Count == 0) return;
 
         ClearChildren(container);
 
         foreach (Profile profile in AppManager.Instance.allProfiles)
         {
-            profileDisplay = Instantiate(listItem, container);
+            ListItem currItem = Instantiate(listItem, container);
+            currItem.Setup(profile);
+        }
 
-            profileDisplay.Setup(profile);
+        if (Options.showArchivedInList)
+        {
+            foreach (Profile profile in AppManager.Instance.allArchivedProfiles)
+            {
+                ListItem currItem = Instantiate(listItem, container);
+                currItem.Setup(profile);
+            }
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(container);
-    }
-
-    public void OnClick()
-    {
-        listcgt.ShowElement();
     }
 
     public void ClearChildren(Transform objectTrans)

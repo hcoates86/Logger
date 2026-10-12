@@ -41,7 +41,7 @@ public class ButtonHandler : MonoBehaviour
         // change the saved color AND the current color
         switch (ThemeChooser.currentTheme)
         {
-            case ThemeType.Default:
+            case ThemeType.Pastel:
                 disabledTextColor = defaultColors[0];
                 enabledTextColor = defaultColors[1];
                 disabledImageColor = defaultColors[2];
@@ -52,6 +52,12 @@ public class ButtonHandler : MonoBehaviour
                 ThemeChooser.ChangeToGrayscale(ref enabledTextColor);
                 ThemeChooser.ChangeToGrayscale(ref disabledImageColor);
                 ThemeChooser.ChangeToGrayscale(ref enabledImageColor);
+                break;
+            case ThemeType.Light:
+                disabledTextColor = Color.gray;
+                enabledTextColor = Color.black;
+                disabledImageColor = Color.gray;
+                enabledImageColor = Color.white;
                 break;
         }
 

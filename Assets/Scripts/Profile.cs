@@ -13,7 +13,9 @@ public class Profile : MonoBehaviour
     public string named;
     // must be in day/month/year format
     public DateTime birthDate;
-    public string Age => isArchived ? archivedAge : AppManager.Instance.GetAge(birthDate);
+    // The days this profile died/ended. Will calculate age based on this if it's set.
+    public DateTime endDate;
+    public string Age => AppManager.Instance.GetAge(birthDate, endDate);
 
     public Sprite profileImage;
     public Sprite thumbnail;
@@ -29,24 +31,27 @@ public class Profile : MonoBehaviour
     public Image profileBackground;
 
     public bool isArchived;
-    public string archivedAge;
 
     void Start()
     {
         LoadEvents();
     }
 
-    // Archives the profile so it'll always display the same age
+    // Archives the profile so it'll be put away in its own tab.
     public void ArchiveProfile()
     {
-        archivedAge = Age;
         isArchived = true;
         SaveProfile();
-        //reload short profile
-        AppManager.Instance.shortProfile.Setup(this);
-        // Reloads the full profile if it's up.
+
+        AppManager.Instance.allProfiles.Remove(this);
+        AppManager.Instance.allArchivedProfiles.Add(this);
+        transform.SetParent(AppManager.Instance.archivedProfileContainer);
+        //close short profile
+        AppManager.Instance.shortProfileToggle.HideElement();
+
+        // close the full profile if it's up.
         if (AppManager.Instance.fullProfileToggle.IsElementVisible())
-            AppManager.Instance.fullProfile.Setup(this);
+            AppManager.Instance.fullProfileToggle.HideElement();
 
     }
 
@@ -54,11 +59,16 @@ public class Profile : MonoBehaviour
     {
         isArchived = false;
         SaveProfile();
-        //reload short profile
-        AppManager.Instance.shortProfile.Setup(this);
-        // Reloads the full profile if it's up.
+
+        AppManager.Instance.allProfiles.Add(this);
+        AppManager.Instance.allArchivedProfiles.Remove(this);
+        transform.SetParent(AppManager.Instance.profileContainer);
+        //close short profile
+        AppManager.Instance.shortProfileToggle.HideElement();
+
+        // close the full profile if it's up.
         if (AppManager.Instance.fullProfileToggle.IsElementVisible())
-            AppManager.Instance.fullProfile.Setup(this);
+            AppManager.Instance.fullProfileToggle.HideElement();
     }
 
 
@@ -82,11 +92,11 @@ public class Profile : MonoBehaviour
         data.id = id;
         data.named = named;
         data.birthDate = birthDate.ToString("MM/dd/yyyy");
+        data.endDate = endDate.ToString("MM/dd/yyyy");
         data.totalEventsAdded = totalEventsAdded;
         data.eventsSortedBy = eventsSortedBy;
         data.customSortNum = customSortNum;
         data.isArchived = isArchived;
-        data.archivedAge = archivedAge;
 
         string json = JsonUtility.ToJson(data);
         string path = $"{Application.persistentDataPath}/profiles";
@@ -366,10 +376,11 @@ public class ProfileData
     public int id;
     public string named;
     public string birthDate;
+    public string endDate;
     public int totalEventsAdded;
     public SortBy eventsSortedBy;
     public int customSortNum;
     public bool isArchived;
-    public string archivedAge;
+    // public string archivedAge;
         
 }

@@ -83,9 +83,15 @@ public class EditButton : MonoBehaviour
         dateInput.ShowElement(true);
     }
 
+    public void EditEndDate()
+    {
+        // if (AppManager.Instance.currentProfile.endDate != DateTime.MinValue)
+    }
+
     // attached to the confirm button on the floating input on full profile
     public void OnConfirm()
     {
+
         //change the visuals on full profile
         if (nameInput.IsElementVisible())
         {
@@ -109,9 +115,8 @@ public class EditButton : MonoBehaviour
                 }
                 else
                 {
-                    AppManager.Instance.fullProfile.ageText.text = AppManager.Instance.GetAge(editInput.dateValidator.dateValue);
+                    // AppManager.Instance.fullProfile.ageText.text = AppManager.Instance.GetAge(editInput.dateValidator.dateValue, DateTime.Now);
                     AppManager.Instance.fullProfile.dateText.text = editInput.dateValidator.dateValue.ToString("MM/dd/yyyy");
-
                 }
             }
             else return;
@@ -131,11 +136,7 @@ public class EditButton : MonoBehaviour
         if (wasDateChanged)
         {
             profile.birthDate = editInput.dateValidator.dateValue;
-            // if the date is edited when the profile is archived, changes the archived age
-            if (profile.isArchived)
-            {
-                profile.archivedAge = AppManager.Instance.GetAge(profile.birthDate);
-            }
+
         }
         if (uploadImage.imageUploaded)
         {

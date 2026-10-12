@@ -10,6 +10,10 @@ public class ProfileDisplay : MonoBehaviour
     public TMP_Text nameText;
     public TMP_Text ageText;
     public TMP_Text dateText;
+    public TMP_Text endDateText;
+    // The dash between birth and death dates.
+    public GameObject divider;
+    public GameObject bornLabel;
     // image to set the sprite photo to
     public Image image;
 
@@ -30,7 +34,29 @@ public class ProfileDisplay : MonoBehaviour
             if (profile.birthDate != DateTime.MinValue)
                 dateText.text = profile.birthDate.ToString("MM/dd/yyyy");
             else
-                dateText.text = "--/--/----";
+                dateText.text = NewEventHandler.blankDate;
+        }
+
+        // If profile has a valid endDate sets it up.
+        if (profile.endDate != DateTime.MinValue)
+        {
+            if (endDateText != null && !endDateText.gameObject.activeInHierarchy)
+                endDateText.gameObject.SetActive(true);
+            if (divider != null && !divider.activeInHierarchy)
+                divider.SetActive(true);
+            if (bornLabel != null && bornLabel.activeInHierarchy)
+                bornLabel.SetActive(false);
+
+            endDateText.text = profile.endDate.ToString("MM/dd/yyyy");
+        }
+        else
+        {
+            if (divider != null && divider.activeInHierarchy)
+                divider.SetActive(false);
+            if (bornLabel != null && !bornLabel.activeInHierarchy)
+                bornLabel.SetActive(true);
+            if (endDateText != null && endDateText.gameObject.activeInHierarchy)
+                endDateText.gameObject.SetActive(false);
         }
 
         //uses as shortcut to check if it's the small profile item

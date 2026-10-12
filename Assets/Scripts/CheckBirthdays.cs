@@ -44,6 +44,23 @@ public class CheckBirthdays : MonoBehaviour
                     birthdayNames += profile.named;
             }
         }
+
+        if (includeArchived)
+        {
+            foreach (Profile profile in AppManager.Instance.allArchivedProfiles)
+            {
+                if (CheckIfBirthday(profile.birthDate))
+                {
+                    // If string already contains names add an "and" and space
+                    if (birthdayNames.Length > 0)
+                    {
+                        birthdayNames += $" and {profile.named}";
+                    }
+                    else
+                        birthdayNames += profile.named;
+                }
+            }
+        }
     }
 
 

@@ -9,9 +9,11 @@ public class Options : MonoBehaviour
 {
     public Toggle soundToggle;
     public Toggle archivedToggle;
+    public Toggle archivedListToggle;
 
     public static bool playSounds = false;
-    public static bool showArchivedBirthdays = true;
+    public static bool showArchivedBirthdays = false;
+    public static bool showArchivedInList = false;
 
     void Start()
     {
@@ -19,7 +21,9 @@ public class Options : MonoBehaviour
         if (!PlayerPrefs.HasKey("playSounds"))
             PlayerPrefs.SetInt("playSounds", 0);
         if (!PlayerPrefs.HasKey("showArchivedBirthdays"))
-            PlayerPrefs.SetInt("showArchivedBirthdays", 1);
+            PlayerPrefs.SetInt("showArchivedBirthdays", 0);
+        if (!PlayerPrefs.HasKey("showArchivedInList"))
+            PlayerPrefs.SetInt("showArchivedInList", 0);
 
         LoadOptions();
     }
@@ -60,23 +64,47 @@ public class Options : MonoBehaviour
         }
     }
 
+    public void ChangeArchivedList(bool isOn)
+    {
+        if (isOn)
+        {
+            showArchivedInList = true;
+            PlayerPrefs.SetInt("showArchivedInList", 1);
+        }
+        else
+        {
+            showArchivedInList = false;
+            PlayerPrefs.SetInt("showArchivedInList", 0);
+
+        }
+    }
+
     void LoadOptions()
     {
-        if (PlayerPrefs.GetInt("playSounds") == 0)
+        if (PlayerPrefs.GetInt("playSounds") == 1)
         {
-            playSounds = false;
-            soundToggle.isOn = false;
+            playSounds = true;
+            soundToggle.isOn = true;
             // Makes the custom toggle visually update;
             soundToggle.GetComponent<CustomToggle>().UpdateState();
 
         }
-        if (PlayerPrefs.GetInt("showArchivedBirthdays") == 0)
+        if (PlayerPrefs.GetInt("showArchivedBirthdays") == 1)
         {
-            showArchivedBirthdays = false;
-            archivedToggle.isOn = false;
+            showArchivedBirthdays = true;
+            archivedToggle.isOn = true;
 
             // Makes the custom toggle visually update;
             archivedToggle.GetComponent<CustomToggle>().UpdateState();
+        }
+
+        if (PlayerPrefs.GetInt("showArchivedInList") == 1)
+        {
+            showArchivedInList = true;
+            archivedListToggle.isOn = true;
+
+            // Makes the custom toggle visually update;
+            archivedListToggle.GetComponent<CustomToggle>().UpdateState();
         }
     }
 }

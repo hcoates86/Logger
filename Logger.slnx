@@ -65,12 +65,12 @@
   <Project Path="SimpleFileBrowser.Runtime.csproj" />
   <Project Path="Unity.Multiplayer.Center.Common.csproj" />
   <Project Path="NativeGallery.Runtime.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="Unity.Notifications.Unified.csproj" />
   <Project Path="Unity.InputSystem.ForUI.csproj" />
   <Project Path="ImageCropper.Runtime.csproj" />
   <Project Path="Unity.Collections.CodeGen.csproj" />
   <Project Path="Unity.Mathematics.Editor.csproj" />
-  <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="Unity.VisualScripting.DocCodeExamples.csproj" />
   <Project Path="Unity.InputSystem.TestFramework.csproj" />
   <Project Path="Unity.CollabProxy.Editor.csproj" />

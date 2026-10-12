@@ -33,6 +33,7 @@ public class AppManager : MonoBehaviour
     public List<Profile> allProfiles = new List<Profile>();
     public Profile profilePrefab;
     public Transform profileContainer;
+    public Transform archivedProfileContainer;
     public GameObject eventPrefab;
     public GameObject shortEventPrefab;
 
@@ -44,6 +45,10 @@ public class AppManager : MonoBehaviour
     public string deletePath;
 
     public bool canEdit = false;
+
+
+    public List<Profile> allArchivedProfiles = new List<Profile>();
+    public bool isArchivedShowing = false;
 
     // colors of the pressed and unpressed profile items
     private const string PRESSED_HEX = "#5A2E82";
@@ -139,13 +144,17 @@ public class AppManager : MonoBehaviour
     {
         switch (ThemeChooser.currentTheme)
         {
-            case ThemeType.Default:
+            case ThemeType.Pastel:
                 normalColor = defaultColors[0];
                 pressedColor = defaultColors[1];
                 break;
             case ThemeType.Dark:
                 ThemeChooser.ChangeToGrayscale(ref pressedColor);
                 ThemeChooser.ChangeToGrayscale(ref normalColor);
+                break;
+            case ThemeType.Light:
+                normalColor = Color.white;
+                pressedColor = Color.gray;
                 break;
         }
     }
@@ -154,12 +163,12 @@ public class AppManager : MonoBehaviour
     {
         if (!currentProfile.isArchived)
         {
-            confirm.Show($"Are you sure you want to archive {currentProfile.named}'s profile?\n Their age will no longer be updated.",
+            confirm.Show($"Are you sure you want to archive {currentProfile.named}'s profile?\n They will be in the archive tab under the menu.",
             currentProfile.ArchiveProfile);
         }
         else
         {
-            confirm.Show($"Are you sure you want to remove {currentProfile.named}'s profile from archive?\n Their age will start to be updated again.",
+            confirm.Show($"Are you sure you want to remove {currentProfile.named}'s profile from archive?",
             currentProfile.RemoveFromArchive);
         }
 
@@ -195,9 +204,12 @@ public class AppManager : MonoBehaviour
         {
             Directory.Delete(path, true);
         }
+        if (currentProfile.isArchived)
+            allArchivedProfiles.Remove(currentProfile);
+        else
+            allProfiles.Remove(currentProfile);
 
         FadeAndDestroy(currentProfile.gameObject);
-        allProfiles.Remove(currentProfile);
 
         currentProfile = null;
 
@@ -307,13 +319,14 @@ public class AppManager : MonoBehaviour
                 foreach (string filePath in filePaths)
                 {
                     string[] data = LoadProfileData(filePath);
-                    DateTime dateValue;
-                    DateTime.TryParse(data[2], out dateValue);
+
+                    DateTime.TryParse(data[2], out DateTime dateValue);
+                    DateTime.TryParse(data[3], out DateTime endDateValue);
 
                     // parses ints/enum
                     int profileId = int.Parse(data[0]);
-                    int totalEvents = int.Parse(data[3]);
-                    int customSortNum = int.Parse(data[5]);
+                    int totalEvents = int.Parse(data[4]);
+                    int customSortNum = int.Parse(data[6]);
 
                     // enum loads as string name of enum eg "None"
                     Enum.TryParse(data[4], out SortBy sortedBy);
@@ -324,8 +337,8 @@ public class AppManager : MonoBehaviour
                     if (File.Exists(imagePath)) profileHasImage = true;
 
                     // creates the profile from the prefab but doesn't save it since it just loaded it
-                    // int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save, bool isarchived, string archivedAge
-                    CreateProfile(profileId, data[1], dateValue, totalEvents, sortedBy, profileHasImage, false, customSortNum, bool.Parse(data[6]), data[7]);
+                    // int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save, bool isarchived
+                    CreateProfile(profileId, data[1], dateValue, endDateValue, totalEvents, sortedBy, profileHasImage, false, customSortNum, bool.Parse(data[7]));
 
                 }
             }
@@ -422,13 +435,13 @@ public class AppManager : MonoBehaviour
         string path = $"{Application.persistentDataPath}/profiles/profile{id}.json";
         string[] data = LoadProfileData(path);
 
-        DateTime dateValue;
-        DateTime.TryParse(data[2], out dateValue);
+        DateTime.TryParse(data[2], out DateTime dateValue);
+        DateTime.TryParse(data[3], out DateTime endDateValue);
 
         // parses ints/enum
         int profileId = int.Parse(data[0]);
-        int totalEvents = int.Parse(data[3]);
-        Enum.TryParse(data[4], out SortBy sortedBy);
+        int totalEvents = int.Parse(data[4]);
+        Enum.TryParse(data[5], out SortBy sortedBy);
 
 
         if (currentProfile.id == id)
@@ -442,13 +455,13 @@ public class AppManager : MonoBehaviour
         {
             Profile profile = FindProfile(id);
 
-            // these shouldn't even be needed??? but just in case for future needs
             profile.id = profileId;
             profile.totalEventsAdded = totalEvents;
             profile.eventsSortedBy = sortedBy;
 
             profile.name = data[1];
             profile.birthDate = dateValue;
+            profile.endDate = endDateValue;
         }
 
     }
@@ -459,17 +472,17 @@ public class AppManager : MonoBehaviour
         {
             string json = File.ReadAllText(path);
             ProfileData data = JsonUtility.FromJson<ProfileData>(json);
-
             string[] dataArray = new string[]
             {
-                            data.id.ToString(),
-                            data.named,
-                            data.birthDate,
-                            data.totalEventsAdded.ToString(),
-                            data.eventsSortedBy.ToString(),
-                            data.customSortNum.ToString(),
-                            data.isArchived.ToString(),
-                            data.archivedAge,
+                data.id.ToString(),
+                data.named,
+                data.birthDate,
+                data.endDate,
+                data.totalEventsAdded.ToString(),
+                data.eventsSortedBy.ToString(),
+                data.customSortNum.ToString(),
+                data.isArchived.ToString(),
+                // data.archivedAge,
             };
 
             return dataArray;
@@ -504,16 +517,16 @@ public class AppManager : MonoBehaviour
             return null;
     }
 
-    public void CreateProfile(int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save, int customSortNum, bool isArchived, string archivedAge)
+    public void CreateProfile(int id, string newName, DateTime birthDate, DateTime endDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save, int customSortNum, bool isArchived)
     {
-        Profile profile = Instantiate(profilePrefab, profileContainer);
+        Profile profile = Instantiate(profilePrefab, isArchived ? archivedProfileContainer : profileContainer);
         profile.id = id;
         profile.named = newName;
         profile.totalEventsAdded = totalEventsAdded;
         profile.eventsSortedBy = eventsSortedBy;
         profile.customSortNum = customSortNum;
         profile.isArchived = isArchived;
-        profile.archivedAge = archivedAge;
+        // profile.archivedAge = archivedAge;
 
         if (imageUploaded)
         {
@@ -522,6 +535,7 @@ public class AppManager : MonoBehaviour
         }
 
         profile.birthDate = birthDate;
+        profile.endDate = endDate;
 
         if (save)
         {
@@ -533,7 +547,10 @@ public class AppManager : MonoBehaviour
         ProfileDisplay profileDisplay = profile.GetComponent<ProfileDisplay>();
         profileDisplay.Setup(profile);
 
-        allProfiles.Add(profile);
+        if (isArchived)
+            allArchivedProfiles.Add(profile);
+        else
+            allProfiles.Add(profile);
         // changes scroll behavior for change order
         if (allProfiles.Count > 3)
         {
@@ -591,23 +608,6 @@ public class AppManager : MonoBehaviour
                 currentProfile.SortByCurrentCriteria();
             shortProfile.Setup(currentProfile);
         }
-        // this should probably be moved
-        // if (ProfileEdited)
-        // {
-        //     // // reloads the image if a new one was uploaded
-        //     // if (EditButton.profileImageReplaced)
-        //     // {
-        //     //     currentProfile.profileImage = LoadImage(currentProfile.id);
-        //     //     currentProfile.thumbnail = LoadThumbnail(currentProfile.id);
-        //     //     EditButton.profileImageReplaced = false;
-        //     // }
-
-        //     shortProfile.Setup(currentProfile);
-
-        //     // grabs and refreshes the small profile item
-        //     ProfileDisplay currentProfDisplay = currentProfile.GetComponent<ProfileDisplay>();
-        //     currentProfDisplay.Setup(currentProfile);
-        // }
 
         fullProfileToggle.HideElement();
 
@@ -648,7 +648,7 @@ public class AppManager : MonoBehaviour
         }
         else
         {
-            AppManager.Instance.error.SetError("Failed to load image.");
+            error.SetError("Failed to load image.");
         }
         if (tex != null)
         {
@@ -733,20 +733,27 @@ public class AppManager : MonoBehaviour
         return returnString;
     }
 
-    public string GetAge(DateTime birthDate)
+    public string GetAge(DateTime birthDate, DateTime deathDate)
     {
         // if date is default value, treat as null
         if (birthDate == DateTime.MinValue)
             return "";
 
+        DateTime calculationDate;
+        if (deathDate != DateTime.MinValue)
+            calculationDate = deathDate;
+        else
+            calculationDate = DateTime.Now;
+
+
         // if date is in the future calculates due date
-        if (birthDate > DateTime.Now)
+        if (birthDate > calculationDate)
         {
             //since the default age calc can't handle future dates, uses Noda Time to calculate time until birth.
             return GetFutureDate(birthDate);
         }
 
-        Age age = new Age(birthDate, DateTime.Now);
+        Age age = new Age(birthDate, calculationDate);
 
         string pluralWeeks;
         string pluralMonths;
@@ -787,7 +794,6 @@ public class AppManager : MonoBehaviour
     }
 
     [SerializeField] CanvasGroupToggle editingBackground;
-    // [SerializeField] CanvasGroupToggle editOrderButtonContainer;
     public bool hasEditedOrder = false;
     public bool isReordering = false;
 
@@ -801,7 +807,6 @@ public class AppManager : MonoBehaviour
         // changes to custom sorting
         SortProfiles(SortBy.Custom, true);
         editingBackground.ShowElement();
-        // editOrderButtonContainer.ShowElement();
         // hides the short profile so no profile is showing
         shortProfileToggle.HideElement();
         // nulls out the current profile
@@ -821,7 +826,6 @@ public class AppManager : MonoBehaviour
     {
         isReordering = false;
         editingBackground.HideElement();
-        // editOrderButtonContainer.HideElement();
         ProfileDisplay profileDisplay;
 
         for (int i = 0; i < allProfiles.Count; i++)

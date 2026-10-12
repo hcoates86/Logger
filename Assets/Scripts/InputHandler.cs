@@ -10,6 +10,7 @@ public class InputHandler : MonoBehaviour
 {
     public TMP_InputField nameInput;
     public DateInputValidator dateValidator;
+    // public DateInputValidator endDateValidator;
     public TMP_InputField dateInput;
     // for ages, like "5", "12"
     public TMP_InputField ageInput;
@@ -33,8 +34,7 @@ public class InputHandler : MonoBehaviour
         DateTime dateTime;
         if (dateValidator.SubmitDateValidation())
             dateTime = dateValidator.dateValue;
-        else
-            return;
+        else return;
 
         int id = AppManager.Instance.CreateNewId();
         if (uploadImage.imageUploaded)
@@ -51,7 +51,7 @@ public class InputHandler : MonoBehaviour
             dateTime = today;
         }
 
-        AppManager.Instance.CreateProfile(id, nameInput.text, dateTime, 0, SortBy.None, uploadImage.imageUploaded, true, 500, false, string.Empty);
+        AppManager.Instance.CreateProfile(id, nameInput.text, dateTime, DateTime.MinValue, 0, SortBy.None, uploadImage.imageUploaded, true, 500, false);
 
         ClearInput(true);
     }
