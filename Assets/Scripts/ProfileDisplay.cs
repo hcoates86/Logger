@@ -24,6 +24,18 @@ public class ProfileDisplay : MonoBehaviour
     public RectTransform eventContainer;
     public FavoriteEventDisplay[] favoriteDisplays = new FavoriteEventDisplay[3];
 
+    void Start()
+    {
+        //uses as shortcut to check if it's the small profile item
+        if (!useThumbnail)
+            AppManager.Instance.OnProfileEdit += Refresh;
+    }
+
+    void Refresh()
+    {
+        Setup(AppManager.Instance.currentProfile);
+    }
+
     public void Setup(Profile profile)
     {
         nameText.text = profile.named;
@@ -46,8 +58,8 @@ public class ProfileDisplay : MonoBehaviour
                 divider.SetActive(true);
             if (bornLabel != null && bornLabel.activeInHierarchy)
                 bornLabel.SetActive(false);
-
-            endDateText.text = profile.endDate.ToString("MM/dd/yyyy");
+            if (endDateText != null)
+                endDateText.text = profile.endDate.ToString("MM/dd/yyyy");
         }
         else
         {

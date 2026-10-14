@@ -15,7 +15,7 @@ public class Profile : MonoBehaviour
     public DateTime birthDate;
     // The days this profile died/ended. Will calculate age based on this if it's set.
     public DateTime endDate;
-    public string Age => AppManager.Instance.GetAge(birthDate, endDate);
+    public string Age => GetAge();
 
     public Sprite profileImage;
     public Sprite thumbnail;
@@ -31,10 +31,19 @@ public class Profile : MonoBehaviour
     public Image profileBackground;
 
     public bool isArchived;
+    // if age is set and profile is dead, display set age only
+    public string savedAge;
 
     void Start()
     {
         LoadEvents();
+    }
+
+    string GetAge()
+    {
+        if (savedAge != string.Empty)
+            return AppManager.Instance.GetAge(this);
+        else return savedAge;
     }
 
     // Archives the profile so it'll be put away in its own tab.
@@ -97,6 +106,8 @@ public class Profile : MonoBehaviour
         data.eventsSortedBy = eventsSortedBy;
         data.customSortNum = customSortNum;
         data.isArchived = isArchived;
+        data.savedAge = savedAge;
+
 
         string json = JsonUtility.ToJson(data);
         string path = $"{Application.persistentDataPath}/profiles";
@@ -381,6 +392,6 @@ public class ProfileData
     public SortBy eventsSortedBy;
     public int customSortNum;
     public bool isArchived;
-    // public string archivedAge;
+    public string savedAge;
         
 }

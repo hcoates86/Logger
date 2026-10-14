@@ -19,6 +19,7 @@ public class EditButton : MonoBehaviour
     public CanvasGroupToggle dateInput;
 
     public GameObject editEventTip;
+    public GameObject savedDateWarning;
 [SerializeField]
     private bool wasDateChanged = false;
     public static bool profileImageReplaced = false;
@@ -78,20 +79,31 @@ public class EditButton : MonoBehaviour
         else
             editInput.dateInput.text = AppManager.Instance.fullProfile.dateText.text;
 
+        if (AppManager.Instance.fullProfile.endDateText.gameObject.activeInHierarchy)
+            editInput.endDateInput.text = AppManager.Instance.fullProfile.endDateText.text;
+        else 
+            editInput.endDateInput.text = string.Empty;
+
         floatingInput.ShowElement();
         nameInput.ShowElement(false);
         dateInput.ShowElement(true);
-    }
 
-    public void EditEndDate()
-    {
-        // if (AppManager.Instance.currentProfile.endDate != DateTime.MinValue)
+        if (AppManager.Instance.currentProfile.savedAge != string.Empty)
+        {
+            if (savedDateWarning != null)
+                savedDateWarning.SetActive(true);
+        }
+        else
+        {
+            if (savedDateWarning != null)
+                savedDateWarning.SetActive(false);
+        }
+
     }
 
     // attached to the confirm button on the floating input on full profile
     public void OnConfirm()
     {
-
         //change the visuals on full profile
         if (nameInput.IsElementVisible())
         {
@@ -111,16 +123,32 @@ public class EditButton : MonoBehaviour
                 if (editInput.dateValidator.dateValue == DateTime.MinValue)
                 {
                     AppManager.Instance.fullProfile.dateText.text = NewEventHandler.blankDate;
-                    AppManager.Instance.fullProfile.ageText.text = "";
+                    if (AppManager.Instance.currentProfile.savedAge != string.Empty)
+                        AppManager.Instance.fullProfile.ageText.text = "";
                 }
                 else
                 {
-                    // AppManager.Instance.fullProfile.ageText.text = AppManager.Instance.GetAge(editInput.dateValidator.dateValue, DateTime.Now);
                     AppManager.Instance.fullProfile.dateText.text = editInput.dateValidator.dateValue.ToString("MM/dd/yyyy");
                 }
             }
             else return;
+            
+            if (editInput.endDateValidator.SubmitDateValidation())
+            {
+                // if the date was blank place blank text
+                if (editInput.endDateValidator.dateValue == DateTime.MinValue)
+                {
+                    AppManager.Instance.fullProfile.endDateText.text = "";
+                }
+                else
+                {
+                    AppManager.Instance.fullProfile.endDateText.text = editInput.endDateValidator.dateValue.ToString("MM/dd/yyyy");
+                }
+            }
+            else return;
         }
+        else
+            wasDateChanged = false;
         // saves submission
         SubmitEdit();
         floatingInput.HideElement();
@@ -136,7 +164,8 @@ public class EditButton : MonoBehaviour
         if (wasDateChanged)
         {
             profile.birthDate = editInput.dateValidator.dateValue;
-
+            profile.endDate = editInput.endDateValidator.dateValue;
+            AppManager.Instance.HandleSavedDates(profile);
         }
         if (uploadImage.imageUploaded)
         {

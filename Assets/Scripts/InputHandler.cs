@@ -10,10 +10,14 @@ public class InputHandler : MonoBehaviour
 {
     public TMP_InputField nameInput;
     public DateInputValidator dateValidator;
-    // public DateInputValidator endDateValidator;
+    public DateInputValidator endDateValidator;
     public TMP_InputField dateInput;
+    public TMP_InputField endDateInput;
     // for ages, like "5", "12"
-    public TMP_InputField ageInput;
+    public TMP_InputField ageYearsInput;
+    public TMP_InputField ageMonthsInput;
+    public TMP_InputField ageWeeksInput;
+    public Toggle isDead;
 
     public Image image;
     public UploadImage uploadImage;
@@ -36,22 +40,71 @@ public class InputHandler : MonoBehaviour
             dateTime = dateValidator.dateValue;
         else return;
 
+        DateTime endDateTime;
+        if (endDateValidator.SubmitDateValidation())
+            endDateTime = endDateValidator.dateValue;
+        else return;
+
         int id = AppManager.Instance.CreateNewId();
         if (uploadImage.imageUploaded)
         {
             uploadImage.Upload(id);
         }
 
-        // if a birthdate hasn't been input, uses the age
-        if (dateTime == DateTime.MinValue && ageInput != null && ageInput.text != string.Empty)
+        string savedAge = string.Empty;
+        // if a birthdate hasn't been input, uses the age to calculate it
+        if (dateTime == DateTime.MinValue && ageYearsInput != null)
         {
-            int _age = int.Parse(ageInput.text);
+            string totalAge = string.Empty;
+            int _years = 0;
+            int _months = 0;
+            int _weeks = 0;
             DateTime today = DateTime.Now;
-            today = today.AddYears(-_age);
+
+            if (ageYearsInput.text != string.Empty)
+            {
+                _years = int.Parse(ageYearsInput.text);
+                if (_years > 0)
+                {
+                    totalAge = $"{ageYearsInput.text} Year{(_years == 1 ? "" : "s")}";
+                    // calculates the birthday
+                    today = today.AddYears(-_years);
+                }
+            }
+
+            if (ageMonthsInput.text != string.Empty)
+            {
+                _months = int.Parse(ageMonthsInput.text);
+                if (_months > 0)
+                {
+                    // Adds a space if the string has text already
+                    totalAge += $"{(totalAge.Length > 0 ? " ":"")}{ageMonthsInput.text} Month{(_months == 1 ? "" : "s")}";
+                    today = today.AddMonths(-_months);
+                }
+            }
+
+            if (ageWeeksInput.text != string.Empty)
+            {
+                _weeks = int.Parse(ageWeeksInput.text);
+                if (_weeks > 0)
+                {
+                    // Adds a space if the string has text already
+                    totalAge += $"{(totalAge.Length > 0 ? " ":"")}{ageWeeksInput.text} Week{(_weeks == 1 ? "" : "s")}";
+                    int _days = _weeks * 7;
+                    today = today.AddDays(-_days);
+                }
+            }
+
             dateTime = today;
+// if age is set and profile is dead, saves age and clears birthdate
+            if (isDead.isOn)
+            {
+                dateTime = DateTime.MinValue;
+                savedAge = totalAge;
+            }
         }
 
-        AppManager.Instance.CreateProfile(id, nameInput.text, dateTime, DateTime.MinValue, 0, SortBy.None, uploadImage.imageUploaded, true, 500, false);
+        AppManager.Instance.CreateProfile(id, nameInput.text, dateTime, endDateTime, 0, SortBy.None, uploadImage.imageUploaded, true, 500, false, savedAge);
 
         ClearInput(true);
     }
@@ -63,17 +116,26 @@ public class InputHandler : MonoBehaviour
             Debug.Log("Cleared input:");
             Debug.Log($"Name: {nameInput?.text}");
             Debug.Log($"Date: {dateInput?.text}");
-            Debug.Log($"Age: {ageInput?.text}");
+            Debug.Log($"Age: {ageYearsInput?.text}");
         }
 
         if (nameInput != null)
             nameInput.text = string.Empty;
         if (dateInput != null)
             dateInput.text = string.Empty;
+        if (endDateInput != null)
+            endDateInput.text = string.Empty;
         if (image != null)
             image.sprite = null;
-        if (ageInput != null)
-            ageInput.text = string.Empty;
+        if (ageYearsInput != null)
+            ageYearsInput.text = string.Empty;
+        if (ageMonthsInput != null)
+            ageMonthsInput.text = string.Empty;
+        if (ageWeeksInput != null)
+            ageWeeksInput.text = string.Empty;
+
+        if (isDead != null)
+            isDead.isOn = false;
 
         // hides errors
         AppManager.Instance.error.OkButton();

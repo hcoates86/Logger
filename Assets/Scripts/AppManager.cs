@@ -337,8 +337,8 @@ public class AppManager : MonoBehaviour
                     if (File.Exists(imagePath)) profileHasImage = true;
 
                     // creates the profile from the prefab but doesn't save it since it just loaded it
-                    // int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save, bool isarchived
-                    CreateProfile(profileId, data[1], dateValue, endDateValue, totalEvents, sortedBy, profileHasImage, false, customSortNum, bool.Parse(data[7]));
+                    // int id, string newName, DateTime birthDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save, bool isarchived, savedAge
+                    CreateProfile(profileId, data[1], dateValue, endDateValue, totalEvents, sortedBy, profileHasImage, false, customSortNum, bool.Parse(data[7]), data[8]);
 
                 }
             }
@@ -482,6 +482,7 @@ public class AppManager : MonoBehaviour
                 data.eventsSortedBy.ToString(),
                 data.customSortNum.ToString(),
                 data.isArchived.ToString(),
+                data.savedAge
                 // data.archivedAge,
             };
 
@@ -517,7 +518,7 @@ public class AppManager : MonoBehaviour
             return null;
     }
 
-    public void CreateProfile(int id, string newName, DateTime birthDate, DateTime endDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save, int customSortNum, bool isArchived)
+    public void CreateProfile(int id, string newName, DateTime birthDate, DateTime endDate, int totalEventsAdded, SortBy eventsSortedBy, bool imageUploaded, bool save, int customSortNum, bool isArchived, string savedAge)
     {
         Profile profile = Instantiate(profilePrefab, isArchived ? archivedProfileContainer : profileContainer);
         profile.id = id;
@@ -526,6 +527,8 @@ public class AppManager : MonoBehaviour
         profile.eventsSortedBy = eventsSortedBy;
         profile.customSortNum = customSortNum;
         profile.isArchived = isArchived;
+        profile.savedAge = savedAge;
+
         // profile.archivedAge = archivedAge;
 
         if (imageUploaded)
@@ -601,12 +604,12 @@ public class AppManager : MonoBehaviour
     {
         canEdit = false;
 
-        if (eventEdited || ProfileEdited)
+        if (eventEdited)
         {
             // sorts and refreshes the short profile. No need to sort if under two items
             if (currentProfile.allEvents.Count > 1)
                 currentProfile.SortByCurrentCriteria();
-            shortProfile.Setup(currentProfile);
+            shortProfile.SetEvents(currentProfile);
         }
 
         fullProfileToggle.HideElement();
@@ -733,6 +736,16 @@ public class AppManager : MonoBehaviour
         return returnString;
     }
 
+// Returns the age as a string
+    public string GetAge(Profile profile)
+    {
+        if (profile.savedAge != string.Empty && profile.birthDate == DateTime.MinValue)
+            return profile.savedAge;
+        else
+        return GetAge(profile.birthDate, profile.endDate);
+    }
+
+
     public string GetAge(DateTime birthDate, DateTime deathDate)
     {
         // if date is default value, treat as null
@@ -792,6 +805,77 @@ public class AppManager : MonoBehaviour
         }
         return $"{age.Years} {pluralYears} {age.Months} {pluralMonths}";
     }
+
+    // Handles saved dates when dates are edited.
+    public void HandleSavedDates(Profile profile)
+    {
+        if (profile.savedAge != string.Empty) return;
+
+        // if user has savedDate, birthDate, and no end date, calcs when they died and deletes savedDate
+        if (profile.birthDate != DateTime.MinValue && profile.endDate == DateTime.MinValue)
+        {
+            // calculates death date with birth date
+            profile.endDate = CalculateDate(profile.savedAge, birthdate: profile.birthDate);
+            profile.savedAge = string.Empty;
+        }
+        // if user has saved age, and a death date, calculates birthdate
+        if (profile.birthDate == DateTime.MinValue && profile.endDate != DateTime.MinValue)
+        {
+            profile.birthDate = CalculateDate(profile.savedAge, deathDate: profile.endDate);
+            profile.savedAge = string.Empty;
+        }
+        // if they have all dates, deletes the saved date
+        if (profile.birthDate != DateTime.MinValue && profile.endDate != DateTime.MinValue)
+            profile.savedAge = string.Empty;
+    }
+
+    public DateTime CalculateDate(string _age, DateTime birthdate = default, DateTime deathDate = default)
+    {
+        Debug.Log($"birthdate {birthdate}, deathDate {deathDate}");
+        int _years = 0;
+        int _months = 0;
+        int _weeks = 0;
+
+        string[] splitAge = _age.Split(" ");
+
+        for (int i = 0; i < splitAge.Length; i++)
+        {
+            if (splitAge[i].Contains("year"))
+            {
+                int.TryParse(splitAge[i - 1], out _years);
+            }
+            else if (splitAge[i].Contains("month"))
+            {
+                int.TryParse(splitAge[i - 1], out _months);
+            }
+            else if (splitAge[i].Contains("week"))
+            {
+                int.TryParse(splitAge[i - 1], out _weeks);
+            }
+            
+        }
+
+        DateTime fromDate;
+        if (birthdate != DateTime.MinValue)
+        {
+            fromDate = birthdate;
+        }
+            else
+        {
+            fromDate = deathDate;
+            _years = -_years;
+            _months = -_months;
+            _weeks = -_weeks;
+        }
+
+        fromDate = fromDate.AddYears(_years);
+        fromDate = fromDate.AddMonths(_months);
+        int _days = _weeks * 7;
+        fromDate = fromDate.AddDays(_days);
+
+        return fromDate;
+    }
+
 
     [SerializeField] CanvasGroupToggle editingBackground;
     public bool hasEditedOrder = false;
